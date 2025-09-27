@@ -3,6 +3,12 @@ title: "REPORTE QUARTO"
 author: "Alexander Gonzalez - Yachay Tech University"
 date: "25-09-2025"
 format: "html"
+
+jupyter: myenv-ml  
+
+project:
+  type: website
+  preview:
 ---
 
 # Pagina de Prueba 
@@ -70,6 +76,16 @@ alt.Chart(cars).mark_point().encode(
 alt.Chart(cars).mark_point().encode(
     x="Weight_in_lbs"
 )
+```
+
+```{python}
+alt.Chart(cars).mark_point().encode(
+    x="Weight_in_lbs",
+    y="Miles_per_Gallon",
+    color="Origin",
+    shape="Origin",
+    tooltip=["Name","Origin","Miles_per_Gallon","Weight_in_lbs"]
+).interactive()
 ```
 
 - List 
