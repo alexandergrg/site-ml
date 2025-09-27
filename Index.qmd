@@ -88,5 +88,53 @@ alt.Chart(cars).mark_point().encode(
 ).interactive()
 ```
 
-- List 
-    - Primero
+
+
+```{python}
+alt.Chart(cars).mark_point().encode(
+    x="Weight_in_lbs",
+    y="Miles_per_Gallon",
+    color="Origin",
+    shape="Origin",
+    tooltip=["Name","Origin","Miles_per_Gallon","Weight_in_lbs"]
+).interactive()
+```
+
+
+
+```{python}
+alt.Chart(cars).mark_point().encode(
+    x="Weight_in_lbs",
+    y="Miles_per_Gallon",
+    color="Origin",
+    shape="Origin",
+    tooltip=["Name","Origin","Miles_per_Gallon","Weight_in_lbs"]
+).interactive()
+```
+
+
+
+```{python}
+alt.Chart(cars).mark_point().encode(
+    x="Weight_in_lbs",
+    y="Miles_per_Gallon",
+    color="Origin",
+    shape="Origin",
+    tooltip=["Name","Origin","Miles_per_Gallon","Weight_in_lbs"]
+).interactive()
+```
+
+# Prueba hasta aqui
+
+```{python}
+alt.Chart(cars).mark_point().encode(
+    x="Weight_in_lbs",
+    y="Miles_per_Gallon",
+    color="Origin",
+    shape="Origin",
+    tooltip=["Name","Origin","Miles_per_Gallon","Weight_in_lbs"]
+).interactive()
+```
+
+
+
