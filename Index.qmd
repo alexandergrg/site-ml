@@ -2,13 +2,17 @@
 title: "REPORTE QUARTO"
 author: "Alexander Gonzalez - Yachay Tech University"
 date: "25-09-2025"
-format: "html"
 
 jupyter: myenv-ml  
 
 project:
   type: website
   preview:
+    watch-inputs: true   # <- recarga al guardar
+
+format: "html"
+
+
 ---
 
 # Pagina de Prueba 
@@ -138,3 +142,52 @@ alt.Chart(cars).mark_point().encode(
 
 
 
+```{python}
+alt.Chart(cars).mark_point().encode(
+    x="Miles_per_Gallon",
+    y="Horsepower",
+    color="Origin",
+    shape="Origin",
+    tooltip=["Name","Origin","Miles_per_Gallon","Horsepower"]
+).interactive()
+```
+
+`count()` De Cada uno de los Origenes
+
+### Agregaciones 
+ Grafico de barar
+
+Número de Obervaciones
+```{python}
+alt.Chart(cars).mark_bar().encode(
+    alt.X('Origin',sort='-y'),
+    alt.Y('count()')
+) 
+```
+
+`mean()` de cada uno de los origines
+
+```{python}
+alt.Chart(cars).mark_bar().encode(
+    alt.X('Origin',sort='-y'),
+    alt.Y('mean(Weight_in_lbs)'),
+    tooltip=['Origin','mean(Weight_in_lbs)']
+).properties(
+    width=200,
+    height=200
+)
+```
+
+### Gráfico Linea
+
+
+```{python}
+alt.Chart(cars).mark_line(point=True).encode(
+    alt.X('Year'),
+    alt.Y('mean(Weight_in_lbs)'),
+    alt.Color('Origin'),
+).properties(
+    width=600,
+    height=600
+).interactive()
+```
