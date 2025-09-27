@@ -5,21 +5,11 @@ date: "25-09-2025"
 
 jupyter: myenv-ml  
 
-project:
-  type: website
-  preview:
-    watch-inputs: true   # <- recarga al guardar
-
-format: "html"
-
-
 ---
 
-# Pagina de Prueba 
-
+# Mi primer Quarto 
 ## Graficas de Prueba
 
----
 
 ```{python}
 print("Hola Mundo")
@@ -28,7 +18,6 @@ for i in range(10):
     print(f"Elemento del for i: {i}")
 
 ```
-
 
 ```{python}
 import altair as alt
@@ -128,8 +117,6 @@ alt.Chart(cars).mark_point().encode(
 ).interactive()
 ```
 
-# Prueba hasta aqui
-
 ```{python}
 alt.Chart(cars).mark_point().encode(
     x="Weight_in_lbs",
@@ -152,12 +139,14 @@ alt.Chart(cars).mark_point().encode(
 ).interactive()
 ```
 
-`count()` De Cada uno de los Origenes
 
-### Agregaciones 
- Grafico de barar
+## Agregaciones 
+ Grafico de barra
 
 Número de Obervaciones
+
+### Count
+`count()` De Cada uno de los Origenes
 ```{python}
 alt.Chart(cars).mark_bar().encode(
     alt.X('Origin',sort='-y'),
@@ -165,6 +154,7 @@ alt.Chart(cars).mark_bar().encode(
 ) 
 ```
 
+### Mean
 `mean()` de cada uno de los origines
 
 ```{python}
@@ -186,6 +176,7 @@ alt.Chart(cars).mark_line(point=True).encode(
     alt.X('Year'),
     alt.Y('mean(Weight_in_lbs)'),
     alt.Color('Origin'),
+    tooltip=['Origin','mean(Weight_in_lbs)']
 ).properties(
     width=600,
     height=600
