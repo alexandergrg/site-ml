@@ -1,0 +1,69 @@
+---
+title: "REPORTE QUARTO"
+author: "Alexander Gonzalez - Yachay Tech University"
+date: "25-09-2025"
+format: "html"
+---
+
+# Pagina de Prueba 
+
+## Graficas de Prueba
+
+---
+
+```{python}
+print("Hola Mundo")
+
+for i in range(10):
+    print(f"Elemento del for i: {i}")
+
+```
+
+
+```{python}
+import altair as alt
+
+from vega_datasets import data
+cars = data.cars()
+print(cars.head())
+```
+
+
+```{python}
+alt.Chart(cars).mark_point().encode(
+    x="Miles_per_Gallon"
+)
+```
+
+```{python}
+alt.Chart(cars).mark_point().encode(
+    x="Miles_per_Gallon",
+    y="Horsepower",
+    tooltip=["Name","Origin","Miles_per_Gallon","Horsepower"]
+).interactive()
+
+```
+
+```{python}
+alt.Chart(cars).mark_point().encode(
+    x="Miles_per_Gallon",
+    y="Horsepower",
+    color="Origin",
+    tooltip=["Name","Origin","Miles_per_Gallon","Horsepower"]
+).interactive()
+
+```
+
+```{python}
+alt.Chart(cars).mark_point().encode(
+    x="Weight_in_lbs",
+    y="Miles_per_Gallon",
+    color="Origin",
+    shape="Origin",
+    tooltip=["Name","Origin","Miles_per_Gallon","Weight_in_lbs"]
+).interactive()
+
+```
+
+- List 
+    - Primero

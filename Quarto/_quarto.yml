@@ -1,0 +1,18 @@
+project:
+  type: website
+  preview:
+    watch-inputs: true   # <- recarga al guardar
+    browser: false
+
+jupyter: myenv-ml        # <- usa el kernelspec "myenv-ml" (no el display name)
+
+execute:
+  eval: true
+  echo: true
+  output: true
+  cache: false           # <- sin caché
+  freeze: false          # <- sin “congelar” resultados
+
+format:
+  html:
+    embed-resources: true
