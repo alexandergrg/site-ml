@@ -1,0 +1,237 @@
+
+---
+title: "Visualización de Data"
+format:
+  html:
+    code-fold: true
+    toc: true
+    number-sections: true
+    df-print: paged
+---
+
+# Resumen del Dataset: Número de causas ingresadas, resueltas y en trámite a nivel nacional
+
+## 📌 Título y propósito
+- **Nombre del dataset:** Número de causas ingresadas, resueltas y en trámite a nivel nacional (ámbitos COIP, COGEP y Constitucional).  
+- **Objetivo:** Mostrar estadísticas judiciales de Ecuador sobre cuántas causas se han **ingresado**, **resuelto** o se encuentran **en trámite**, desglosadas por materia, tipo de acción, delito, provincia, cantón, judicatura e instancia.
+
+---
+
+## ⏱ Cobertura temporal y actualización
+- **Período:** Desde **2017** hasta la fecha de corte.  
+- **Última actualización:** **17 de septiembre de 2025**.  
+- **Periodicidad:** **Mensual** (se actualiza cada mes).  
+
+---
+
+## 🏛 Fuente y autoría
+- **Organismo responsable:** Consejo de la Judicatura de Ecuador.  
+- **Departamento:** Dirección Nacional de Estudios Jurimétricos y Estadística Judicial.  
+- **Licencia:** Creative Commons Attribution (CC-BY).  
+
+---
+
+## 📊 Variables destacadas
+El dataset incluye información desagregada en los siguientes campos:
+
+- **Año** y **Mes**  
+- **Materia** (penal, constitucional, administrativo, etc.)  
+- **Tipo de acción / clase de causa**  
+- **Delito** (cuando aplica)  
+- **Provincia** y **Cantón**  
+- **Judicatura** e **Instancia**  
+- **Número de causas**:  
+  - Ingresadas  
+  - Resueltas  
+  - En trámite  
+
+---
+
+## 📊 Carga del Dataset
+
+```{python}
+import pandas as pd
+import altair as alt
+
+# Ruta local del archivo .ods
+file = "/Users/usr-s3c/Documents/Maestria_YTech/Machine-Learning/cnj.csv"
+# Leer la primera hoja del archivo
+df = pd.read_csv(file, sep=";", low_memory=False)
+
+# Mostrar las primeras filas
+print(df.head(20))
+```
+
+```{python}
+# Mostrar nombres de todas las columnas
+print(df.columns.tolist())
+
+```
+
+
+```{python}
+print("Número de columnas:", len(df.columns))
+
+```
+
+
+```{python}
+print(df.info())
+```
+
+
+```{python}
+df.head(20)
+```
+
+## 📊 Top 10 de Delitos Comunes en el Pais
+
+```{python}
+
+# --- Agregacion y Top 10 ---
+top_delitos = (df.groupby('Delito', as_index=False)['Ingreso']
+                 .sum()
+                 .sort_values('Ingreso', ascending=False)
+                 .head(10))
+
+# (Opcional) ver tabla en consola
+print(top_delitos.to_string(index=False))
+
+# --- Grafica ---
+bar = alt.Chart(top_delitos).mark_bar().encode(
+    y=alt.Y('Delito:N', sort='-x', title='Delito'),
+    x=alt.X('Ingreso:Q', title='Causas (Ingreso)'),
+    tooltip=['Delito', 'Ingreso']
+).properties(
+    title='Top 10 de causas mas comunes por Delito (segun Ingreso)',
+    width=700,
+    height=350
+).interactive()
+
+labels = bar.mark_text(align='left', dx=3).encode(text='Ingreso:Q')
+
+(bar + labels)
+```
+
+
+
+## 📊 Top 10 de las Provincias mas violentas
+
+
+```{python}
+
+# Asegurar limpieza de texto
+df['Delito'] = df['Delito'].fillna('SIN ESPECIFICAR').astype(str).str.strip()
+df['Provincia'] = df['Provincia'].astype(str).str.strip()
+df['Ingreso'] = pd.to_numeric(df['Ingreso'], errors='coerce').fillna(0)
+
+# Filtrar solo el delito 140 ASESINATO
+df_asesinato = df[df['Delito'].str.upper().str.contains("140 ASESINATO")]
+
+# Agrupar por provincia y ordenar
+top5_provincias = (df_asesinato.groupby('Provincia', as_index=False)['Ingreso']
+                   .sum()
+                   .sort_values('Ingreso', ascending=False)
+                   .head(5))
+
+print(top5_provincias.to_string(index=False))  # tabla en consola
+
+# Gráfica
+chart = alt.Chart(top5_provincias).mark_bar().encode(
+    x=alt.X('Ingreso:Q', title='Causas (Ingreso)'),
+    y=alt.Y('Provincia:N', sort='-x', title='Provincia'),
+    tooltip=['Provincia','Ingreso']
+).properties(
+    title='Top 5 provincias con mas causas por delito: 140 ASESINATO',
+    width=600,
+    height=300
+).interactive()
+
+labels = chart.mark_text(align='left', dx=3).encode(text='Ingreso:Q')
+
+(chart + labels)
+```
+
+
+
+
+
+```{python}
+# Asegurar limpieza de texto
+df['Delito'] = df['Delito'].fillna('SIN ESPECIFICAR').astype(str).str.strip()
+df['Provincia'] = df['Provincia'].astype(str).str.strip()
+df['Ingreso'] = pd.to_numeric(df['Ingreso'], errors='coerce').fillna(0)
+
+# Filtrar solo el delito 140 ASESINATO
+df_asesinato = df[df['Delito'].str.upper().str.contains("140 ASESINATO")]
+
+# Identificar las top 5 provincias con más casos acumulados
+top5_provincias = (df_asesinato.groupby('Provincia', as_index=False)['Ingreso']
+                   .sum()
+                   .sort_values('Ingreso', ascending=False)
+                   .head(5)['Provincia']
+                   .tolist())
+
+# Filtrar solo esas provincias
+df_top5 = df_asesinato[df_asesinato['Provincia'].isin(top5_provincias)]
+
+# Agrupar por año y provincia
+evolucion = (df_top5.groupby(['Anio','Provincia'], as_index=False)['Ingreso']
+             .sum()
+             .sort_values(['Provincia','Anio']))
+
+print(evolucion.to_string(index=False))  # Tabla en consola
+
+# Gráfica de evolución
+chart = alt.Chart(evolucion).mark_line(point=True).encode(
+    x=alt.X('Anio:O', title='Año'),
+    y=alt.Y('Ingreso:Q', title='Causas (Ingreso)'),
+    color=alt.Color('Provincia:N', title='Provincia'),
+    tooltip=['Anio','Provincia','Ingreso']
+).properties(
+    title='Evolución por año — Delito 140 ASESINATO (Top 5 provincias)',
+    width=500,
+    height=400
+).interactive()
+
+chart
+```
+
+
+```{python}    
+df = df.copy()
+for c in ['Ingreso','Resuelta','Tramite']:
+    df[c] = pd.to_numeric(df[c], errors='coerce').fillna(0)
+df['Provincia'] = df['Provincia'].astype(str).str.strip()
+
+# Provincias con mayor Resuelta (para ordenar/filtrar)
+topN = 5
+orden_prov = (df.groupby('Provincia', as_index=False)['Resuelta']
+                .sum()
+                .sort_values('Resuelta', ascending=False)
+                .head(topN)['Provincia']
+                .tolist())
+
+# Subset y pasar a formato largo
+subset = (df[df['Provincia'].isin(orden_prov)]
+          .groupby('Provincia', as_index=False)[['Ingreso','Resuelta','Tramite']]
+          .sum())
+
+datos_long = subset.melt('Provincia', var_name='Estado', value_name='Causas')
+
+# --- barras agrupadas (xOffset) ---
+chart = alt.Chart(datos_long).mark_line(point=True).encode(
+    x=alt.X('Provincia:N', sort=orden_prov, title='Provincia'),
+    y=alt.Y('Causas:Q', title='Número de causas'),
+    color=alt.Color('Estado:N', title='Estado'),
+    xOffset='Estado:N',  # <--- Agrupa barras por Estado dentro de cada provincia
+    tooltip=['Provincia','Estado','Causas']
+).properties(
+    title=f'Provincias vs número de causas (Ingreso / Resuelta / Tramite) — Top {topN}',
+    width=600,
+    height=450
+)
+
+chart
+
+```

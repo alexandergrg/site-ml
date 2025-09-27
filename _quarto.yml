@@ -12,6 +12,8 @@ website:
         text: Home
       - href: eda.qmd
         text: Eda
+      - href: cnj.qmd
+        text: CNJ
 
 format:
   html:
