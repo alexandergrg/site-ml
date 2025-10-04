@@ -14,6 +14,8 @@ website:
         text: Eda
       - href: cnj.qmd
         text: CNJ
+      - href: classification.qmd
+        text: Classification
 
 format:
   html:

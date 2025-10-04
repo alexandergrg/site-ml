@@ -1,0 +1,179 @@
+
+---
+title: "Classification"
+format:
+  html:
+    code-fold: true
+    toc: true
+    number-sections: true
+    df-print: paged
+---
+# Clasificación sin Pie
+
+## 1. Importar Librerias
+
+```{python}
+# 1. Import libraries
+from sklearn.datasets import load_breast_cancer
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split as tts
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, ConfusionMatrixDisplay
+```
+
+## Cargar el Dataset
+
+
+
+```{python}
+df = load_breast_cancer()
+X= df.data
+y= df.target
+
+X
+y
+```
+
+## Split de la data
+
+
+```{python}
+X_train, X_test, y_train, y_test = tts(
+    X,y,test_size=0.2, random_state=42,stratify=y
+)
+print("X_train")
+print(X_train)
+print("X_test")
+print(X_test)
+
+
+print("Y_train")
+print(y_train)
+print("y_test")
+print(y_test)
+```
+
+## Entrenar el modelo
+
+```{python}
+model = LogisticRegression(max_iter=1000000)
+model.fit(X_train,y_train)
+
+
+```
+
+## Predicción
+
+
+```{python}
+y_pred= model.predict(X_test)
+
+```
+
+## Evaluación
+
+
+```{python}
+accuracy= accuracy_score(y_test,y_pred)
+precision=precision_score(y_test,y_pred)
+recall=recall_score(y_test,y_pred)
+f1=f1_score(y_test,y_pred)
+
+print(f"Accuracy : ",accuracy)
+print("precision :",precision)
+print("recall :",recall)
+print("f1 :", f1)
+
+```
+
+## Matriz de confusion
+
+
+```{python}
+ConfusionMatrixDisplay.from_predictions(y_test,y_pred)
+```
+
+# Clasificación con Pipe
+
+## 1. Importar Librerias
+
+```{python}
+# 1. Import libraries
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+```
+
+
+
+## Cargar el Dataset
+
+```{python}
+df = load_breast_cancer()
+X= df.data
+y= df.target
+
+X
+y
+```
+
+## Split de la data
+
+```{python}
+X_train, X_test, y_train, y_test = tts(
+    X,y,test_size=0.2, random_state=42,stratify=y
+)
+print("X_train")
+print(X_train)
+print("X_test")
+print(X_test)
+
+
+print("Y_train")
+print(y_train)
+print("y_test")
+print(y_test)
+```
+
+## Pipeline
+```{python}
+pipe = Pipeline([
+    ("escalado", StandardScaler()),
+    ("logreg",LogisticRegression(max_iter=1000000))
+])
+```
+
+
+## Entrenar el modelo
+
+```{python}
+pipe.fit(X_train,y_train)
+```
+
+## Predicción
+
+```{python}
+y_pred_pipe= pipe.predict(X_test)
+
+```
+
+## Evaluación
+
+
+```{python}
+accuracy= accuracy_score(y_test,y_pred_pipe)
+precision=precision_score(y_test,y_pred_pipe)
+recall=recall_score(y_test,y_pred_pipe)
+f1=f1_score(y_test,y_pred_pipe)
+
+print(f"Accuracy : ",accuracy)
+print("precision :",precision)
+print("recall :",recall)
+print("f1 :", f1)
+
+```
+
+## Matriz de confusion
+
+
+```{python}
+ConfusionMatrixDisplay.from_predictions(y_test,y_pred_pipe)
+```
