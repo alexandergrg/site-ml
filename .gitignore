@@ -7,4 +7,5 @@ Index_files/
 **/*.quarto_ipynb
 _site
 .quarto/
-db/
+/db/
+/db/*.*
