@@ -16,6 +16,14 @@ website:
         text: CNJ
       - href: classification.qmd
         text: Classification
+      - text: MidTerm
+        menu:
+          - href: midterm_regression.qmd
+            text: Regresión
+          - href: midterm_classification.qmd
+            text: Clasificación
+
+
 
 format:
   html:

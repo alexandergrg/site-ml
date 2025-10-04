@@ -1,0 +1,332 @@
+
+---
+title: "Clasificación"
+format:
+  html:
+    code-fold: true
+    toc: true
+    number-sections: true
+    df-print: paged
+---
+# 🦠 Introducción al dataset — Casos COVID-19 (MSP Ecuador)
+
+El conjunto de datos **“Casos COVID-19”**, publicado por el **Ministerio de Salud Pública del Ecuador (MSP)**, recopila los registros oficiales de casos de **SARS-CoV-2** notificados entre **febrero de 2020 y marzo de 2022**.  
+
+Cada fila representa un **caso epidemiológico individual**, con datos sobre edad, sexo, provincia, fechas de atención y resultado final del paciente.
+
+> 💡 **Importancia del dataset**
+>
+> - 📊 Analiza la evolución de la pandemia en Ecuador.  
+> - 🧍‍♂️ Permite estudiar factores asociados a hospitalización o fallecimiento.  
+> - 🤖 Ideal para aplicar **modelos supervisados** (clasificación / regresión) en salud pública.
+
+---
+
+## ⚙️ Características técnicas
+
+| 🗂️ **Aspecto** | **Detalle** |
+|----------------|-------------|
+| **Fuente** | [Datos Abiertos Ecuador — MSP](https://datosabiertos.gob.ec/dataset/https-almacenamiento-msp-gob-ec-index-php-s-maihh1064vskrbl/resource/4a15d681-743f-493c-8133-4b88715f9947) |
+| **Entidad responsable** | Dirección Nacional de Vigilancia Epidemiológica, MSP |
+| **Formato** | CSV (valores separados por comas) |
+| **Cobertura temporal** | Febrero 2020 – Marzo 2022 |
+| **Licencia** | Creative Commons Atribución (CC-BY) |
+| **Última actualización** | 13 de diciembre de 2022 |
+
+---
+
+## 🧾 Campos principales del dataset
+
+| 🏷️ **Campo** | 📖 **Descripción** | ⚙️ **Uso** |
+|--------------|------------------|-------------|
+| `anio_notificacion`, `mes_notificacion`, `dia_notificacion` | Fecha en la que se notificó el caso. | Variables numéricas predictoras. |
+| `anio_atencion`, `mes_atencion`, `dia_atencion` | Fecha de atención médica. | Predictores temporales. |
+| `edad_paciente` | Edad del paciente al momento de la atención. | Variable clave numérica. |
+| `sexo_paciente` | Sexo del paciente (HOMBRE/MUJER). | Puede binarizarse si se usa. |
+| `condicion_final` | Estado final: **VIVO / MUERTO**. | 🎯 **Variable objetivo (y)**. |
+| `ae_se_notificacion` | Semana epidemiológica del año. | Control temporal opcional. |
+
+---
+
+## 🔢 Variables seleccionadas para el modelo
+
+**Predictores (X):**
+- `anio_notificacion`, `mes_notificacion`, `dia_notificacion`  
+- `anio_atencion`, `mes_atencion`, `dia_atencion`  
+- `edad_paciente`  
+- `ae_se_notificacion`  
+
+**Variable objetivo (y):**
+- `condicion_final` → `0 = VIVO`, `1 = MUERTO`
+
+---
+
+## 🧠 Justificación
+
+El modelo busca **predecir la condición final del paciente** (supervivencia o fallecimiento) a partir de variables **numéricas** relacionadas con edad y tiempo de atención.  
+Se excluyen variables categóricas para cumplir la rúbrica del proyecto y mantener un flujo de **clasificación binaria limpia y reproducible**.
+
+---
+
+# Procesamiento de datos
+
+
+```{python}
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+from sklearn.model_selection import train_test_split as tts
+from sklearn.linear_model import LinearRegression, LogisticRegression
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, ConfusionMatrixDisplay
+import altair as alt
+from sklearn.metrics import roc_curve, roc_auc_score
+```
+
+## Carga del dataset
+
+```{python}
+
+df = pd.read_csv("/Users/usr-s3c/Documents/Maestria_YTech/Machine-Learning/db/covid2.csv", encoding="utf-8")
+df.info()
+df.head()
+```
+
+
+
+### Revisión de valores nulos y estadísticos
+
+```{python}
+df.isna().sum()
+```
+
+```{python}
+df.describe()
+```
+
+### Preprocesamiento 
+
+
+```{python}
+# 🔍 Seleccionar solo las columnas necesarias para clasificación
+cols_relevantes = [
+    "anio_atencion", "mes_atencion","edad_paciente","clasificacion_final", "condicion_final"
+]
+df = df[cols_relevantes].copy()
+print(f"Columnas seleccionadas: {list(df.columns)}")
+df.head()
+```
+
+### Resumen del preprocesamiento
+
+En esta etapa se realiza la limpieza inicial de los datos con el objetivo de preparar las variables para el modelo de clasificación:
+
+- **Estandarización de texto:**  
+  Se convierten a minúsculas y se eliminan espacios en blanco en las columnas `clasificacion_final` y `condicion_final`, garantizando consistencia en los valores.
+
+- **Filtrado de registros válidos:**  
+  Solo se conservan los casos con clasificación epidemiológica reconocida: `confirmado`, `probable` o `descartado`.
+
+- **Creación de la variable objetivo:**  
+  Se transforma `condicion_final` en una variable binaria:  
+  `0 = vivo` y `1 = muerto`.
+
+- **Limpieza de valores nulos:**  
+  Se eliminan los registros sin etiqueta válida o con datos incompletos en la variable objetivo.
+
+- **Conversión de tipo:**  
+  Finalmente, la columna `condicion_final` se convierte al tipo entero (`int`), dejándola lista para el entrenamiento del modelo.
+
+> 💡 Con este proceso, el dataset queda estandarizado, limpio y con una **variable objetivo binaria** adecuada para aplicar un modelo de **clasificación supervisada**.
+
+```{python}
+# Normalizamos los textos a minúsculas sin espacios extra
+df["clasificacion_final"] = df["clasificacion_final"].str.strip().str.lower()
+df["condicion_final"] = df["condicion_final"].str.strip().str.lower()
+
+# 🔸 Filtrar solo registros válidos de clasificación (descartado, confirmado, probable)
+# Convertir valores de texto a números
+df["clasificacion_final"] = df["clasificacion_final"].map({
+    "confirmado": 2,
+    "probable": 1,
+    "descartado": 0
+})
+
+# 🔸 Mapear la variable objetivo: 1 = muerto, 0 = vivo
+df["condicion_final"] = df["condicion_final"].map({"vivo": 0, "muerto": 1})
+
+# 🔸 Eliminar filas sin etiqueta válida
+df = df.dropna(subset=["condicion_final"])
+
+# 🔸 Convertir tipo a entero
+df["condicion_final"] = df["condicion_final"].astype(int)
+
+print("Distribución de la variable objetivo:")
+print(df["condicion_final"].value_counts())
+
+df.head(10)
+```
+
+### Selección de campos para el Dataset
+
+```{python}
+# Variable objetivo
+X = df[["anio_atencion", "mes_atencion", "edad_paciente", "clasificacion_final"]]
+y = df["condicion_final"]
+
+X = X.dropna()
+y = y.loc[X.index]
+
+
+print("Dimensiones de los conjuntos:")
+print(f"X → {X.shape[0]} filas × {X.shape[1]} columnas")
+print(f"y → {y.shape[0]} etiquetas")
+X.head()
+y
+```
+## División de datos Train y Test
+
+```{python}
+X_train, X_test, y_train, y_test = tts(
+    X,y,test_size=0.2, random_state=42,stratify=y
+)
+print("X_train")
+print(X_train)
+print("X_test")
+print(X_test)
+
+
+print("Y_train")
+print(y_train)
+print("y_test")
+print(y_test)
+```
+
+
+##  Pipeline
+```{python}
+pipe = Pipeline([
+    ("escalado", StandardScaler()),
+    ("logreg",LogisticRegression(max_iter=1000000))
+])
+```
+
+## Entrenar el modelo
+
+```{python}
+pipe.fit(X_train,y_train)
+```
+
+## Predicción
+
+```{python}
+y_pred_pipe= pipe.predict(X_test)
+
+```
+
+## Evaluación
+
+```{python}
+accuracy= accuracy_score(y_test,y_pred_pipe)
+precision=precision_score(y_test,y_pred_pipe)
+recall=recall_score(y_test,y_pred_pipe)
+f1=f1_score(y_test,y_pred_pipe)
+
+print(f"Accuracy : ",accuracy)
+print("precision :",precision)
+print("recall :",recall)
+print("f1 :", f1)
+
+```
+
+## Matriz de confusion
+
+
+### 📊 Análisis
+
+- **Verdaderos Negativos (57 762):**  
+  Casos correctamente clasificados como *vivos*.  
+  Representan la gran mayoría de los registros, lo que muestra que el modelo identifica correctamente a los pacientes que no fallecieron.
+
+- **Falsos Positivos (105):**  
+  Casos predichos como *muertos* cuando en realidad estaban *vivos*.  
+  Son pocos, lo que indica un **bajo nivel de alarmas falsas**.
+
+- **Falsos Negativos (1 594):**  
+  Casos reales de *muertos* que el modelo clasificó como *vivos*.  
+  Este valor es relativamente alto en proporción a los positivos reales, lo que sugiere que el modelo **tiende a subestimar los casos críticos** (bajo *recall* para la clase 1).
+
+- **Verdaderos Positivos (67):**  
+  Casos correctamente identificados como *muertos*.  
+  Aunque son pocos, muestran que el modelo tiene cierta capacidad de detección de la clase minoritaria.
+
+---
+
+### 📈 Conclusión
+
+El modelo logra un **excelente desempeño general (alta precisión global)**, pero presenta **desbalance de clases**: la mayoría de los pacientes son *vivos*, y los casos *muertos* son escasos.
+
+```{python}
+ConfusionMatrixDisplay.from_predictions(y_test,y_pred_pipe)
+```
+
+
+### 📈 Interpretación de la Curva ROC
+
+La **curva ROC (Receiver Operating Characteristic)** muestra la relación entre la **tasa de verdaderos positivos (TPR)** y la **tasa de falsos positivos (FPR)** a diferentes umbrales de decisión.
+
+- La línea roja discontinua representa un **modelo aleatorio** (sin poder de discriminación).  
+- La curva azul, correspondiente al modelo de regresión logística, se eleva muy por encima de esta línea.  
+- El valor **AUC = 0.902** indica una **alta capacidad de clasificación**, lo que significa que el modelo distingue correctamente entre los pacientes **vivos (0)** y **muertos (1)** en más del **90% de los casos**.
+
+> ✅ En términos prácticos:  
+> El modelo tiene un desempeño excelente y generaliza bien; sin embargo, se recomienda revisar el balance de clases y ajustar el umbral dependiedno la necesidad
+
+```{python}
+
+# Calcular los valores de la curva ROC
+y_proba = pipe.predict_proba(X_test)[:, 1]
+fpr, tpr, thr = roc_curve(y_test, y_proba)
+auc = roc_auc_score(y_test, y_proba)
+
+# Crear un DataFrame con los resultados
+roc_df = pd.DataFrame({
+    "FPR": fpr,
+    "TPR": tpr,
+    "Threshold": thr
+})
+
+# === Gráfico ROC con Altair ===
+roc_chart = (
+    alt.Chart(roc_df)
+    .mark_line(color="#1f77b4", strokeWidth=3)
+    .encode(
+        x=alt.X("FPR", title="Tasa de falsos positivos"),
+        y=alt.Y("TPR", title="Tasa de verdaderos positivos"),
+        tooltip=["FPR", "TPR", "Threshold"]
+    )
+    .properties(
+        title=f"Curva ROC (AUC = {auc:.3f})",
+        width=400,
+        height=300,
+    ).interactive()
+)
+
+# Línea diagonal de referencia (clasificador aleatorio)
+ref_line = (
+    alt.Chart(pd.DataFrame({"x": [0, 1], "y": [0, 1]}))
+    .mark_line(strokeDash=[5, 5], color="red")
+    .encode(x="x", y="y")
+)
+
+roc_chart_final = roc_chart + ref_line
+roc_chart_final
+```

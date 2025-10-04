@@ -145,6 +145,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link active" href="./classification.html" aria-current="page"> 
 <span class="menu-text">Classification</span></a>
   </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-midterm" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">MidTerm</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-midterm">    
+        <li>
+    <a class="dropdown-item" href="./midterm_regression.html">
+ <span class="dropdown-text">Regresión</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./midterm_classification.html">
+ <span class="dropdown-text">Clasificación</span></a>
+  </li>  
+    </ul>
+  </li>
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -211,7 +226,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1 data-number="1"><span class="header-section-number">1</span> Clasificación sin Pie</h1>
 <section id="importar-librerias" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="importar-librerias"><span class="header-section-number">1.1</span> 1. Importar Librerias</h2>
-<div id="2c688488" class="cell" data-execution_count="1">
+<div id="f7062764" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Import libraries</span></span>
@@ -224,7 +239,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="cargar-el-dataset" class="level2" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="cargar-el-dataset"><span class="header-section-number">1.2</span> Cargar el Dataset</h2>
-<div id="d658e3ae" class="cell" data-execution_count="2">
+<div id="60c860fd" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> load_breast_cancer()</span>
@@ -234,7 +249,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>X</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>y</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="28">
+<div class="cell-output cell-output-display" data-execution_count="2">
 <pre><code>array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
        0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0,
@@ -266,7 +281,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="split-de-la-data" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="split-de-la-data"><span class="header-section-number">1.3</span> Split de la data</h2>
-<div id="284d4c49" class="cell" data-execution_count="3">
+<div id="1faa29a9" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> tts(</span>
@@ -324,14 +339,14 @@ y_test
 </section>
 <section id="entrenar-el-modelo" class="level2" data-number="1.4">
 <h2 data-number="1.4" class="anchored" data-anchor-id="entrenar-el-modelo"><span class="header-section-number">1.4</span> Entrenar el modelo</h2>
-<div id="399ff3f4" class="cell" data-execution_count="4">
+<div id="408c9d1b" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> LogisticRegression(max_iter<span class="op">=</span><span class="dv">1000000</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>model.fit(X_train,y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="30">
-<style>#sk-container-id-4 {
+<div class="cell-output cell-output-display" data-execution_count="4">
+<style>#sk-container-id-1 {
   /* Definition of color scheme common for light and dark mode */
   --sklearn-color-text: #000;
   --sklearn-color-text-muted: #666;
@@ -362,15 +377,15 @@ y_test
   }
 }
 
-#sk-container-id-4 {
+#sk-container-id-1 {
   color: var(--sklearn-color-text);
 }
 
-#sk-container-id-4 pre {
+#sk-container-id-1 pre {
   padding: 0;
 }
 
-#sk-container-id-4 input.sk-hidden--visually {
+#sk-container-id-1 input.sk-hidden--visually {
   border: 0;
   clip: rect(1px 1px 1px 1px);
   clip: rect(1px, 1px, 1px, 1px);
@@ -382,7 +397,7 @@ y_test
   width: 1px;
 }
 
-#sk-container-id-4 div.sk-dashed-wrapped {
+#sk-container-id-1 div.sk-dashed-wrapped {
   border: 1px dashed var(--sklearn-color-line);
   margin: 0 0.4em 0.5em 0.4em;
   box-sizing: border-box;
@@ -390,7 +405,7 @@ y_test
   background-color: var(--sklearn-color-background);
 }
 
-#sk-container-id-4 div.sk-container {
+#sk-container-id-1 div.sk-container {
   /* jupyter's `normalize.less` sets `[hidden] { display: none; }`
      but bootstrap.min.css set `[hidden] { display: none !important; }`
      so we also need the `!important` here to be able to override the
@@ -400,7 +415,7 @@ y_test
   position: relative;
 }
 
-#sk-container-id-4 div.sk-text-repr-fallback {
+#sk-container-id-1 div.sk-text-repr-fallback {
   display: none;
 }
 
@@ -416,14 +431,14 @@ div.sk-item {
 
 /* Parallel-specific style estimator block */
 
-#sk-container-id-4 div.sk-parallel-item::after {
+#sk-container-id-1 div.sk-parallel-item::after {
   content: "";
   width: 100%;
   border-bottom: 2px solid var(--sklearn-color-text-on-default-background);
   flex-grow: 1;
 }
 
-#sk-container-id-4 div.sk-parallel {
+#sk-container-id-1 div.sk-parallel {
   display: flex;
   align-items: stretch;
   justify-content: center;
@@ -431,28 +446,28 @@ div.sk-item {
   position: relative;
 }
 
-#sk-container-id-4 div.sk-parallel-item {
+#sk-container-id-1 div.sk-parallel-item {
   display: flex;
   flex-direction: column;
 }
 
-#sk-container-id-4 div.sk-parallel-item:first-child::after {
+#sk-container-id-1 div.sk-parallel-item:first-child::after {
   align-self: flex-end;
   width: 50%;
 }
 
-#sk-container-id-4 div.sk-parallel-item:last-child::after {
+#sk-container-id-1 div.sk-parallel-item:last-child::after {
   align-self: flex-start;
   width: 50%;
 }
 
-#sk-container-id-4 div.sk-parallel-item:only-child::after {
+#sk-container-id-1 div.sk-parallel-item:only-child::after {
   width: 0;
 }
 
 /* Serial-specific style estimator block */
 
-#sk-container-id-4 div.sk-serial {
+#sk-container-id-1 div.sk-serial {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -470,14 +485,14 @@ clickable and can be expanded/collapsed.
 
 /* Pipeline and ColumnTransformer style (default) */
 
-#sk-container-id-4 div.sk-toggleable {
+#sk-container-id-1 div.sk-toggleable {
   /* Default theme specific background. It is overwritten whether we have a
   specific estimator or a Pipeline/ColumnTransformer */
   background-color: var(--sklearn-color-background);
 }
 
 /* Toggleable label */
-#sk-container-id-4 label.sk-toggleable__label {
+#sk-container-id-1 label.sk-toggleable__label {
   cursor: pointer;
   display: flex;
   width: 100%;
@@ -490,13 +505,13 @@ clickable and can be expanded/collapsed.
   gap: 0.5em;
 }
 
-#sk-container-id-4 label.sk-toggleable__label .caption {
+#sk-container-id-1 label.sk-toggleable__label .caption {
   font-size: 0.6rem;
   font-weight: lighter;
   color: var(--sklearn-color-text-muted);
 }
 
-#sk-container-id-4 label.sk-toggleable__label-arrow:before {
+#sk-container-id-1 label.sk-toggleable__label-arrow:before {
   /* Arrow on the left of the label */
   content: "▸";
   float: left;
@@ -504,25 +519,25 @@ clickable and can be expanded/collapsed.
   color: var(--sklearn-color-icon);
 }
 
-#sk-container-id-4 label.sk-toggleable__label-arrow:hover:before {
+#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {
   color: var(--sklearn-color-text);
 }
 
 /* Toggleable content - dropdown */
 
-#sk-container-id-4 div.sk-toggleable__content {
+#sk-container-id-1 div.sk-toggleable__content {
   display: none;
   text-align: left;
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-0);
 }
 
-#sk-container-id-4 div.sk-toggleable__content.fitted {
+#sk-container-id-1 div.sk-toggleable__content.fitted {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-0);
 }
 
-#sk-container-id-4 div.sk-toggleable__content pre {
+#sk-container-id-1 div.sk-toggleable__content pre {
   margin: 0.2em;
   border-radius: 0.25em;
   color: var(--sklearn-color-text);
@@ -530,79 +545,79 @@ clickable and can be expanded/collapsed.
   background-color: var(--sklearn-color-unfitted-level-0);
 }
 
-#sk-container-id-4 div.sk-toggleable__content.fitted pre {
+#sk-container-id-1 div.sk-toggleable__content.fitted pre {
   /* unfitted */
   background-color: var(--sklearn-color-fitted-level-0);
 }
 
-#sk-container-id-4 input.sk-toggleable__control:checked~div.sk-toggleable__content {
+#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {
   /* Expand drop-down */
   display: block;
   width: 100%;
   overflow: visible;
 }
 
-#sk-container-id-4 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
+#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
   content: "▾";
 }
 
 /* Pipeline/ColumnTransformer-specific style */
 
-#sk-container-id-4 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
   color: var(--sklearn-color-text);
   background-color: var(--sklearn-color-unfitted-level-2);
 }
 
-#sk-container-id-4 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-1 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
   background-color: var(--sklearn-color-fitted-level-2);
 }
 
 /* Estimator-specific style */
 
 /* Colorize estimator box */
-#sk-container-id-4 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-2);
 }
 
-#sk-container-id-4 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-1 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-2);
 }
 
-#sk-container-id-4 div.sk-label label.sk-toggleable__label,
-#sk-container-id-4 div.sk-label label {
+#sk-container-id-1 div.sk-label label.sk-toggleable__label,
+#sk-container-id-1 div.sk-label label {
   /* The background is the default theme color */
   color: var(--sklearn-color-text-on-default-background);
 }
 
 /* On hover, darken the color of the background */
-#sk-container-id-4 div.sk-label:hover label.sk-toggleable__label {
+#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {
   color: var(--sklearn-color-text);
   background-color: var(--sklearn-color-unfitted-level-2);
 }
 
 /* Label box, darken color on hover, fitted */
-#sk-container-id-4 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
+#sk-container-id-1 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
   color: var(--sklearn-color-text);
   background-color: var(--sklearn-color-fitted-level-2);
 }
 
 /* Estimator label */
 
-#sk-container-id-4 div.sk-label label {
+#sk-container-id-1 div.sk-label label {
   font-family: monospace;
   font-weight: bold;
   display: inline-block;
   line-height: 1.2em;
 }
 
-#sk-container-id-4 div.sk-label-container {
+#sk-container-id-1 div.sk-label-container {
   text-align: center;
 }
 
 /* Estimator-specific */
-#sk-container-id-4 div.sk-estimator {
+#sk-container-id-1 div.sk-estimator {
   font-family: monospace;
   border: 1px dotted var(--sklearn-color-border-box);
   border-radius: 0.25em;
@@ -612,18 +627,18 @@ clickable and can be expanded/collapsed.
   background-color: var(--sklearn-color-unfitted-level-0);
 }
 
-#sk-container-id-4 div.sk-estimator.fitted {
+#sk-container-id-1 div.sk-estimator.fitted {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-0);
 }
 
 /* on hover */
-#sk-container-id-4 div.sk-estimator:hover {
+#sk-container-id-1 div.sk-estimator:hover {
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-2);
 }
 
-#sk-container-id-4 div.sk-estimator.fitted:hover {
+#sk-container-id-1 div.sk-estimator.fitted:hover {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-2);
 }
@@ -711,7 +726,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 
 /* "?"-specific style due to the `<a>` HTML tag */
 
-#sk-container-id-4 a.estimator_doc_link {
+#sk-container-id-1 a.estimator_doc_link {
   float: right;
   font-size: 1rem;
   line-height: 1em;
@@ -726,21 +741,21 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
   border: var(--sklearn-color-unfitted-level-1) 1pt solid;
 }
 
-#sk-container-id-4 a.estimator_doc_link.fitted {
+#sk-container-id-1 a.estimator_doc_link.fitted {
   /* fitted */
   border: var(--sklearn-color-fitted-level-1) 1pt solid;
   color: var(--sklearn-color-fitted-level-1);
 }
 
 /* On hover */
-#sk-container-id-4 a.estimator_doc_link:hover {
+#sk-container-id-1 a.estimator_doc_link:hover {
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-3);
   color: var(--sklearn-color-background);
   text-decoration: none;
 }
 
-#sk-container-id-4 a.estimator_doc_link.fitted:hover {
+#sk-container-id-1 a.estimator_doc_link.fitted:hover {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-3);
 }
@@ -808,7 +823,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
     height: 14px;
     cursor: pointer;
 }
-</style><div id="sk-container-id-4" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>LogisticRegression(max_iter=1000000)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br>On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden=""><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-6" type="checkbox" checked=""><label for="sk-estimator-id-6" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>LogisticRegression</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.7/modules/generated/sklearn.linear_model.LogisticRegression.html">?<span>Documentation for LogisticRegression</span></a><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+</style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>LogisticRegression(max_iter=1000000)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br>On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden=""><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked=""><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>LogisticRegression</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.7/modules/generated/sklearn.linear_model.LogisticRegression.html">?<span>Documentation for LogisticRegression</span></a><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
         <div class="estimator-table">
             <details>
                 <summary>Parameters</summary>
@@ -943,7 +958,7 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 </section>
 <section id="predicción" class="level2" data-number="1.5">
 <h2 data-number="1.5" class="anchored" data-anchor-id="predicción"><span class="header-section-number">1.5</span> Predicción</h2>
-<div id="9309c4ce" class="cell" data-execution_count="5">
+<div id="aab6daad" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>y_pred<span class="op">=</span> model.predict(X_test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -952,7 +967,7 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 </section>
 <section id="evaluación" class="level2" data-number="1.6">
 <h2 data-number="1.6" class="anchored" data-anchor-id="evaluación"><span class="header-section-number">1.6</span> Evaluación</h2>
-<div id="8f4ebbdb" class="cell" data-execution_count="6">
+<div id="b9f473d8" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>accuracy<span class="op">=</span> accuracy_score(y_test,y_pred)</span>
@@ -975,7 +990,7 @@ f1 : 0.9726027397260274</code></pre>
 </section>
 <section id="matriz-de-confusion" class="level2" data-number="1.7">
 <h2 data-number="1.7" class="anchored" data-anchor-id="matriz-de-confusion"><span class="header-section-number">1.7</span> Matriz de confusion</h2>
-<div id="9784c372" class="cell" data-execution_count="7">
+<div id="c62cd6ea" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ConfusionMatrixDisplay.from_predictions(y_test,y_pred)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -994,7 +1009,7 @@ f1 : 0.9726027397260274</code></pre>
 <h1 data-number="2"><span class="header-section-number">2</span> Clasificación con Pipe</h1>
 <section id="importar-librerias-1" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="importar-librerias-1"><span class="header-section-number">2.1</span> 1. Importar Librerias</h2>
-<div id="b8ce1e19" class="cell" data-execution_count="8">
+<div id="43a77184" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Import libraries</span></span>
@@ -1005,7 +1020,7 @@ f1 : 0.9726027397260274</code></pre>
 </section>
 <section id="cargar-el-dataset-1" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="cargar-el-dataset-1"><span class="header-section-number">2.2</span> Cargar el Dataset</h2>
-<div id="34b12d92" class="cell" data-execution_count="9">
+<div id="88ea3480" class="cell" data-execution_count="9">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> load_breast_cancer()</span>
@@ -1015,7 +1030,7 @@ f1 : 0.9726027397260274</code></pre>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>X</span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>y</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="35">
+<div class="cell-output cell-output-display" data-execution_count="9">
 <pre><code>array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
        0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0,
@@ -1047,7 +1062,7 @@ f1 : 0.9726027397260274</code></pre>
 </section>
 <section id="split-de-la-data-1" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="split-de-la-data-1"><span class="header-section-number">2.3</span> Split de la data</h2>
-<div id="154d62ec" class="cell" data-execution_count="10">
+<div id="2bf8bbe2" class="cell" data-execution_count="10">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> tts(</span>
@@ -1105,7 +1120,7 @@ y_test
 </section>
 <section id="pipeline" class="level2" data-number="2.4">
 <h2 data-number="2.4" class="anchored" data-anchor-id="pipeline"><span class="header-section-number">2.4</span> Pipeline</h2>
-<div id="416ec30d" class="cell" data-execution_count="11">
+<div id="4db6af07" class="cell" data-execution_count="11">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>pipe <span class="op">=</span> Pipeline([</span>
@@ -1117,13 +1132,13 @@ y_test
 </section>
 <section id="entrenar-el-modelo-1" class="level2" data-number="2.5">
 <h2 data-number="2.5" class="anchored" data-anchor-id="entrenar-el-modelo-1"><span class="header-section-number">2.5</span> Entrenar el modelo</h2>
-<div id="8617071a" class="cell" data-execution_count="12">
+<div id="55765d86" class="cell" data-execution_count="12">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>pipe.fit(X_train,y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="38">
-<style>#sk-container-id-5 {
+<div class="cell-output cell-output-display" data-execution_count="12">
+<style>#sk-container-id-2 {
   /* Definition of color scheme common for light and dark mode */
   --sklearn-color-text: #000;
   --sklearn-color-text-muted: #666;
@@ -1154,15 +1169,15 @@ y_test
   }
 }
 
-#sk-container-id-5 {
+#sk-container-id-2 {
   color: var(--sklearn-color-text);
 }
 
-#sk-container-id-5 pre {
+#sk-container-id-2 pre {
   padding: 0;
 }
 
-#sk-container-id-5 input.sk-hidden--visually {
+#sk-container-id-2 input.sk-hidden--visually {
   border: 0;
   clip: rect(1px 1px 1px 1px);
   clip: rect(1px, 1px, 1px, 1px);
@@ -1174,7 +1189,7 @@ y_test
   width: 1px;
 }
 
-#sk-container-id-5 div.sk-dashed-wrapped {
+#sk-container-id-2 div.sk-dashed-wrapped {
   border: 1px dashed var(--sklearn-color-line);
   margin: 0 0.4em 0.5em 0.4em;
   box-sizing: border-box;
@@ -1182,7 +1197,7 @@ y_test
   background-color: var(--sklearn-color-background);
 }
 
-#sk-container-id-5 div.sk-container {
+#sk-container-id-2 div.sk-container {
   /* jupyter's `normalize.less` sets `[hidden] { display: none; }`
      but bootstrap.min.css set `[hidden] { display: none !important; }`
      so we also need the `!important` here to be able to override the
@@ -1192,7 +1207,7 @@ y_test
   position: relative;
 }
 
-#sk-container-id-5 div.sk-text-repr-fallback {
+#sk-container-id-2 div.sk-text-repr-fallback {
   display: none;
 }
 
@@ -1208,14 +1223,14 @@ div.sk-item {
 
 /* Parallel-specific style estimator block */
 
-#sk-container-id-5 div.sk-parallel-item::after {
+#sk-container-id-2 div.sk-parallel-item::after {
   content: "";
   width: 100%;
   border-bottom: 2px solid var(--sklearn-color-text-on-default-background);
   flex-grow: 1;
 }
 
-#sk-container-id-5 div.sk-parallel {
+#sk-container-id-2 div.sk-parallel {
   display: flex;
   align-items: stretch;
   justify-content: center;
@@ -1223,28 +1238,28 @@ div.sk-item {
   position: relative;
 }
 
-#sk-container-id-5 div.sk-parallel-item {
+#sk-container-id-2 div.sk-parallel-item {
   display: flex;
   flex-direction: column;
 }
 
-#sk-container-id-5 div.sk-parallel-item:first-child::after {
+#sk-container-id-2 div.sk-parallel-item:first-child::after {
   align-self: flex-end;
   width: 50%;
 }
 
-#sk-container-id-5 div.sk-parallel-item:last-child::after {
+#sk-container-id-2 div.sk-parallel-item:last-child::after {
   align-self: flex-start;
   width: 50%;
 }
 
-#sk-container-id-5 div.sk-parallel-item:only-child::after {
+#sk-container-id-2 div.sk-parallel-item:only-child::after {
   width: 0;
 }
 
 /* Serial-specific style estimator block */
 
-#sk-container-id-5 div.sk-serial {
+#sk-container-id-2 div.sk-serial {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1262,14 +1277,14 @@ clickable and can be expanded/collapsed.
 
 /* Pipeline and ColumnTransformer style (default) */
 
-#sk-container-id-5 div.sk-toggleable {
+#sk-container-id-2 div.sk-toggleable {
   /* Default theme specific background. It is overwritten whether we have a
   specific estimator or a Pipeline/ColumnTransformer */
   background-color: var(--sklearn-color-background);
 }
 
 /* Toggleable label */
-#sk-container-id-5 label.sk-toggleable__label {
+#sk-container-id-2 label.sk-toggleable__label {
   cursor: pointer;
   display: flex;
   width: 100%;
@@ -1282,13 +1297,13 @@ clickable and can be expanded/collapsed.
   gap: 0.5em;
 }
 
-#sk-container-id-5 label.sk-toggleable__label .caption {
+#sk-container-id-2 label.sk-toggleable__label .caption {
   font-size: 0.6rem;
   font-weight: lighter;
   color: var(--sklearn-color-text-muted);
 }
 
-#sk-container-id-5 label.sk-toggleable__label-arrow:before {
+#sk-container-id-2 label.sk-toggleable__label-arrow:before {
   /* Arrow on the left of the label */
   content: "▸";
   float: left;
@@ -1296,25 +1311,25 @@ clickable and can be expanded/collapsed.
   color: var(--sklearn-color-icon);
 }
 
-#sk-container-id-5 label.sk-toggleable__label-arrow:hover:before {
+#sk-container-id-2 label.sk-toggleable__label-arrow:hover:before {
   color: var(--sklearn-color-text);
 }
 
 /* Toggleable content - dropdown */
 
-#sk-container-id-5 div.sk-toggleable__content {
+#sk-container-id-2 div.sk-toggleable__content {
   display: none;
   text-align: left;
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-0);
 }
 
-#sk-container-id-5 div.sk-toggleable__content.fitted {
+#sk-container-id-2 div.sk-toggleable__content.fitted {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-0);
 }
 
-#sk-container-id-5 div.sk-toggleable__content pre {
+#sk-container-id-2 div.sk-toggleable__content pre {
   margin: 0.2em;
   border-radius: 0.25em;
   color: var(--sklearn-color-text);
@@ -1322,79 +1337,79 @@ clickable and can be expanded/collapsed.
   background-color: var(--sklearn-color-unfitted-level-0);
 }
 
-#sk-container-id-5 div.sk-toggleable__content.fitted pre {
+#sk-container-id-2 div.sk-toggleable__content.fitted pre {
   /* unfitted */
   background-color: var(--sklearn-color-fitted-level-0);
 }
 
-#sk-container-id-5 input.sk-toggleable__control:checked~div.sk-toggleable__content {
+#sk-container-id-2 input.sk-toggleable__control:checked~div.sk-toggleable__content {
   /* Expand drop-down */
   display: block;
   width: 100%;
   overflow: visible;
 }
 
-#sk-container-id-5 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
+#sk-container-id-2 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
   content: "▾";
 }
 
 /* Pipeline/ColumnTransformer-specific style */
 
-#sk-container-id-5 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-2 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
   color: var(--sklearn-color-text);
   background-color: var(--sklearn-color-unfitted-level-2);
 }
 
-#sk-container-id-5 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-2 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
   background-color: var(--sklearn-color-fitted-level-2);
 }
 
 /* Estimator-specific style */
 
 /* Colorize estimator box */
-#sk-container-id-5 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-2 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-2);
 }
 
-#sk-container-id-5 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-2 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-2);
 }
 
-#sk-container-id-5 div.sk-label label.sk-toggleable__label,
-#sk-container-id-5 div.sk-label label {
+#sk-container-id-2 div.sk-label label.sk-toggleable__label,
+#sk-container-id-2 div.sk-label label {
   /* The background is the default theme color */
   color: var(--sklearn-color-text-on-default-background);
 }
 
 /* On hover, darken the color of the background */
-#sk-container-id-5 div.sk-label:hover label.sk-toggleable__label {
+#sk-container-id-2 div.sk-label:hover label.sk-toggleable__label {
   color: var(--sklearn-color-text);
   background-color: var(--sklearn-color-unfitted-level-2);
 }
 
 /* Label box, darken color on hover, fitted */
-#sk-container-id-5 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
+#sk-container-id-2 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
   color: var(--sklearn-color-text);
   background-color: var(--sklearn-color-fitted-level-2);
 }
 
 /* Estimator label */
 
-#sk-container-id-5 div.sk-label label {
+#sk-container-id-2 div.sk-label label {
   font-family: monospace;
   font-weight: bold;
   display: inline-block;
   line-height: 1.2em;
 }
 
-#sk-container-id-5 div.sk-label-container {
+#sk-container-id-2 div.sk-label-container {
   text-align: center;
 }
 
 /* Estimator-specific */
-#sk-container-id-5 div.sk-estimator {
+#sk-container-id-2 div.sk-estimator {
   font-family: monospace;
   border: 1px dotted var(--sklearn-color-border-box);
   border-radius: 0.25em;
@@ -1404,18 +1419,18 @@ clickable and can be expanded/collapsed.
   background-color: var(--sklearn-color-unfitted-level-0);
 }
 
-#sk-container-id-5 div.sk-estimator.fitted {
+#sk-container-id-2 div.sk-estimator.fitted {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-0);
 }
 
 /* on hover */
-#sk-container-id-5 div.sk-estimator:hover {
+#sk-container-id-2 div.sk-estimator:hover {
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-2);
 }
 
-#sk-container-id-5 div.sk-estimator.fitted:hover {
+#sk-container-id-2 div.sk-estimator.fitted:hover {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-2);
 }
@@ -1503,7 +1518,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 
 /* "?"-specific style due to the `<a>` HTML tag */
 
-#sk-container-id-5 a.estimator_doc_link {
+#sk-container-id-2 a.estimator_doc_link {
   float: right;
   font-size: 1rem;
   line-height: 1em;
@@ -1518,21 +1533,21 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
   border: var(--sklearn-color-unfitted-level-1) 1pt solid;
 }
 
-#sk-container-id-5 a.estimator_doc_link.fitted {
+#sk-container-id-2 a.estimator_doc_link.fitted {
   /* fitted */
   border: var(--sklearn-color-fitted-level-1) 1pt solid;
   color: var(--sklearn-color-fitted-level-1);
 }
 
 /* On hover */
-#sk-container-id-5 a.estimator_doc_link:hover {
+#sk-container-id-2 a.estimator_doc_link:hover {
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-3);
   color: var(--sklearn-color-background);
   text-decoration: none;
 }
 
-#sk-container-id-5 a.estimator_doc_link.fitted:hover {
+#sk-container-id-2 a.estimator_doc_link.fitted:hover {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-3);
 }
@@ -1600,8 +1615,8 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
     height: 14px;
     cursor: pointer;
 }
-</style><div id="sk-container-id-5" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>Pipeline(steps=[('escalado', StandardScaler()),
-                ('logreg', LogisticRegression(max_iter=1000000))])</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br>On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden=""><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-7" type="checkbox"><label for="sk-estimator-id-7" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>Pipeline</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.7/modules/generated/sklearn.pipeline.Pipeline.html">?<span>Documentation for Pipeline</span></a><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+</style><div id="sk-container-id-2" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>Pipeline(steps=[('escalado', StandardScaler()),
+                ('logreg', LogisticRegression(max_iter=1000000))])</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br>On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden=""><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-2" type="checkbox"><label for="sk-estimator-id-2" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>Pipeline</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.7/modules/generated/sklearn.pipeline.Pipeline.html">?<span>Documentation for Pipeline</span></a><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
         <div class="estimator-table">
             <details>
                 <summary>Parameters</summary>
@@ -1633,7 +1648,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 
             </details>
         </div>
-    </div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-8" type="checkbox"><label for="sk-estimator-id-8" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>StandardScaler</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.7/modules/generated/sklearn.preprocessing.StandardScaler.html">?<span>Documentation for StandardScaler</span></a></div></label><div class="sk-toggleable__content fitted" data-param-prefix="escalado__">
+    </div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-3" type="checkbox"><label for="sk-estimator-id-3" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>StandardScaler</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.7/modules/generated/sklearn.preprocessing.StandardScaler.html">?<span>Documentation for StandardScaler</span></a></div></label><div class="sk-toggleable__content fitted" data-param-prefix="escalado__">
         <div class="estimator-table">
             <details>
                 <summary>Parameters</summary>
@@ -1660,7 +1675,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 
             </details>
         </div>
-    </div></div></div><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-9" type="checkbox"><label for="sk-estimator-id-9" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>LogisticRegression</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.7/modules/generated/sklearn.linear_model.LogisticRegression.html">?<span>Documentation for LogisticRegression</span></a></div></label><div class="sk-toggleable__content fitted" data-param-prefix="logreg__">
+    </div></div></div><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-4" type="checkbox"><label for="sk-estimator-id-4" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>LogisticRegression</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.7/modules/generated/sklearn.linear_model.LogisticRegression.html">?<span>Documentation for LogisticRegression</span></a></div></label><div class="sk-toggleable__content fitted" data-param-prefix="logreg__">
         <div class="estimator-table">
             <details>
                 <summary>Parameters</summary>
@@ -1795,7 +1810,7 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 </section>
 <section id="predicción-1" class="level2" data-number="2.6">
 <h2 data-number="2.6" class="anchored" data-anchor-id="predicción-1"><span class="header-section-number">2.6</span> Predicción</h2>
-<div id="8c065dfe" class="cell" data-execution_count="13">
+<div id="d26cbb35" class="cell" data-execution_count="13">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>y_pred_pipe<span class="op">=</span> pipe.predict(X_test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1804,7 +1819,7 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 </section>
 <section id="evaluación-1" class="level2" data-number="2.7">
 <h2 data-number="2.7" class="anchored" data-anchor-id="evaluación-1"><span class="header-section-number">2.7</span> Evaluación</h2>
-<div id="cae73165" class="cell" data-execution_count="14">
+<div id="aa4cdd1d" class="cell" data-execution_count="14">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>accuracy<span class="op">=</span> accuracy_score(y_test,y_pred_pipe)</span>
@@ -1827,7 +1842,7 @@ f1 : 0.9861111111111112</code></pre>
 </section>
 <section id="matriz-de-confusion-1" class="level2" data-number="2.8">
 <h2 data-number="2.8" class="anchored" data-anchor-id="matriz-de-confusion-1"><span class="header-section-number">2.8</span> Matriz de confusion</h2>
-<div id="77626214" class="cell" data-execution_count="15">
+<div id="d4b8e376" class="cell" data-execution_count="15">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>ConfusionMatrixDisplay.from_predictions(y_test,y_pred_pipe)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>

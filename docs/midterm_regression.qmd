@@ -1,0 +1,42 @@
+
+---
+title: "Classification"
+format:
+  html:
+    code-fold: true
+    toc: true
+    number-sections: true
+    df-print: paged
+---
+# 📌 Introducción
+
+El dataset **“Datos de recaudaciones de tributos de comercio exterior”** proviene del **Servicio Nacional de Aduana del Ecuador (SENAE)** y está disponible en el portal oficial de [Datos Abiertos Ecuador](https://datosabiertos.gob.ec/dataset/datos-de-recaudaciones-de-tributos-de-comercio-exterior/resource/abc336cc-632c-467a-bc71-a8f5b61284e3).
+
+Este conjunto de datos recoge información detallada sobre los **tributos generados por operaciones de comercio exterior** en el Ecuador, con valores de recaudación asociados a diferentes tributos, distritos aduaneros y canales de pago.
+
+---
+
+# 📊 Variables principales
+
+Algunas columnas clave del dataset son:
+
+- **NOM_DISTRITO:** Nombre del distrito aduanero donde se registró la operación.  
+- **NOM_TRIBUTO:** Tipo de tributo aplicado (ej. IVA, Arancel Advalorem, Salvaguardias).  
+- **CANAL_PAGO:** Medio por el cual se realizó el pago (internet, ventanilla, tarjeta, etc.).  
+- **VALOR_TOTAL_TRIBUTO_EN_NC:** Valor pagado con notas de crédito.  
+- **VALOR_TOTAL_TRIBUTO_EN_EFECTIVO:** Valor pagado en efectivo.  
+- **VALOR_TOTAL_TRIBUTO_PAGADO:** Valor total del tributo (suma de los anteriores).  
+
+---
+
+# 🎯 Propósito del análisis
+
+Para el **ejercicio de regresión**, nos planteamos el siguiente problema:
+
+> **Predecir el valor total de tributos pagados (`VALOR_TOTAL_TRIBUTO_PAGADO`) en función del canal de pago, el distrito, el tipo de tributo y los valores parciales (nota de crédito, efectivo).**
+
+Este análisis nos permitirá:
+
+- Identificar qué factores influyen más en la recaudación.  
+- Evaluar la capacidad predictiva de un modelo de regresión en este contexto.  
+- Demostrar un flujo completo de *Machine Learning supervisado* con **Scikit-learn Pipeline** (preprocesamiento, entrenamiento, métricas y visualizaciones).  
