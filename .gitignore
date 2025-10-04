@@ -10,3 +10,5 @@ _site
 /db/
 /db/*.*
 db/
+db/
+ db/covid.csv 
