@@ -7,8 +7,9 @@ Index_files/
 **/*.quarto_ipynb
 _site
 .quarto/
+.mypy_cache/
 /db/
 /db/*.*
 db/
 db/
- db/covid.csv 
+db/covid.csv 
