@@ -2,32 +2,71 @@ project:
   type: website
   output-dir: docs
   preview:
-    watch-inputs: true   # <- recarga al guardar
+    watch-inputs: true
 
 website:
   title: "Machine Learning"
-  navbar:
-    left:
-      - href: index.qmd
-        text: Home
-      - href: eda.qmd
-        text: Eda
-      - href: cnj.qmd
-        text: CNJ
-      - href: classification.qmd
-        text: Classification
-      - text: MidTerm
-        menu:
+  sidebar:
+    style: docked
+    search: true
+    contents:
+      - text: "Welcome"
+        href: index.qmd
+
+      - section: "Exploratory Data Analysis (EDA)"
+        contents:
+          - href: eda.qmd
+            text: "EDA"
+          - href: cnj.qmd
+            text: "CNJ"
+
+      - section: "Classification"
+        contents:
+          - href: classification.qmd
+            text: "Overview"
+          - href: categorical_encoding.qmd
+            text: "Ejemplo de Categorización"
+          - href: categorical_pipeline.qmd
+            text: "Categorización con Pipeline"
+
+      - section: "MidTerm"
+        contents:
           - href: midterm_regression.qmd
-            text: Regresión
+            text: "Regresión"
           - href: midterm_classification.qmd
-            text: Clasificación
+            text: "Clasificación"
 
+      - section: "Natural Language Processing (NLP)"
+        contents:
+          - href: nltk.qmd
+            text: "NLTK"
+          - href: bagofwords.qmd
+            text: "Bag of Words"
+          - href: tfidf.qmd
+            text: "Term Frequency–Inverse Document Frequency"
 
+  navbar:
+    left: 
+      - text: "Home"
+        href: cv.qmd
+      - text: "Whoami"
+        href: cv.qmd
+
+    right:
+      - text: "CV"
+        href: cv.qmd
 
 format:
   html:
     theme: cosmo
     toc: true
-    code-fold: true
+    number-sections: false
+    code-fold: false
     fig-align: center
+    page-navigation: true
+    smooth-scroll: true
+    lightbox: true
+
+execute:
+  # Usa el nombre EXACTO del kernel que te aparece en Jupyter
+  kernel: "myenv-ml"

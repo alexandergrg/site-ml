@@ -2,9 +2,6 @@
 title: "REPORTE QUARTO"
 author: "Alexander Gonzalez - Yachay Tech University"
 date: "25-09-2025"
-
-jupyter: myenv-ml  
-
 ---
 
 # Mi primer Quarto 

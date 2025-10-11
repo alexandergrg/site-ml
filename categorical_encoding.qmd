@@ -1,0 +1,91 @@
+---
+title: "Categorical Encoding"
+---
+
+# Ejemplo de Categorias
+
+## Importación de Librerias
+
+
+
+```{python}
+import pandas as pd
+from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder, StandardScaler,LabelEncoder
+from sklearn.compose import ColumnTransformer
+```
+
+
+## Dataframe Encoder
+
+
+```{python}
+data = {
+    'size' : ['M', 'S', 'L'], # Categorico Ordinal porque va en orden
+    'color' : ['green','red','blue'], #  
+    'price': [10.1, 13.5, 15.6],
+    'label': ['pantalones', 'camisetas', 'camisetas']
+}
+
+df = pd.DataFrame(data)
+df
+```
+
+
+## label encoder: Usar solo en output
+
+
+```{python}
+df['label_encoded']=LabelEncoder().fit_transform(df['label'])
+df
+```
+
+## Ordinal Encoder
+
+
+```{python}
+size_order = [['S','M','L']]
+df['size_encoded']=OrdinalEncoder(categories=size_order).fit_transform(df[['size']])
+df
+```
+
+## OneHotEncoder
+
+```{python}
+color_encoder = OneHotEncoder (sparse_output=False, handle_unknown='ignore')
+color_encoded = color_encoder.fit_transform(df[['color']])
+color_title_encoded = color_encoder.get_feature_names_out(['color'])
+
+df[color_title_encoded] = color_encoded
+df
+```
+
+
+## Column Transformer
+
+### Creación del Preprocessor
+```{python}
+
+categoricas_features = ['color']
+ordinal_features = ['size']
+numerical_features = ['price']
+
+size_orde = [['S','M','L']]
+
+preprocessor = ColumnTransformer(
+    transformers=[
+        ('color_onehot', OneHotEncoder(),categoricas_features),
+        ('size_ord',OrdinalEncoder(categories=size_orde), ordinal_features),
+        ('price_stan',StandardScaler(),numerical_features)
+    ]
+)
+
+```
+
+### Aplicar el preprocessor
+
+```{python}
+feature_processor = preprocessor.fit_transform(df)
+feature_processor
+```
+
+

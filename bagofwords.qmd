@@ -1,0 +1,101 @@
+---
+title: "Bag Of Words"
+---
+
+
+# Importar Librerias
+
+```{python}
+from sklearn.feature_extraction.text import CountVectorizer
+import pandas as pd
+import nltk 
+nltk.download('stopwords') # necessary for removal of stop words
+from nltk.corpus import stopwords
+from nltk import word_tokenize, pos_tag
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+from nltk.corpus import wordnet
+
+nltk.download('punkt_tab') # necessary for tokenization
+nltk.download('wordnet') # necessary for lemmatization
+nltk.download('stopwords') # necessary for removal of stop words
+nltk.download('averaged_perceptron_tagger_eng') # necessary for POS tagging
+nltk.download('maxent_ne_chunker' ) # necessary for entity extraction
+nltk.download('omw-1.4') # necessary for lemmatization
+nltk.download('words')
+```
+
+```{python}
+corpus = [
+    "machine learning is fun 1990",
+    "Machine learning is part of AI 2000",
+    "I loving machine learning",
+    "I love AI"
+]
+```
+
+
+```{python}
+stop_words = stopwords.words("english")
+vectorizer = CountVectorizer(stop_words= stop_words)
+```
+
+
+## Limpieza de Datos
+
+
+```{python}
+lemmatizer = WordNetLemmatizer()   
+
+def get_wordnet_pos(treebank_tag):
+    if treebank_tag.startswith('J'):
+        return wordnet.ADJ
+    elif treebank_tag.startswith('V'):
+        return wordnet.VERB
+    elif treebank_tag.startswith('N'):
+        return wordnet.NOUN
+    elif treebank_tag.startswith('R'):
+        return wordnet.ADV
+    else:
+        return wordnet.NOUN
+
+def preprocessing_document(doc):
+    #1 Transformar en minusculas
+    doc = doc.lower()
+    #2 Tokenizar
+    tokens = word_tokenize(doc)
+    #3 Lematización con etiqueta POS
+    tagged_tokens = pos_tag(tokens)
+    #4 Filtrar números y Stopwords
+    filtered_tokens = [(word,pos) for word,pos in tagged_tokens if word.isalpha()]
+    #5 Lemmatización
+    lemmatized_words = [lemmatizer.lemmatize(word, get_wordnet_pos(pos)) for word, pos in filtered_tokens]
+
+    return " ". join(lemmatized_words)
+```
+
+## Preprocesamiento manual
+
+```{python}
+for doc in corpus:
+    r = preprocessing_document(doc)
+    print(f"doc: {doc}, preprocesamiento: {r}")
+```
+
+## Fit Transform
+
+```{python}
+corpus_cleanned = [preprocessing_document(doc) for doc in corpus]
+X = vectorizer.fit_transform(corpus_cleanned)
+```
+
+
+```{python}
+vectorizer.get_feature_names_out()
+```
+
+## matriz de ocurrencias
+
+```{python}
+df = pd.DataFrame.sparse.from_spmatrix(X, columns= vectorizer.get_feature_names_out())
+df
+```
