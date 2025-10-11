@@ -49,6 +49,8 @@ website:
             text: "Bag of Words"
           - href: tfidf.qmd
             text: "Term Frequency–Inverse Document Frequency"
+          - href: text_classificaction.qmd
+            text: "Clasificación de Texto"
 
   navbar:
     left: 

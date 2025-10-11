@@ -1,0 +1,116 @@
+---
+title: "Classificación de Texto"
+---
+
+
+# Importar Librerias
+
+```{python}
+from sklearn.datasets import fetch_20newsgroups
+
+#vectorización de Textp
+from sklearn.feature_extraction.text import CountVectorizer,TfidfVectorizer
+from sklearn.metrics import classification_report,ConfusionMatrixDisplay, confusion_matrix
+from sklearn.model_selection import train_test_split as tts
+from sklearn.linear_model import LogisticRegression
+from sklearn.pipeline import Pipeline
+from sklearn.naive_bayes import MultinomialNB
+
+
+import nltk 
+from nltk.corpus import stopwords
+from nltk.corpus import wordnet
+
+nltk.download('punkt_tab') # necessary for tokenization
+nltk.download('wordnet') # necessary for lemmatization
+nltk.download('stopwords') # necessary for removal of stop words
+nltk.download('averaged_perceptron_tagger_eng') # necessary for POS tagging
+nltk.download('maxent_ne_chunker' ) # necessary for entity extraction
+nltk.download('omw-1.4') # necessary for lemmatization
+nltk.download('words')
+```
+
+# Cargar el Dataset
+
+```{python}
+
+categorias = ['comp.graphics', 'comp.sys.mac.hardware', 'rec.sport.baseball', 'talk.politics.guns']
+#newgroups = fetch_20newsgroups(subset='train', categories=categorias, remove=('headers', 'footers', 'quotes'))
+newgroups = fetch_20newsgroups(subset='train', remove=('headers', 'footers', 'quotes'))
+print(newgroups.target_names)
+```
+
+
+# Separación de Features y Target
+
+
+```{python}
+X = newgroups.data
+y = newgroups.target
+```
+
+# Separación de train-test Split
+
+```{python}
+X_train, X_test, y_train, y_test= tts(
+    X,
+    y,
+    test_size=0.2,
+    random_state= 42,
+    stratify= y
+)
+```
+
+# Stopwords
+
+
+```{python}
+stopwords = stopwords.words("english")
+vectorizer = CountVectorizer(stop_words=stopwords)
+#vectorizer = TfidfVectorizer(stop_words=stopwords)
+```
+
+
+#Modelo
+
+```{python}
+model = MultinomialNB()
+```
+#Pipeline
+
+```{python}
+pipeline = Pipeline(
+    [
+        ('vectorizacion', vectorizer),
+        ('classifier', model)
+    ]
+)
+```
+
+# Fit del Modelo
+
+
+```{python}
+pipeline.fit(X_train, y_train)
+
+```
+
+# Predict
+
+```{python}
+y_pred = pipeline.predict(X_test)
+```
+
+
+# Reporte de Clasificación
+
+
+```{python}
+print("Reporte de Clasificacion \n",classification_report(y_test, y_pred,target_names= newgroups.target_names))
+```
+
+# Matriz de Confusiones
+
+```{python}
+ConfusionMatrixDisplay(confusion_matrix(y_test,y_pred),display_labels=newgroups.target_names).plot()
+```
