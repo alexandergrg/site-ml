@@ -332,7 +332,7 @@ def label_luisa(text):
     text = str(text).lower()
     # buscar las palabras clave
     #pattern = r"\bluisa\b|\bpresidenta\b|luisapresidenta"
-    pattern = r"luisapresidenta|dictadura|dictador|impunidad|presidenta|revolucion|revolucionciudadana|rafaelcorrea|patria|victoria|luisaeselpueblo|somosmas|votaporluisa|luisa2025|represion|derecha|ricos|mili|traicion"
+    pattern = r"luisapresidenta|dictadura|dictador|impunidad|presidenta|revolucion|revolucionciudadana|rafaelcorrea|patria|victoria|luisaeselpueblo|somosmas|votaporluisa|luisa2025|represion|derecha|ricos|mili|traicion|luisa\s*gonzalez|revolucionciudadana|correa|rafaelcorrea|votaluisa|#luisapresidenta"
     if re.search(pattern, text):
         return 0
     else:
