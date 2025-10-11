@@ -1,0 +1,2200 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.24">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Classificación de Texto – Machine Learning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./text_classificaction.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-b337f537912f5ab074b938eebad4c5d7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    </a>
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Machine Learning</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Whoami</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">CV</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./lab2.html">Lab 2</a></li><li class="breadcrumb-item"><a href="./lab2.html">Lab 2 Procesamiento de Texto Twiter</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+      <a href="./index.html" class="sidebar-logo-link">
+      </a>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Pagina de Quarto y Altair</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./altair.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quarto y Altair</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Exploratory Data Analysis (EDA)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./eda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">EDA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cnj.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">CNJ</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Classification</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./classification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Overview</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./categorical_encoding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ejemplo de Categorización</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./categorical_pipeline.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Categorización con Pipeline</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">MidTerm</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./midterm_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Regresión</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./midterm_classification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Clasificación</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Natural Language Processing (NLP)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./nltk.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">NLTK</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bagofwords.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bag of Words</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./tfidf.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Term Frequency–Inverse Document Frequency</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./text_classificaction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Clasificación de Texto</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">Lab 2</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lab2.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Lab 2 Procesamiento de Texto Twiter</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#importar-librerias" id="toc-importar-librerias" class="nav-link active" data-scroll-target="#importar-librerias">Importar Librerias</a></li>
+  <li><a href="#cargar-el-dataset" id="toc-cargar-el-dataset" class="nav-link" data-scroll-target="#cargar-el-dataset">Cargar el Dataset</a></li>
+  <li><a href="#exploración-inicial" id="toc-exploración-inicial" class="nav-link" data-scroll-target="#exploración-inicial">🧮 2. Exploración inicial</a>
+  <ul class="collapse">
+  <li><a href="#verificar-la-base-de-datos" id="toc-verificar-la-base-de-datos" class="nav-link" data-scroll-target="#verificar-la-base-de-datos">Verificar la base de datos</a></li>
+  <li><a href="#verificación-de-columnas" id="toc-verificación-de-columnas" class="nav-link" data-scroll-target="#verificación-de-columnas">Verificación de columnas</a></li>
+  <li><a href="#identificación-del-campo-content" id="toc-identificación-del-campo-content" class="nav-link" data-scroll-target="#identificación-del-campo-content">Identificación del campo content</a></li>
+  <li><a href="#limpieza-inicial-del-texto" id="toc-limpieza-inicial-del-texto" class="nav-link" data-scroll-target="#limpieza-inicial-del-texto">Limpieza inicial del texto</a></li>
+  <li><a href="#tokenización-con-nltk" id="toc-tokenización-con-nltk" class="nav-link" data-scroll-target="#tokenización-con-nltk">Tokenización con NLTK</a></li>
+  <li><a href="#frecuencia" id="toc-frecuencia" class="nav-link" data-scroll-target="#frecuencia">Frecuencia</a></li>
+  <li><a href="#visualizar-palabras-repetidas" id="toc-visualizar-palabras-repetidas" class="nav-link" data-scroll-target="#visualizar-palabras-repetidas">Visualizar Palabras Repetidas</a></li>
+  <li><a href="#lista-de-stopwords-personalizadas-exeptuando-si-o-no" id="toc-lista-de-stopwords-personalizadas-exeptuando-si-o-no" class="nav-link" data-scroll-target="#lista-de-stopwords-personalizadas-exeptuando-si-o-no">lista de Stopwords personalizadas ( exeptuando SI o NO )</a></li>
+  <li><a href="#lista-de-stopwords-personalizadas-exeptuando-si-o-no-para-lematizar" id="toc-lista-de-stopwords-personalizadas-exeptuando-si-o-no-para-lematizar" class="nav-link" data-scroll-target="#lista-de-stopwords-personalizadas-exeptuando-si-o-no-para-lematizar">lista de Stopwords personalizadas ( exeptuando SI o NO ) para lematizar</a></li>
+  <li><a href="#lematizar" id="toc-lematizar" class="nav-link" data-scroll-target="#lematizar">Lematizar</a></li>
+  <li><a href="#mostramos-las-palabras-mas-conunes-para-etiquetar" id="toc-mostramos-las-palabras-mas-conunes-para-etiquetar" class="nav-link" data-scroll-target="#mostramos-las-palabras-mas-conunes-para-etiquetar">Mostramos las palabras mas conunes para etiquetar</a></li>
+  </ul></li>
+  <li><a href="#creación-de-al-etiqueta" id="toc-creación-de-al-etiqueta" class="nav-link" data-scroll-target="#creación-de-al-etiqueta">Creación de al etiqueta</a>
+  <ul class="collapse">
+  <li><a href="#filtrado-de-patrones-para-luisa-presidenta" id="toc-filtrado-de-patrones-para-luisa-presidenta" class="nav-link" data-scroll-target="#filtrado-de-patrones-para-luisa-presidenta">Filtrado de patrones para luisa presidenta</a></li>
+  <li><a href="#listado-de-observaciones-donde-aparece-posrura-de-luisa" id="toc-listado-de-observaciones-donde-aparece-posrura-de-luisa" class="nav-link" data-scroll-target="#listado-de-observaciones-donde-aparece-posrura-de-luisa">Listado de observaciones donde aparece posrura de luisa</a></li>
+  <li><a href="#listado-de-observaciones-donde-aparece-postura-de-luisa" id="toc-listado-de-observaciones-donde-aparece-postura-de-luisa" class="nav-link" data-scroll-target="#listado-de-observaciones-donde-aparece-postura-de-luisa">Listado de observaciones donde aparece postura de luisa</a></li>
+  </ul></li>
+  <li><a href="#selecciones-de-features-y-target" id="toc-selecciones-de-features-y-target" class="nav-link" data-scroll-target="#selecciones-de-features-y-target">Selecciones de Features y Target</a>
+  <ul class="collapse">
+  <li><a href="#creación-del-df" id="toc-creación-del-df" class="nav-link" data-scroll-target="#creación-del-df">Creación del DF</a></li>
+  <li><a href="#features-y-target" id="toc-features-y-target" class="nav-link" data-scroll-target="#features-y-target">Features y Target</a></li>
+  <li><a href="#split-de-variables-features-y-target" id="toc-split-de-variables-features-y-target" class="nav-link" data-scroll-target="#split-de-variables-features-y-target">Split de variables Features y Target</a></li>
+  <li><a href="#procesamiento" id="toc-procesamiento" class="nav-link" data-scroll-target="#procesamiento">Procesamiento</a></li>
+  <li><a href="#entrenamiento-del-modelo" id="toc-entrenamiento-del-modelo" class="nav-link" data-scroll-target="#entrenamiento-del-modelo">Entrenamiento del modelo</a></li>
+  <li><a href="#matriz-de-confusión" id="toc-matriz-de-confusión" class="nav-link" data-scroll-target="#matriz-de-confusión">Matriz de Confusión</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./lab2.html">Lab 2</a></li><li class="breadcrumb-item"><a href="./lab2.html">Lab 2 Procesamiento de Texto Twiter</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Classificación de Texto</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>#🧩 1. Importar librerías y cargar el dataset</p>
+<section id="importar-librerias" class="level2">
+<h2 class="anchored" data-anchor-id="importar-librerias">Importar Librerias</h2>
+<div id="68e96eb9" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_20newsgroups</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#vectorización de Textp</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> CountVectorizer,TfidfVectorizer</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> classification_report,ConfusionMatrixDisplay, confusion_matrix</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split <span class="im">as</span> tts</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.naive_bayes <span class="im">import</span> MultinomialNB</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> nltk </span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.corpus <span class="im">import</span> stopwords</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.corpus <span class="im">import</span> wordnet</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>nltk.download(<span class="st">'punkt_tab'</span>) <span class="co"># necessary for tokenization</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>nltk.download(<span class="st">'wordnet'</span>) <span class="co"># necessary for lemmatization</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>nltk.download(<span class="st">'stopwords'</span>) <span class="co"># necessary for removal of stop words</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>nltk.download(<span class="st">'averaged_perceptron_tagger_eng'</span>) <span class="co"># necessary for POS tagging</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>nltk.download(<span class="st">'maxent_ne_chunker'</span> ) <span class="co"># necessary for entity extraction</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>nltk.download(<span class="st">'omw-1.4'</span>) <span class="co"># necessary for lemmatization</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>nltk.download(<span class="st">'words'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>[nltk_data] Downloading package punkt_tab to
+[nltk_data]     /Users/usr-s3c/nltk_data...
+[nltk_data]   Package punkt_tab is already up-to-date!
+[nltk_data] Downloading package wordnet to /Users/usr-s3c/nltk_data...
+[nltk_data]   Package wordnet is already up-to-date!
+[nltk_data] Downloading package stopwords to
+[nltk_data]     /Users/usr-s3c/nltk_data...
+[nltk_data]   Package stopwords is already up-to-date!
+[nltk_data] Downloading package averaged_perceptron_tagger_eng to
+[nltk_data]     /Users/usr-s3c/nltk_data...
+[nltk_data]   Package averaged_perceptron_tagger_eng is already up-to-
+[nltk_data]       date!
+[nltk_data] Downloading package maxent_ne_chunker to
+[nltk_data]     /Users/usr-s3c/nltk_data...
+[nltk_data]   Package maxent_ne_chunker is already up-to-date!
+[nltk_data] Downloading package omw-1.4 to /Users/usr-s3c/nltk_data...
+[nltk_data]   Package omw-1.4 is already up-to-date!
+[nltk_data] Downloading package words to /Users/usr-s3c/nltk_data...
+[nltk_data]   Package words is already up-to-date!</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="121">
+<pre><code>True</code></pre>
+</div>
+</div>
+</section>
+<section id="cargar-el-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="cargar-el-dataset">Cargar el Dataset</h2>
+<div id="2dd04163" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/erickedu85/dataset/refs/heads/master/tweets/tweets_totales_con_sentimiento_ml.csv"</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Lectura estricta en UTF-8</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(url, encoding<span class="op">=</span><span class="st">"utf-8"</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Chequeos rápidos</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.shape)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.columns.tolist())</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(158873, 26)
+['tweetId', 'tweetUrl', 'content', 'isReply', 'replyTo', 'createdAt', 'authorId', 'authorName', 'authorUsername', 'authorVerified', 'authorFollowers', 'authorProfilePic', 'authorJoinDate', 'source', 'hashtags', 'mentions', 'conversationId', 'inReplyToId', 'Date', 'time_response', 'account_age_days', 'mentions_count', 'hashtags_count', 'content_length', 'has_profile_picture', 'sentiment_polarity']</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="122">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">tweetId</th>
+<th data-quarto-table-cell-role="th">tweetUrl</th>
+<th data-quarto-table-cell-role="th">content</th>
+<th data-quarto-table-cell-role="th">isReply</th>
+<th data-quarto-table-cell-role="th">replyTo</th>
+<th data-quarto-table-cell-role="th">createdAt</th>
+<th data-quarto-table-cell-role="th">authorId</th>
+<th data-quarto-table-cell-role="th">authorName</th>
+<th data-quarto-table-cell-role="th">authorUsername</th>
+<th data-quarto-table-cell-role="th">authorVerified</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">conversationId</th>
+<th data-quarto-table-cell-role="th">inReplyToId</th>
+<th data-quarto-table-cell-role="th">Date</th>
+<th data-quarto-table-cell-role="th">time_response</th>
+<th data-quarto-table-cell-role="th">account_age_days</th>
+<th data-quarto-table-cell-role="th">mentions_count</th>
+<th data-quarto-table-cell-role="th">hashtags_count</th>
+<th data-quarto-table-cell-role="th">content_length</th>
+<th data-quarto-table-cell-role="th">has_profile_picture</th>
+<th data-quarto-table-cell-role="th">sentiment_polarity</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>1877190873579950336</td>
+<td>https://x.com/hectorjalonm/status/1877190873579950535</td>
+<td>@DiegoPonguill10 @DanielNoboaOk @LuisaGonzalezEc JAJAJAAJAJAJAJAJAJAJAJJAJAAJJA okkkkkkk</td>
+<td>True</td>
+<td>DiegoPonguill10</td>
+<td>2025-01-09 03:09:00</td>
+<td>1458536175119986688</td>
+<td>héctor 🌵</td>
+<td>hectorjalonm</td>
+<td>False</td>
+<td>...</td>
+<td>1877115691146306005</td>
+<td>1877188297551650816</td>
+<td>2025-01-08 22:10:30</td>
+<td>298.5</td>
+<td>1151</td>
+<td>3</td>
+<td>0</td>
+<td>88</td>
+<td>True</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>1877188297551650816</td>
+<td>https://x.com/DiegoPonguill10/status/1877188297551650927</td>
+<td>@hectorjalonm @DanielNoboaOk @LuisaGonzalezEc Ahora vivimos en la miseria antes fuimos el mejor país de latinoamerica..</td>
+<td>True</td>
+<td>hectorjalonm</td>
+<td>2025-01-09 02:59:00</td>
+<td>1555549203211976704</td>
+<td>Diego Ponguillo Vargas TODO TODITO #5 😉 HLVS!!</td>
+<td>DiegoPonguill10</td>
+<td>False</td>
+<td>...</td>
+<td>1877115691146306005</td>
+<td>1877123519743451648</td>
+<td>2025-01-08 22:10:30</td>
+<td>288.5</td>
+<td>883</td>
+<td>3</td>
+<td>0</td>
+<td>119</td>
+<td>True</td>
+<td>0.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>1877186248986501120</td>
+<td>https://x.com/ekuador_593/status/1877186248986501395</td>
+<td>@Gregori58965636 @yesendiaz @DanielNoboaOk Otro troll basura</td>
+<td>True</td>
+<td>Gregori58965636</td>
+<td>2025-01-09 02:50:00</td>
+<td>1457524470365708288</td>
+<td>Sebastián Noboa Ec</td>
+<td>ekuador_593</td>
+<td>False</td>
+<td>...</td>
+<td>1877115691146306005</td>
+<td>1877122565782576896</td>
+<td>2025-01-08 22:10:30</td>
+<td>279.5</td>
+<td>1153</td>
+<td>3</td>
+<td>0</td>
+<td>60</td>
+<td>True</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+
+<p>3 rows × 26 columns</p>
+</div>
+</div>
+</div>
+</section>
+<section id="exploración-inicial" class="level1">
+<h1>🧮 2. Exploración inicial</h1>
+<section id="verificar-la-base-de-datos" class="level2">
+<h2 class="anchored" data-anchor-id="verificar-la-base-de-datos">Verificar la base de datos</h2>
+<div id="0f4a9b9c" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df.info()</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>df.describe()</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>df.isna().<span class="bu">sum</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 158873 entries, 0 to 158872
+Data columns (total 26 columns):
+ #   Column               Non-Null Count   Dtype  
+---  ------               --------------   -----  
+ 0   tweetId              158873 non-null  int64  
+ 1   tweetUrl             158873 non-null  object 
+ 2   content              158873 non-null  object 
+ 3   isReply              158873 non-null  bool   
+ 4   replyTo              158011 non-null  object 
+ 5   createdAt            158873 non-null  object 
+ 6   authorId             158873 non-null  int64  
+ 7   authorName           158871 non-null  object 
+ 8   authorUsername       158873 non-null  object 
+ 9   authorVerified       158873 non-null  bool   
+ 10  authorFollowers      158873 non-null  int64  
+ 11  authorProfilePic     158873 non-null  object 
+ 12  authorJoinDate       158873 non-null  object 
+ 13  source               158873 non-null  object 
+ 14  hashtags             12415 non-null   object 
+ 15  mentions             158525 non-null  object 
+ 16  conversationId       158873 non-null  int64  
+ 17  inReplyToId          158873 non-null  int64  
+ 18  Date                 158873 non-null  object 
+ 19  time_response        158873 non-null  float64
+ 20  account_age_days     158873 non-null  int64  
+ 21  mentions_count       158873 non-null  int64  
+ 22  hashtags_count       158873 non-null  int64  
+ 23  content_length       158873 non-null  int64  
+ 24  has_profile_picture  158873 non-null  bool   
+ 25  sentiment_polarity   158873 non-null  float64
+dtypes: bool(3), float64(2), int64(9), object(12)
+memory usage: 28.3+ MB</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="123">
+<pre><code>tweetId                     0
+tweetUrl                    0
+content                     0
+isReply                     0
+replyTo                   862
+createdAt                   0
+authorId                    0
+authorName                  2
+authorUsername              0
+authorVerified              0
+authorFollowers             0
+authorProfilePic            0
+authorJoinDate              0
+source                      0
+hashtags               146458
+mentions                  348
+conversationId              0
+inReplyToId                 0
+Date                        0
+time_response               0
+account_age_days            0
+mentions_count              0
+hashtags_count              0
+content_length              0
+has_profile_picture         0
+sentiment_polarity          0
+dtype: int64</code></pre>
+</div>
+</div>
+</section>
+<section id="verificación-de-columnas" class="level2">
+<h2 class="anchored" data-anchor-id="verificación-de-columnas">Verificación de columnas</h2>
+<div id="9f61693d" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>df.columns</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="124">
+<pre><code>Index(['tweetId', 'tweetUrl', 'content', 'isReply', 'replyTo', 'createdAt',
+       'authorId', 'authorName', 'authorUsername', 'authorVerified',
+       'authorFollowers', 'authorProfilePic', 'authorJoinDate', 'source',
+       'hashtags', 'mentions', 'conversationId', 'inReplyToId', 'Date',
+       'time_response', 'account_age_days', 'mentions_count', 'hashtags_count',
+       'content_length', 'has_profile_picture', 'sentiment_polarity'],
+      dtype='object')</code></pre>
+</div>
+</div>
+</section>
+<section id="identificación-del-campo-content" class="level2">
+<h2 class="anchored" data-anchor-id="identificación-del-campo-content">Identificación del campo content</h2>
+<div id="4f1aed60" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Confirmar si existe y mostrar ejemplos</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'content'</span> <span class="kw">in</span> df.columns:</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"✅ La columna 'content' está disponible. Ejemplo de texto:"</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(df[<span class="st">'content'</span>].head(<span class="dv">5</span>))</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"⚠️ No se encontró la columna 'content'. Usa df.columns para verificar."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>✅ La columna 'content' está disponible. Ejemplo de texto:
+0                                   @DiegoPonguill10 @DanielNoboaOk @LuisaGonzalezEc JAJAJAAJAJAJAJAJAJAJAJJAJAAJJA okkkkkkk
+1    @hectorjalonm @DanielNoboaOk @LuisaGonzalezEc Ahora vivimos en la miseria antes fuimos el mejor país de latinoamerica..
+2                                                               @Gregori58965636 @yesendiaz @DanielNoboaOk Otro troll basura
+3                                                                        @jdiegol2010 @DanielNoboaOk https://t.co/CsLWQdQtnc
+4                                           @JRamirez2O24 @DanielNoboaOk El tema es respetar a quien eligió el pueblo o no ?
+Name: content, dtype: object</code></pre>
+</div>
+</div>
+</section>
+<section id="limpieza-inicial-del-texto" class="level2">
+<h2 class="anchored" data-anchor-id="limpieza-inicial-del-texto">Limpieza inicial del texto</h2>
+<div id="221269c9" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> unicodedata</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normalize_text(text):</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> <span class="bu">str</span>(text).lower().strip()</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r"http</span><span class="dv">\S</span><span class="op">+</span><span class="cf">|</span><span class="vs">www</span><span class="ch">\.</span><span class="dv">\S</span><span class="op">+</span><span class="vs">"</span>, <span class="st">" "</span>, text)   <span class="co"># quitar URLs</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r"@</span><span class="dv">\w</span><span class="op">+</span><span class="vs">"</span>, <span class="st">" "</span>, text)               <span class="co"># quitar menciones</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r"#"</span>, <span class="st">" "</span>, text)                  <span class="co"># quitar hashtags</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> unicodedata.normalize(<span class="st">"NFD"</span>, text)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> <span class="st">""</span>.join(ch <span class="cf">for</span> ch <span class="kw">in</span> text <span class="cf">if</span> unicodedata.category(ch) <span class="op">!=</span> <span class="st">"Mn"</span>)  <span class="co"># quitar tildes</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r"</span><span class="pp">[^a-zñáéíóúü</span><span class="dv">\s</span><span class="pp">]</span><span class="vs">"</span>, <span class="st">" "</span>, text)   <span class="co"># solo letras</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r"</span><span class="dv">\s</span><span class="op">+</span><span class="vs">"</span>, <span class="st">" "</span>, text).strip()        <span class="co"># quitar espacios extras</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> text</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'clean_text'</span>] <span class="op">=</span> df[<span class="st">'content'</span>].<span class="bu">apply</span>(normalize_text)</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>df[[<span class="st">'content'</span>, <span class="st">'clean_text'</span>]].head(<span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="126">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">content</th>
+<th data-quarto-table-cell-role="th">clean_text</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>@DiegoPonguill10 @DanielNoboaOk @LuisaGonzalezEc JAJAJAAJAJAJAJAJAJAJAJJAJAAJJA okkkkkkk</td>
+<td>jajajaajajajajajajajajjajaajja okkkkkkk</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>@hectorjalonm @DanielNoboaOk @LuisaGonzalezEc Ahora vivimos en la miseria antes fuimos el mejor país de latinoamerica..</td>
+<td>ahora vivimos en la miseria antes fuimos el mejor pais de latinoamerica</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>@Gregori58965636 @yesendiaz @DanielNoboaOk Otro troll basura</td>
+<td>otro troll basura</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>@jdiegol2010 @DanielNoboaOk https://t.co/CsLWQdQtnc</td>
+<td></td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>@JRamirez2O24 @DanielNoboaOk El tema es respetar a quien eligió el pueblo o no ?</td>
+<td>el tema es respetar a quien eligio el pueblo o no</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="tokenización-con-nltk" class="level2">
+<h2 class="anchored" data-anchor-id="tokenización-con-nltk">Tokenización con NLTK</h2>
+<div id="9942e5e0" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> nltk</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.tokenize <span class="im">import</span> word_tokenize</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>nltk.download(<span class="st">'punkt'</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'tokens'</span>] <span class="op">=</span> df[<span class="st">'clean_text'</span>].<span class="bu">apply</span>(word_tokenize)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>df[[<span class="st">'clean_text'</span>, <span class="st">'tokens'</span>]].head(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>[nltk_data] Downloading package punkt to /Users/usr-s3c/nltk_data...
+[nltk_data]   Package punkt is already up-to-date!</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="127">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">clean_text</th>
+<th data-quarto-table-cell-role="th">tokens</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>jajajaajajajajajajajajjajaajja okkkkkkk</td>
+<td>[jajajaajajajajajajajajjajaajja, okkkkkkk]</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>ahora vivimos en la miseria antes fuimos el mejor pais de latinoamerica</td>
+<td>[ahora, vivimos, en, la, miseria, antes, fuimos, el, mejor, pais, de, latinoamerica]</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>otro troll basura</td>
+<td>[otro, troll, basura]</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="frecuencia" class="level2">
+<h2 class="anchored" data-anchor-id="frecuencia">Frecuencia</h2>
+<div id="9f58c991" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Combinar todas las listas de tokens</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>all_tokens <span class="op">=</span> [token <span class="cf">for</span> sublist <span class="kw">in</span> df[<span class="st">'tokens'</span>] <span class="cf">for</span> token <span class="kw">in</span> sublist]</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Contar las 50 más frecuentes</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>freq <span class="op">=</span> Counter(all_tokens).most_common(<span class="dv">50</span>)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Convertir a DataFrame para visualizar mejor</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>freq_df <span class="op">=</span> pd.DataFrame(freq, columns<span class="op">=</span>[<span class="st">'palabra'</span>, <span class="st">'frecuencia'</span>])</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>freq_df.head(<span class="dv">50</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="128">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">palabra</th>
+<th data-quarto-table-cell-role="th">frecuencia</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>de</td>
+<td>91902</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>que</td>
+<td>83685</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>la</td>
+<td>66407</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>y</td>
+<td>60441</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>a</td>
+<td>58649</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">5</th>
+<td>el</td>
+<td>53965</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">6</th>
+<td>no</td>
+<td>53388</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">7</th>
+<td>en</td>
+<td>36766</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">8</th>
+<td>los</td>
+<td>32399</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">9</th>
+<td>es</td>
+<td>31377</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">10</th>
+<td>con</td>
+<td>25433</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">11</th>
+<td>por</td>
+<td>23538</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">12</th>
+<td>se</td>
+<td>22689</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">13</th>
+<td>lo</td>
+<td>21836</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">14</th>
+<td>para</td>
+<td>21428</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">15</th>
+<td>te</td>
+<td>19799</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">16</th>
+<td>un</td>
+<td>19323</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">17</th>
+<td>tu</td>
+<td>18709</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">18</th>
+<td>las</td>
+<td>15479</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">19</th>
+<td>si</td>
+<td>15257</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">20</th>
+<td>del</td>
+<td>15210</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">21</th>
+<td>como</td>
+<td>15188</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">22</th>
+<td>ya</td>
+<td>15099</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">23</th>
+<td>mas</td>
+<td>14648</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">24</th>
+<td>una</td>
+<td>13514</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">25</th>
+<td>luisa</td>
+<td>13472</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">26</th>
+<td>al</td>
+<td>12954</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">27</th>
+<td>esta</td>
+<td>11856</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">28</th>
+<td>su</td>
+<td>11795</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">29</th>
+<td>ecuador</td>
+<td>10147</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">30</th>
+<td>le</td>
+<td>10020</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">31</th>
+<td>pero</td>
+<td>9899</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">32</th>
+<td>q</td>
+<td>9871</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">33</th>
+<td>presidente</td>
+<td>9751</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">34</th>
+<td>pais</td>
+<td>9747</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">35</th>
+<td>noboa</td>
+<td>9574</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">36</th>
+<td>todo</td>
+<td>8566</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">37</th>
+<td>eso</td>
+<td>7856</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">38</th>
+<td>solo</td>
+<td>7769</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">39</th>
+<td>eres</td>
+<td>7344</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">40</th>
+<td>son</td>
+<td>6884</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">41</th>
+<td>o</td>
+<td>6775</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">42</th>
+<td>ni</td>
+<td>6500</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">43</th>
+<td>este</td>
+<td>5348</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">44</th>
+<td>nos</td>
+<td>5241</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">45</th>
+<td>porque</td>
+<td>5228</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">46</th>
+<td>ser</td>
+<td>5224</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">47</th>
+<td>cuando</td>
+<td>5215</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">48</th>
+<td>sin</td>
+<td>4992</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">49</th>
+<td>sus</td>
+<td>4898</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="visualizar-palabras-repetidas" class="level2">
+<h2 class="anchored" data-anchor-id="visualizar-palabras-repetidas">Visualizar Palabras Repetidas</h2>
+<div id="aa2652a7" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#import matplotlib.pyplot as plt</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co">#plt.figure(figsize=(10,5))</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">##plt.barh(freq_df['palabra'][::-1], freq_df['frecuencia'][::-1])</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co">##plt.title("Palabras más frecuentes en los tweets (sin filtrar stopwords)")</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co">#plt.xlabel("Frecuencia")</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co">#plt.show()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="lista-de-stopwords-personalizadas-exeptuando-si-o-no" class="level2">
+<h2 class="anchored" data-anchor-id="lista-de-stopwords-personalizadas-exeptuando-si-o-no">lista de Stopwords personalizadas ( exeptuando SI o NO )</h2>
+<div id="914d4def" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.corpus <span class="im">import</span> stopwords</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Base NLTK en español</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>stop_es <span class="op">=</span> <span class="bu">set</span>(stopwords.words(<span class="st">"spanish"</span>))</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Stopwords personalizadas palabras frecuentes (máx. 2 sílabas y muy comunes)</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>custom_stop <span class="op">=</span> {</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ——— Conectores y artículos frecuentes ———</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"de"</span>,<span class="st">"que"</span>,<span class="st">"la"</span>,<span class="st">"y"</span>,<span class="st">"a"</span>,<span class="st">"el"</span>,<span class="st">"no"</span>,<span class="st">"en"</span>,<span class="st">"los"</span>,<span class="st">"es"</span>,<span class="st">"con"</span>,<span class="st">"por"</span>,<span class="st">"se"</span>,<span class="st">"lo"</span>,<span class="st">"para"</span>,<span class="st">"te"</span>,<span class="st">"un"</span>,<span class="st">"tu"</span>,</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"las"</span>,<span class="st">"si"</span>,<span class="st">"del"</span>,<span class="st">"ya"</span>,<span class="st">"mas"</span>,<span class="st">"una"</span>,<span class="st">"al"</span>,<span class="st">"su"</span>,<span class="st">"le"</span>,<span class="st">"ni"</span>,<span class="st">"o"</span>,<span class="st">"son"</span>,<span class="st">"eso"</span>,<span class="st">"solo"</span>,<span class="st">"su"</span>,<span class="st">"sin"</span>,<span class="st">"sus"</span>,</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"nos"</span>,<span class="st">"me"</span>,<span class="st">"mi"</span>,<span class="st">"te"</span>,<span class="st">"tu"</span>,<span class="st">"su"</span>,<span class="st">"al"</span>,<span class="st">"del"</span>,<span class="st">"es"</span>,<span class="st">"en"</span>,<span class="st">"de"</span>,<span class="st">"el"</span>,<span class="st">"la"</span>,<span class="st">"los"</span>,<span class="st">"las"</span>,</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"como"</span>,<span class="st">"pero"</span>,<span class="st">"porque"</span>,<span class="st">"todo"</span>,<span class="st">"esto"</span>,<span class="st">"eso"</span>,<span class="st">"esa"</span>,<span class="st">"ese"</span>,<span class="st">"soy"</span>,<span class="st">"eres"</span>,<span class="st">"fui"</span>,<span class="st">"ser"</span>,<span class="st">"este"</span>,<span class="st">"esta"</span>,</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"pues"</span>,<span class="st">"hay"</span>,<span class="st">"ya"</span>,<span class="st">"muy"</span>,<span class="st">"más"</span>,<span class="st">"ni"</span>,<span class="st">"si"</span>,<span class="st">"no"</span>,<span class="st">"q"</span>,<span class="st">"solo"</span>,<span class="st">"todo"</span>,<span class="st">"otros"</span>,<span class="st">"otras"</span>,<span class="st">"otro"</span>,<span class="st">"otra"</span>,</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ——— Nuevas que detectaste (verbos y pronombres del sistema verbal español) ———</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"esta"</span>,<span class="st">"suyas"</span>,<span class="st">"mías"</span>,<span class="st">"este"</span>,<span class="st">"habrás"</span>,<span class="st">"estarían"</span>,<span class="st">"tuyas"</span>,<span class="st">"serías"</span>,<span class="st">"son"</span>,<span class="st">"tienes"</span>,<span class="st">"algo"</span>,</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"seamos"</span>,<span class="st">"habíais"</span>,<span class="st">"estuvimos"</span>,<span class="st">"yo"</span>,<span class="st">"siente"</span>,<span class="st">"por"</span>,<span class="st">"habidas"</span>,<span class="st">"suyos"</span>,<span class="st">"estarán"</span>,<span class="st">"estabas"</span>,</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"serán"</span>,<span class="st">"eres"</span>,<span class="st">"tenemos"</span>,<span class="st">"tuvo"</span>,<span class="st">"estaremos"</span>,<span class="st">"era"</span>,<span class="st">"hubisteis"</span>,<span class="st">"la"</span>,<span class="st">"vosotros"</span>,<span class="st">"tuviste"</span>,</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"fuerais"</span>,<span class="st">"hubiéramos"</span>,<span class="st">"tened"</span>,<span class="st">"seréis"</span>,<span class="st">"otros"</span>,<span class="st">"algunas"</span>,<span class="st">"al"</span>,<span class="st">"tuviese"</span>,</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ——— Muletillas / ruido de redes sociales ———</span></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"rt"</span>,<span class="st">"via"</span>,<span class="st">"xd"</span>,<span class="st">"jajaja"</span>,<span class="st">"jaja"</span>,<span class="st">"ajja"</span>,<span class="st">"jj"</span>,<span class="st">"aja"</span>,<span class="st">"ajajaja"</span>,<span class="st">"sip"</span>,<span class="st">"gracias"</span>,<span class="st">"hola"</span>,</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"buenos"</span>,<span class="st">"dias"</span>,<span class="st">"buenas"</span>,<span class="st">"tardes"</span>,<span class="st">"noches"</span>,</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ——— Nombres o contexto país (si no quieres sesgo local) ———</span></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>    <span class="co">#"ecuador","luisa","noboa","pais","presidente"</span></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a><span class="co"># {"ecuador", "luisa", "noboa", "pais", "presidente"}  # palabras que distorsionan</span></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>stop_words <span class="op">=</span> stop_es.union(custom_stop)</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Total de stopwords: </span><span class="sc">{</span><span class="bu">len</span>(stop_words)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a><span class="bu">list</span>(stop_words)[:<span class="dv">40</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Total de stopwords: 336</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="130">
+<pre><code>['tuviesen',
+ 'también',
+ 'ha',
+ 'erais',
+ 'hubiésemos',
+ 'por',
+ 'estar',
+ 'hay',
+ 'ajja',
+ 'había',
+ 'habré',
+ 'los',
+ 'sus',
+ 'sean',
+ 'tiene',
+ 'porque',
+ 'tenga',
+ 'nuestro',
+ 'hubimos',
+ 'estas',
+ 'suya',
+ 'aja',
+ 'le',
+ 'con',
+ 'para',
+ 'estaba',
+ 'tuyo',
+ 'estamos',
+ 'tuviésemos',
+ 'les',
+ 'hubieron',
+ 'estemos',
+ 'tengas',
+ 'dias',
+ 'más',
+ 'tenidas',
+ 'del',
+ 'era',
+ 'pero',
+ 'jj']</code></pre>
+</div>
+</div>
+</section>
+<section id="lista-de-stopwords-personalizadas-exeptuando-si-o-no-para-lematizar" class="level2">
+<h2 class="anchored" data-anchor-id="lista-de-stopwords-personalizadas-exeptuando-si-o-no-para-lematizar">lista de Stopwords personalizadas ( exeptuando SI o NO ) para lematizar</h2>
+<div id="cead8b7c" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># PRE-FLIGHT: asegurar columnas previas para lematizar</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re, unicodedata</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> nltk</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.tokenize <span class="im">import</span> word_tokenize</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.corpus <span class="im">import</span> stopwords</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Descargas necesarias (idempotentes)</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>nltk.download(<span class="st">'punkt'</span>)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>nltk.download(<span class="st">'stopwords'</span>)</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="co"># clean_text</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normalize_text(text):</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> <span class="bu">str</span>(text).lower().strip()</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r"http</span><span class="dv">\S</span><span class="op">+</span><span class="cf">|</span><span class="vs">www</span><span class="ch">\.</span><span class="dv">\S</span><span class="op">+</span><span class="vs">"</span>, <span class="st">" "</span>, text)   <span class="co"># URLs</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r"@</span><span class="dv">\w</span><span class="op">+</span><span class="vs">"</span>, <span class="st">" "</span>, text)               <span class="co"># menciones</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> text.replace(<span class="st">"#"</span>, <span class="st">" "</span>)</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># quitar tildes</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> unicodedata.normalize(<span class="st">"NFD"</span>, text)</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> <span class="st">""</span>.join(ch <span class="cf">for</span> ch <span class="kw">in</span> text <span class="cf">if</span> unicodedata.category(ch) <span class="op">!=</span> <span class="st">"Mn"</span>)</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># dejar solo letras</span></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r"</span><span class="pp">[^a-zñáéíóúü</span><span class="dv">\s</span><span class="pp">]</span><span class="vs">"</span>, <span class="st">" "</span>, text)</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r"</span><span class="dv">\s</span><span class="op">+</span><span class="vs">"</span>, <span class="st">" "</span>, text).strip()</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> text</span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="st">'content'</span> <span class="kw">in</span> df.columns, <span class="st">"No existe la columna 'content'."</span></span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'clean_text'</span> <span class="kw">not</span> <span class="kw">in</span> df.columns:</span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'clean_text'</span>] <span class="op">=</span> df[<span class="st">'content'</span>].<span class="bu">apply</span>(normalize_text)</span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a><span class="co">#) tokens</span></span>
+<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'tokens'</span> <span class="kw">not</span> <span class="kw">in</span> df.columns:</span>
+<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'tokens'</span>] <span class="op">=</span> df[<span class="st">'clean_text'</span>].<span class="bu">apply</span>(word_tokenize)</span>
+<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a><span class="co"># stopwords (lista personalizada + NLTK)</span></span>
+<span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a>stop_es <span class="op">=</span> <span class="bu">set</span>(stopwords.words(<span class="st">"spanish"</span>))</span>
+<span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a>custom_stop <span class="op">=</span> {</span>
+<span id="cb21-37"><a href="#cb21-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Palabras Frecuentes</span></span>
+<span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a>    <span class="st">"de"</span>,<span class="st">"que"</span>,<span class="st">"la"</span>,<span class="st">"y"</span>,<span class="st">"a"</span>,<span class="st">"el"</span>,<span class="st">"no"</span>,<span class="st">"en"</span>,<span class="st">"los"</span>,<span class="st">"es"</span>,<span class="st">"con"</span>,<span class="st">"por"</span>,<span class="st">"se"</span>,<span class="st">"lo"</span>,<span class="st">"para"</span>,<span class="st">"te"</span>,<span class="st">"un"</span>,<span class="st">"tu"</span>,</span>
+<span id="cb21-39"><a href="#cb21-39" aria-hidden="true" tabindex="-1"></a>    <span class="st">"las"</span>,<span class="st">"si"</span>,<span class="st">"del"</span>,<span class="st">"ya"</span>,<span class="st">"mas"</span>,<span class="st">"una"</span>,<span class="st">"al"</span>,<span class="st">"su"</span>,<span class="st">"le"</span>,<span class="st">"ni"</span>,<span class="st">"o"</span>,<span class="st">"son"</span>,<span class="st">"eso"</span>,<span class="st">"solo"</span>,<span class="st">"su"</span>,<span class="st">"sin"</span>,<span class="st">"sus"</span>,</span>
+<span id="cb21-40"><a href="#cb21-40" aria-hidden="true" tabindex="-1"></a>    <span class="st">"nos"</span>,<span class="st">"me"</span>,<span class="st">"mi"</span>,<span class="st">"te"</span>,<span class="st">"tu"</span>,<span class="st">"al"</span>,<span class="st">"del"</span>,<span class="st">"como"</span>,<span class="st">"pero"</span>,<span class="st">"porque"</span>,<span class="st">"todo"</span>,<span class="st">"esto"</span>,<span class="st">"esa"</span>,<span class="st">"ese"</span>,<span class="st">"soy"</span>,</span>
+<span id="cb21-41"><a href="#cb21-41" aria-hidden="true" tabindex="-1"></a>    <span class="st">"eres"</span>,<span class="st">"fui"</span>,<span class="st">"ser"</span>,<span class="st">"este"</span>,<span class="st">"esta"</span>,<span class="st">"pues"</span>,<span class="st">"hay"</span>,<span class="st">"muy"</span>,<span class="st">"q"</span>,<span class="st">"otros"</span>,<span class="st">"otras"</span>,<span class="st">"otro"</span>,<span class="st">"otra"</span>,</span>
+<span id="cb21-42"><a href="#cb21-42" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Nuevas residuales </span></span>
+<span id="cb21-43"><a href="#cb21-43" aria-hidden="true" tabindex="-1"></a>    <span class="st">"suyas"</span>,<span class="st">"mias"</span>,<span class="st">"habras"</span>,<span class="st">"estarian"</span>,<span class="st">"tuyas"</span>,<span class="st">"serias"</span>,<span class="st">"tienes"</span>,<span class="st">"algo"</span>,<span class="st">"seamos"</span>,<span class="st">"habiais"</span>,<span class="st">"estuvimos"</span>,</span>
+<span id="cb21-44"><a href="#cb21-44" aria-hidden="true" tabindex="-1"></a>    <span class="st">"yo"</span>,<span class="st">"siente"</span>,<span class="st">"habidas"</span>,<span class="st">"suyos"</span>,<span class="st">"estaran"</span>,<span class="st">"estabas"</span>,<span class="st">"seran"</span>,<span class="st">"tenemos"</span>,<span class="st">"tuvo"</span>,<span class="st">"estaremos"</span>,<span class="st">"era"</span>,</span>
+<span id="cb21-45"><a href="#cb21-45" aria-hidden="true" tabindex="-1"></a>    <span class="st">"hubisteis"</span>,<span class="st">"vosotros"</span>,<span class="st">"tuviste"</span>,<span class="st">"fuerais"</span>,<span class="st">"hubieramos"</span>,<span class="st">"tened"</span>,<span class="st">"sereis"</span>,<span class="st">"algunas"</span>,<span class="st">"tuviese"</span>,</span>
+<span id="cb21-46"><a href="#cb21-46" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Ruido redes</span></span>
+<span id="cb21-47"><a href="#cb21-47" aria-hidden="true" tabindex="-1"></a>    <span class="st">"rt"</span>,<span class="st">"via"</span>,<span class="st">"xd"</span>,<span class="st">"jajaja"</span>,<span class="st">"jaja"</span>,<span class="st">"ajja"</span>,<span class="st">"jj"</span>,<span class="st">"aja"</span>,<span class="st">"ajajaja"</span>,<span class="st">"sip"</span>,<span class="st">"gracias"</span>,<span class="st">"hola"</span>,</span>
+<span id="cb21-48"><a href="#cb21-48" aria-hidden="true" tabindex="-1"></a>    <span class="st">"buenos"</span>,<span class="st">"dias"</span>,<span class="st">"buenas"</span>,<span class="st">"tardes"</span>,<span class="st">"noches"</span>,</span>
+<span id="cb21-49"><a href="#cb21-49" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ——— Nombres o contexto país</span></span>
+<span id="cb21-50"><a href="#cb21-50" aria-hidden="true" tabindex="-1"></a>    <span class="co">#"ecuador","luisa","noboa","pais","presidente"</span></span>
+<span id="cb21-51"><a href="#cb21-51" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb21-52"><a href="#cb21-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-53"><a href="#cb21-53" aria-hidden="true" tabindex="-1"></a><span class="co">### 'si' y 'no' eliminar</span></span>
+<span id="cb21-54"><a href="#cb21-54" aria-hidden="true" tabindex="-1"></a>custom_stop.discard(<span class="st">"si"</span>)</span>
+<span id="cb21-55"><a href="#cb21-55" aria-hidden="true" tabindex="-1"></a>custom_stop.discard(<span class="st">"no"</span>)</span>
+<span id="cb21-56"><a href="#cb21-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-57"><a href="#cb21-57" aria-hidden="true" tabindex="-1"></a>stop_words <span class="op">=</span> stop_es.union(custom_stop)</span>
+<span id="cb21-58"><a href="#cb21-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-59"><a href="#cb21-59" aria-hidden="true" tabindex="-1"></a><span class="co">### Filtrado de Tokens</span></span>
+<span id="cb21-60"><a href="#cb21-60" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'tokens_filtrados'</span> <span class="kw">not</span> <span class="kw">in</span> df.columns:</span>
+<span id="cb21-61"><a href="#cb21-61" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'tokens_filtrados'</span>] <span class="op">=</span> df[<span class="st">'tokens'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> toks: [t <span class="cf">for</span> t <span class="kw">in</span> toks <span class="cf">if</span> t <span class="kw">not</span> <span class="kw">in</span> stop_words])</span>
+<span id="cb21-62"><a href="#cb21-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-63"><a href="#cb21-63" aria-hidden="true" tabindex="-1"></a><span class="co">### Sanitizar tipos Si toks es None o NaN, en lugar de lanzar error, lo reemplaza por una lista vacía [].</span></span>
+<span id="cb21-64"><a href="#cb21-64" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'tokens_filtrados'</span>] <span class="op">=</span> df[<span class="st">'tokens_filtrados'</span>].<span class="bu">apply</span>(</span>
+<span id="cb21-65"><a href="#cb21-65" aria-hidden="true" tabindex="-1"></a>    <span class="kw">lambda</span> toks: [t <span class="cf">for</span> t <span class="kw">in</span> (toks <span class="kw">or</span> []) <span class="cf">if</span> <span class="bu">isinstance</span>(t, <span class="bu">str</span>)]</span>
+<span id="cb21-66"><a href="#cb21-66" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>[nltk_data] Downloading package punkt to /Users/usr-s3c/nltk_data...
+[nltk_data]   Package punkt is already up-to-date!
+[nltk_data] Downloading package stopwords to
+[nltk_data]     /Users/usr-s3c/nltk_data...
+[nltk_data]   Package stopwords is already up-to-date!</code></pre>
+</div>
+</div>
+</section>
+<section id="lematizar" class="level2">
+<h2 class="anchored" data-anchor-id="lematizar">Lematizar</h2>
+<div id="f24df1b0" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> nltk, re</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.stem <span class="im">import</span> SnowballStemmer, WordNetLemmatizer</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk <span class="im">import</span> pos_tag</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.corpus <span class="im">import</span> wordnet</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Descargas necesarias para POS y WordNet (idempotentes)</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>nltk.download(<span class="st">'wordnet'</span>)</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>nltk.download(<span class="st">'averaged_perceptron_tagger'</span>)</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>stemmer_es <span class="op">=</span> SnowballStemmer(<span class="st">"spanish"</span>)</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>lemmatizer_en <span class="op">=</span> WordNetLemmatizer()</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> map_pos_to_wordnet(tag):</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> tag.startswith(<span class="st">'J'</span>): <span class="cf">return</span> wordnet.ADJ</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> tag.startswith(<span class="st">'V'</span>): <span class="cf">return</span> wordnet.VERB</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> tag.startswith(<span class="st">'N'</span>): <span class="cf">return</span> wordnet.NOUN</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> tag.startswith(<span class="st">'R'</span>): <span class="cf">return</span> wordnet.ADV</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> wordnet.NOUN</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> is_spanish_token(tok: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Detecta caracteres típicos del español</span></span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">bool</span>(re.search(<span class="vs">r"</span><span class="pp">[ñáéíóúü]</span><span class="vs">"</span>, tok))</span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lemmatize_or_stem(tokens):</span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a><span class="co">    - Filtrado de tokens muy cortos</span></span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a>    clean_toks <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> tokens <span class="cf">if</span> <span class="bu">isinstance</span>(t, <span class="bu">str</span>) <span class="kw">and</span> <span class="bu">len</span>(t) <span class="op">&gt;</span> <span class="dv">2</span>]</span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a>    es_toks <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> clean_toks <span class="cf">if</span> is_spanish_token(t)]</span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a>    en_toks <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> clean_toks <span class="cf">if</span> <span class="kw">not</span> is_spanish_token(t)]</span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a>    es_lemmas <span class="op">=</span> [stemmer_es.stem(t) <span class="cf">for</span> t <span class="kw">in</span> es_toks]</span>
+<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a>    en_lemmas <span class="op">=</span> []</span>
+<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> en_toks:</span>
+<span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a>        tags <span class="op">=</span> pos_tag(en_toks)</span>
+<span id="cb23-37"><a href="#cb23-37" aria-hidden="true" tabindex="-1"></a>        en_lemmas <span class="op">=</span> [lemmatizer_en.lemmatize(tok, map_pos_to_wordnet(tag)) <span class="cf">for</span> tok, tag <span class="kw">in</span> tags]</span>
+<span id="cb23-38"><a href="#cb23-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-39"><a href="#cb23-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> es_lemmas <span class="op">+</span> en_lemmas</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>[nltk_data] Downloading package wordnet to /Users/usr-s3c/nltk_data...
+[nltk_data]   Package wordnet is already up-to-date!
+[nltk_data] Downloading package averaged_perceptron_tagger to
+[nltk_data]     /Users/usr-s3c/nltk_data...
+[nltk_data]   Package averaged_perceptron_tagger is already up-to-
+[nltk_data]       date!</code></pre>
+</div>
+</div>
+</section>
+<section id="mostramos-las-palabras-mas-conunes-para-etiquetar" class="level2">
+<h2 class="anchored" data-anchor-id="mostramos-las-palabras-mas-conunes-para-etiquetar">Mostramos las palabras mas conunes para etiquetar</h2>
+<div id="4a4b11a7" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear la columna lemmas</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'lemmas'</span>] <span class="op">=</span> df[<span class="st">'tokens_filtrados'</span>].<span class="bu">apply</span>(lemmatize_or_stem)</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Contar y visualizar</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>all_lemmas <span class="op">=</span> [lemma <span class="cf">for</span> sublist <span class="kw">in</span> df[<span class="st">'lemmas'</span>] <span class="cf">for</span> lemma <span class="kw">in</span> (sublist <span class="kw">or</span> [])]</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>freq_lemmas <span class="op">=</span> Counter(all_lemmas).most_common(<span class="dv">30</span>)</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>freq_df_lemmas <span class="op">=</span> pd.DataFrame(freq_lemmas, columns<span class="op">=</span>[<span class="st">'lema'</span>, <span class="st">'frecuencia'</span>])</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">6</span>))</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>plt.barh(freq_df_lemmas[<span class="st">'lema'</span>][::<span class="op">-</span><span class="dv">1</span>], freq_df_lemmas[<span class="st">'frecuencia'</span>][::<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Lemas más frecuentes después de lematización / stemming"</span>)</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Frecuencia"</span>)</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>freq_df_lemmas.head(<span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="lab2_files/figure-html/cell-14-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="lab2_files/figure-html/cell-14-output-1.png" width="888" height="524" class="figure-img"></a></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="133">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">lema</th>
+<th data-quarto-table-cell-role="th">frecuencia</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>luisa</td>
+<td>13472</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>ecuador</td>
+<td>10147</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>presidente</td>
+<td>9751</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>pais</td>
+<td>9747</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>noboa</td>
+<td>9574</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">5</th>
+<td>asi</td>
+<td>4710</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">6</th>
+<td>nunca</td>
+<td>4689</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">7</th>
+<td>pueblo</td>
+<td>4626</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">8</th>
+<td>gente</td>
+<td>4336</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">9</th>
+<td>rana</td>
+<td>4312</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">10</th>
+<td>correa</td>
+<td>4273</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">11</th>
+<td>bien</td>
+<td>4169</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">12</th>
+<td>rene</td>
+<td>4141</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">13</th>
+<td>ahora</td>
+<td>4074</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">14</th>
+<td>usted</td>
+<td>4016</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">15</th>
+<td>presidenta</td>
+<td>3974</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">16</th>
+<td>hacer</td>
+<td>3927</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">17</th>
+<td>gobierno</td>
+<td>3684</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">18</th>
+<td>mejor</td>
+<td>3521</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">19</th>
+<td>luisapresidenta</td>
+<td>3388</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="creación-de-al-etiqueta" class="level1">
+<h1>Creación de al etiqueta</h1>
+<section id="filtrado-de-patrones-para-luisa-presidenta" class="level2">
+<h2 class="anchored" data-anchor-id="filtrado-de-patrones-para-luisa-presidenta">Filtrado de patrones para luisa presidenta</h2>
+<div id="3e532ad2" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> label_luisa(text):</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Crea la etiqueta binaria:</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co">    0 -&gt; si el tweet menciona a Luisa presidenta</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co">    1 -&gt; si no lo menciona</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> <span class="bu">str</span>(text).lower()</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># buscar las palabras clave</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">#pattern = r"\bluisa\b|\bpresidenta\b|luisapresidenta"</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>    pattern <span class="op">=</span> <span class="vs">r"luisapresidenta</span><span class="cf">|</span><span class="vs">dictadura</span><span class="cf">|</span><span class="vs">dictador</span><span class="cf">|</span><span class="vs">impunidad</span><span class="cf">|</span><span class="vs">presidenta</span><span class="cf">|</span><span class="vs">revolucion</span><span class="cf">|</span><span class="vs">revolucionciudadana</span><span class="cf">|</span><span class="vs">rafaelcorrea</span><span class="cf">|</span><span class="vs">patria</span><span class="cf">|</span><span class="vs">victoria</span><span class="cf">|</span><span class="vs">luisaeselpueblo</span><span class="cf">|</span><span class="vs">somosmas</span><span class="cf">|</span><span class="vs">votaporluisa</span><span class="cf">|</span><span class="vs">luisa2025</span><span class="cf">|</span><span class="vs">represion</span><span class="cf">|</span><span class="vs">derecha</span><span class="cf">|</span><span class="vs">ricos</span><span class="cf">|</span><span class="vs">mili</span><span class="cf">|</span><span class="vs">traicion"</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> re.search(pattern, text):</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">0</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">1</span></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"luisa_presidenta"</span>] <span class="op">=</span> df[<span class="st">"clean_text"</span>].<span class="bu">apply</span>(label_luisa)</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"luisa_presidenta"</span>].value_counts(normalize<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="134">
+<pre><code>luisa_presidenta
+1    0.902658
+0    0.097342
+Name: proportion, dtype: float64</code></pre>
+</div>
+</div>
+<div id="c370b19c" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar texto completo en pandas (sin truncar)</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>pd.set_option(<span class="st">"display.max_colwidth"</span>, <span class="va">None</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>pd.set_option(<span class="st">"display.max_rows"</span>, <span class="dv">100</span>)  <span class="co"># opcional, para ver más filas</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="listado-de-observaciones-donde-aparece-posrura-de-luisa" class="level2">
+<h2 class="anchored" data-anchor-id="listado-de-observaciones-donde-aparece-posrura-de-luisa">Listado de observaciones donde aparece posrura de luisa</h2>
+<div id="71a073c4" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>df.query(<span class="st">"luisa_presidenta == 0"</span>)[[<span class="st">"content"</span>]].head(<span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="136">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">content</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">7</th>
+<td>@Isaac_25_1986 @brillosaaa @DanielNoboaOk Una Dictadura es Dictadura sea la forma que sea, donde se a visto que nombren a una vicepresidenta por decreto que ni el pueblo la eligió, ahí te la dejo.</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">9</th>
+<td>@Jorgelr79 @FunerariaAlach @DanielNoboaOk Para mi son culpables al menos de la desaparición forzada, habrá que determinar si son de la ejecución extrajudicial, y en caso de no serlo, deberían ser culpable por su omisión, pero bajo todo lo que se visto con ese ministro de defensa, hacen ver que quieren impunidad</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">14</th>
+<td>@TeneRojas @DanielNoboaOk Ellos nos fueron, fué una banda, y los militares se molestaron porque ellos no lo hicieron</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">26</th>
+<td>@gladiadorjavier @DanielNoboaOk Tú querías poner a Verónica como Vicepresidenta para que asuma la presidencia?, ¿porqué?, acaso tu no sabes lo que quería hacer?, o es que eso mismo querías m</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">40</th>
+<td>@DanielNoboaOk Así será Sr. Presidente. Con Dios y por derecha juntos hacia el bienestar de la Patria</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">44</th>
+<td>@derechodevia18 @DanielNoboaOk Asesino, genocida, asesino de niños, dictadorsuelo!</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">51</th>
+<td>@DanielNoboaOk Lamentablemente los seguidores de la RC5 no entienden. Todo el que vote por los RC5 está de acuerdo con la dictadura en Venezuela. https://t.co/fYhgrufMQB</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">69</th>
+<td>@DanielNoboaOk Q CARA DURA EL SR NOBITA HIZO Q LAS FFAA Y LA POLICIA ESTEN DE SU LADO Y NO DE LA CONSTITUCIÓN AL NO APOYAR A LA VICEPRESIDENTA ESTE ES MADURO DISFRAZADO</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">70</th>
+<td>@joluchuvi @DanielNoboaOk Y los 3 angelitos baleados ayer en las malvinas????. Ya fueron a entrevistar a sus familias?…</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">74</th>
+<td>@DanielNoboaOk Respeta primero la democracia de nuestro país, pusiste de presidenta a alguien que no se eligió en las urnas…</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="listado-de-observaciones-donde-aparece-postura-de-luisa" class="level2">
+<h2 class="anchored" data-anchor-id="listado-de-observaciones-donde-aparece-postura-de-luisa">Listado de observaciones donde aparece postura de luisa</h2>
+<div id="decb4dce" class="cell" data-execution_count="17">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>df.query(<span class="st">"luisa_presidenta == 1"</span>)[[<span class="st">"content"</span>]].head(<span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="137">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">content</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>@DiegoPonguill10 @DanielNoboaOk @LuisaGonzalezEc JAJAJAAJAJAJAJAJAJAJAJJAJAAJJA okkkkkkk</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>@hectorjalonm @DanielNoboaOk @LuisaGonzalezEc Ahora vivimos en la miseria antes fuimos el mejor país de latinoamerica..</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>@Gregori58965636 @yesendiaz @DanielNoboaOk Otro troll basura</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>@jdiegol2010 @DanielNoboaOk https://t.co/CsLWQdQtnc</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>@JRamirez2O24 @DanielNoboaOk El tema es respetar a quien eligió el pueblo o no ?</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">5</th>
+<td>@gladiadorjavier @DanielNoboaOk Yo no lo he visto en las calles</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">6</th>
+<td>@gladiadorjavier @DanielNoboaOk Pero NOBOA sigue trabajando como Presidente o no?</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">8</th>
+<td>@JRamirez2O24 @DanielNoboaOk https://t.co/zLgWtMaDIb</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">10</th>
+<td>@gladiadorjavier @DanielNoboaOk El presidente también mostró que para completar una presidencia no se necesita pedir licencia, porque no es una reelección en si, el solo completó la presidencia de Lasso, una presidencia completa son 4 años.</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">11</th>
+<td>@JaimeEspin13 @brillosaaa @DanielNoboaOk Quizás, pero en Ecuador no encarcelan o matan a todo el que piense distinto ni falsean elecciones. Cosa que si hace el chavismo, desde la época del innombrable de Chávez. Así que la comparación resulta un pozo odiosa la verdad.🤷🏼‍♂️</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="selecciones-de-features-y-target" class="level1">
+<h1>Selecciones de Features y Target</h1>
+<section id="creación-del-df" class="level2">
+<h2 class="anchored" data-anchor-id="creación-del-df">Creación del DF</h2>
+<div id="33a60971" class="cell" data-execution_count="18">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>df_model <span class="op">=</span> df[[</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"clean_text"</span>,</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"authorVerified"</span>,<span class="st">"account_age_days"</span>,</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"luisa_presidenta"</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>]].copy()</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>df_model.info()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 158873 entries, 0 to 158872
+Data columns (total 4 columns):
+ #   Column            Non-Null Count   Dtype 
+---  ------            --------------   ----- 
+ 0   clean_text        158873 non-null  object
+ 1   authorVerified    158873 non-null  bool  
+ 2   account_age_days  158873 non-null  int64 
+ 3   luisa_presidenta  158873 non-null  int64 
+dtypes: bool(1), int64(2), object(1)
+memory usage: 3.8+ MB</code></pre>
+</div>
+</div>
+<div id="09954842" class="cell" data-execution_count="19">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> df_model.drop(<span class="st">"luisa_presidenta"</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> df_model[<span class="st">"luisa_presidenta"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="features-y-target" class="level2">
+<h2 class="anchored" data-anchor-id="features-y-target">Features y Target</h2>
+<div id="536e024e" class="cell" data-execution_count="20">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>text_features <span class="op">=</span> [<span class="st">"clean_text"</span>]</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>categorical_features <span class="op">=</span> [<span class="st">"authorVerified"</span>]</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>numeric_features <span class="op">=</span> [<span class="st">"account_age_days"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="split-de-variables-features-y-target" class="level2">
+<h2 class="anchored" data-anchor-id="split-de-variables-features-y-target">Split de variables Features y Target</h2>
+<div id="4dc63a6f" class="cell" data-execution_count="21">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># División de datos</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> tts(</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    X, y, test_size<span class="op">=</span><span class="fl">0.25</span>, random_state<span class="op">=</span><span class="dv">42</span>, stratify<span class="op">=</span>y</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="procesamiento" class="level2">
+<h2 class="anchored" data-anchor-id="procesamiento">Procesamiento</h2>
+<div id="2d536c23" class="cell" data-execution_count="22">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OneHotEncoder, StandardScaler</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> TfidfVectorizer</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.compose <span class="im">import</span> ColumnTransformer</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>preprocessor <span class="op">=</span> ColumnTransformer(</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    transformers<span class="op">=</span>[</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>        (<span class="st">"text"</span>, TfidfVectorizer(max_features<span class="op">=</span><span class="dv">3000</span>, ngram_range<span class="op">=</span>(<span class="dv">1</span>,<span class="dv">2</span>)), <span class="st">"clean_text"</span>),</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>        (<span class="st">"cat"</span>, OneHotEncoder(handle_unknown<span class="op">=</span><span class="st">"ignore"</span>), categorical_features),</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>        (<span class="st">"num"</span>, StandardScaler(), numeric_features),</span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="entrenamiento-del-modelo" class="level2">
+<h2 class="anchored" data-anchor-id="entrenamiento-del-modelo">Entrenamiento del modelo</h2>
+<div id="008c18d2" class="cell" data-execution_count="23">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> Pipeline(steps<span class="op">=</span>[</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"preprocessor"</span>, preprocessor),</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"classifier"</span>, LogisticRegression(max_iter<span class="op">=</span><span class="dv">200</span>, random_state<span class="op">=</span><span class="dv">42</span>))</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="matriz-de-confusión" class="level2">
+<h2 class="anchored" data-anchor-id="matriz-de-confusión">Matriz de Confusión</h2>
+<div id="6dca8b20" class="cell" data-execution_count="24">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> classification_report, confusion_matrix, ConfusionMatrixDisplay</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Entrenar</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>model.fit(X_train, y_train)</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Predicciones</span></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> model.predict(X_test)</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Reporte</span></span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"=== Classification Report ==="</span>)</span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(classification_report(y_test, y_pred))</span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Matriz de confusión</span></span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> confusion_matrix(y_test, y_pred)</span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>disp <span class="op">=</span> ConfusionMatrixDisplay(confusion_matrix<span class="op">=</span>cm, display_labels<span class="op">=</span>model.classes_)</span>
+<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a>disp.plot(cmap<span class="op">=</span><span class="st">"Blues"</span>)</span>
+<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Matriz de confusión - Clasificador Luisa Presidenta"</span>)</span>
+<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>=== Classification Report ===
+              precision    recall  f1-score   support
+
+           0       1.00      0.88      0.94      3866
+           1       0.99      1.00      0.99     35853
+
+    accuracy                           0.99     39719
+   macro avg       0.99      0.94      0.96     39719
+weighted avg       0.99      0.99      0.99     39719
+</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="lab2_files/figure-html/cell-25-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="lab2_files/figure-html/cell-25-output-2.png" width="521" height="449" class="figure-img"></a></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./text_classificaction.html" class="pagination-link" aria-label="Clasificación de Texto">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Clasificación de Texto</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

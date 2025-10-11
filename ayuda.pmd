@@ -1,0 +1,28 @@
+
+
+
+---
+
+
+---
+
+from nltk.corpus import stopwords
+
+# Base NLTK en español
+stop_es = set(stopwords.words("spanish"))
+
+# Stopwords personalizadas palabras frecuentes (máx. 2 sílabas y muy comunes)
+custom_stop = {
+    "de","que","la","y","a","el","no","en","los","es","con","por","se","lo","para","te","un","tu",
+    "las","si","del","ya","mas","una","al","su","le","q","ni","o","son","eso","solo","su","sin",
+    "su","sus","nos","le","me","te","mi","tu","su","al","del","es","en","de","el","la","los","las",
+    "como","pero","porque","todo","esto","eso","esa","ese","soy","eres","fui","ser","este","esta",
+    "pues","hay","ya","muy","más","ni"
+}
+
+# {"ecuador", "luisa", "noboa", "pais", "presidente"}  # palabras que distorsionan
+# 
+stop_words = stop_es.union(custom_stop)
+
+print(f"Total de stopwords: {len(stop_words)}")
+list(stop_words)[:40]

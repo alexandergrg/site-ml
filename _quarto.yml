@@ -51,6 +51,11 @@ website:
             text: "Term Frequency–Inverse Document Frequency"
           - href: text_classificaction.qmd
             text: "Clasificación de Texto"
+      - section: "Lab 2"
+        contents:
+          - href: lab2.qmd
+            text: "Lab 2 Procesamiento de Texto Twiter "
+
 
   navbar:
     left: 

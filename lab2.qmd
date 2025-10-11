@@ -1,0 +1,452 @@
+---
+title: "Classificación de Texto"
+---
+
+
+#🧩 1. Importar librerías y cargar el dataset
+
+## Importar Librerias
+
+```{python}
+import pandas as pd
+
+from sklearn.datasets import fetch_20newsgroups
+
+#vectorización de Textp
+from sklearn.feature_extraction.text import CountVectorizer,TfidfVectorizer
+from sklearn.metrics import classification_report,ConfusionMatrixDisplay, confusion_matrix
+from sklearn.model_selection import train_test_split as tts
+from sklearn.linear_model import LogisticRegression
+from sklearn.pipeline import Pipeline
+from sklearn.naive_bayes import MultinomialNB
+
+
+import nltk 
+from nltk.corpus import stopwords
+from nltk.corpus import wordnet
+
+nltk.download('punkt_tab') # necessary for tokenization
+nltk.download('wordnet') # necessary for lemmatization
+nltk.download('stopwords') # necessary for removal of stop words
+nltk.download('averaged_perceptron_tagger_eng') # necessary for POS tagging
+nltk.download('maxent_ne_chunker' ) # necessary for entity extraction
+nltk.download('omw-1.4') # necessary for lemmatization
+nltk.download('words')
+
+
+```
+
+## Cargar el Dataset
+
+
+```{python}
+url = "https://raw.githubusercontent.com/erickedu85/dataset/refs/heads/master/tweets/tweets_totales_con_sentimiento_ml.csv"
+# Lectura estricta en UTF-8
+df = pd.read_csv(url, encoding="utf-8")
+
+# Chequeos rápidos
+print(df.shape)
+print(df.columns.tolist())
+df.head(3)
+```
+
+# 🧮 2. Exploración inicial
+
+## Verificar la base de datos
+```{python}
+df.info()
+df.describe()
+df.isna().sum()
+```
+
+## Verificación de columnas
+
+```{python}
+df.columns
+```
+
+## Identificación del campo content
+
+```{python}
+# Confirmar si existe y mostrar ejemplos
+if 'content' in df.columns:
+    print("✅ La columna 'content' está disponible. Ejemplo de texto:")
+    print(df['content'].head(5))
+else:
+    print("⚠️ No se encontró la columna 'content'. Usa df.columns para verificar.")
+```
+
+## Limpieza inicial del texto
+
+```{python}
+import re
+import unicodedata
+
+def normalize_text(text):
+    text = str(text).lower().strip()
+    text = re.sub(r"http\S+|www\.\S+", " ", text)   # quitar URLs
+    text = re.sub(r"@\w+", " ", text)               # quitar menciones
+    text = re.sub(r"#", " ", text)                  # quitar hashtags
+    text = unicodedata.normalize("NFD", text)
+    text = "".join(ch for ch in text if unicodedata.category(ch) != "Mn")  # quitar tildes
+    text = re.sub(r"[^a-zñáéíóúü\s]", " ", text)   # solo letras
+    text = re.sub(r"\s+", " ", text).strip()        # quitar espacios extras
+    return text
+
+df['clean_text'] = df['content'].apply(normalize_text)
+df[['content', 'clean_text']].head(5)
+```
+
+## Tokenización con NLTK
+
+
+```{python}
+import nltk
+from nltk.tokenize import word_tokenize
+
+nltk.download('punkt')
+
+df['tokens'] = df['clean_text'].apply(word_tokenize)
+df[['clean_text', 'tokens']].head(3)
+```
+
+## Frecuencia
+
+
+```{python}
+from collections import Counter
+
+# Combinar todas las listas de tokens
+all_tokens = [token for sublist in df['tokens'] for token in sublist]
+
+# Contar las 50 más frecuentes
+freq = Counter(all_tokens).most_common(50)
+
+# Convertir a DataFrame para visualizar mejor
+freq_df = pd.DataFrame(freq, columns=['palabra', 'frecuencia'])
+freq_df.head(50)
+```
+
+## Visualizar Palabras Repetidas
+
+```{python}
+#import matplotlib.pyplot as plt
+
+#plt.figure(figsize=(10,5))
+##plt.barh(freq_df['palabra'][::-1], freq_df['frecuencia'][::-1])
+##plt.title("Palabras más frecuentes en los tweets (sin filtrar stopwords)")
+#plt.xlabel("Frecuencia")
+#plt.show()
+```
+
+## lista de Stopwords personalizadas ( exeptuando SI o NO )
+
+```{python}
+from nltk.corpus import stopwords
+
+# Base NLTK en español
+stop_es = set(stopwords.words("spanish"))
+
+# Stopwords personalizadas palabras frecuentes (máx. 2 sílabas y muy comunes)
+custom_stop = {
+    # ——— Conectores y artículos frecuentes ———
+    "de","que","la","y","a","el","no","en","los","es","con","por","se","lo","para","te","un","tu",
+    "las","si","del","ya","mas","una","al","su","le","ni","o","son","eso","solo","su","sin","sus",
+    "nos","me","mi","te","tu","su","al","del","es","en","de","el","la","los","las",
+    "como","pero","porque","todo","esto","eso","esa","ese","soy","eres","fui","ser","este","esta",
+    "pues","hay","ya","muy","más","ni","si","no","q","solo","todo","otros","otras","otro","otra",
+
+    # ——— Nuevas que detectaste (verbos y pronombres del sistema verbal español) ———
+    "esta","suyas","mías","este","habrás","estarían","tuyas","serías","son","tienes","algo",
+    "seamos","habíais","estuvimos","yo","siente","por","habidas","suyos","estarán","estabas",
+    "serán","eres","tenemos","tuvo","estaremos","era","hubisteis","la","vosotros","tuviste",
+    "fuerais","hubiéramos","tened","seréis","otros","algunas","al","tuviese",
+
+    # ——— Muletillas / ruido de redes sociales ———
+    "rt","via","xd","jajaja","jaja","ajja","jj","aja","ajajaja","sip","gracias","hola",
+    "buenos","dias","buenas","tardes","noches",
+
+    # ——— Nombres o contexto país (si no quieres sesgo local) ———
+    #"ecuador","luisa","noboa","pais","presidente"
+}
+# {"ecuador", "luisa", "noboa", "pais", "presidente"}  # palabras que distorsionan
+# 
+stop_words = stop_es.union(custom_stop)
+
+print(f"Total de stopwords: {len(stop_words)}")
+list(stop_words)[:40]
+```
+
+## lista de Stopwords personalizadas ( exeptuando SI o NO ) para lematizar
+
+```{python}
+# PRE-FLIGHT: asegurar columnas previas para lematizar
+import re, unicodedata
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+
+# Descargas necesarias (idempotentes)
+nltk.download('punkt')
+nltk.download('stopwords')
+
+# clean_text
+def normalize_text(text):
+    text = str(text).lower().strip()
+    text = re.sub(r"http\S+|www\.\S+", " ", text)   # URLs
+    text = re.sub(r"@\w+", " ", text)               # menciones
+    text = text.replace("#", " ")
+    # quitar tildes
+    text = unicodedata.normalize("NFD", text)
+    text = "".join(ch for ch in text if unicodedata.category(ch) != "Mn")
+    # dejar solo letras
+    text = re.sub(r"[^a-zñáéíóúü\s]", " ", text)
+    text = re.sub(r"\s+", " ", text).strip()
+    return text
+
+assert 'content' in df.columns, "No existe la columna 'content'."
+if 'clean_text' not in df.columns:
+    df['clean_text'] = df['content'].apply(normalize_text)
+
+#) tokens
+if 'tokens' not in df.columns:
+    df['tokens'] = df['clean_text'].apply(word_tokenize)
+
+# stopwords (lista personalizada + NLTK)
+stop_es = set(stopwords.words("spanish"))
+
+custom_stop = {
+    # Palabras Frecuentes
+    "de","que","la","y","a","el","no","en","los","es","con","por","se","lo","para","te","un","tu",
+    "las","si","del","ya","mas","una","al","su","le","ni","o","son","eso","solo","su","sin","sus",
+    "nos","me","mi","te","tu","al","del","como","pero","porque","todo","esto","esa","ese","soy",
+    "eres","fui","ser","este","esta","pues","hay","muy","q","otros","otras","otro","otra",
+    # Nuevas residuales 
+    "suyas","mias","habras","estarian","tuyas","serias","tienes","algo","seamos","habiais","estuvimos",
+    "yo","siente","habidas","suyos","estaran","estabas","seran","tenemos","tuvo","estaremos","era",
+    "hubisteis","vosotros","tuviste","fuerais","hubieramos","tened","sereis","algunas","tuviese",
+    # Ruido redes
+    "rt","via","xd","jajaja","jaja","ajja","jj","aja","ajajaja","sip","gracias","hola",
+    "buenos","dias","buenas","tardes","noches",
+    # ——— Nombres o contexto país
+    #"ecuador","luisa","noboa","pais","presidente"
+}
+
+### 'si' y 'no' eliminar
+custom_stop.discard("si")
+custom_stop.discard("no")
+
+stop_words = stop_es.union(custom_stop)
+
+### Filtrado de Tokens
+if 'tokens_filtrados' not in df.columns:
+    df['tokens_filtrados'] = df['tokens'].apply(lambda toks: [t for t in toks if t not in stop_words])
+
+### Sanitizar tipos Si toks es None o NaN, en lugar de lanzar error, lo reemplaza por una lista vacía [].
+df['tokens_filtrados'] = df['tokens_filtrados'].apply(
+    lambda toks: [t for t in (toks or []) if isinstance(t, str)]
+)
+```
+
+## Lematizar
+
+```{python}
+import nltk, re
+from nltk.stem import SnowballStemmer, WordNetLemmatizer
+from nltk import pos_tag
+from nltk.corpus import wordnet
+
+# Descargas necesarias para POS y WordNet (idempotentes)
+nltk.download('wordnet')
+nltk.download('averaged_perceptron_tagger')
+
+stemmer_es = SnowballStemmer("spanish")
+lemmatizer_en = WordNetLemmatizer()
+
+def map_pos_to_wordnet(tag):
+    if tag.startswith('J'): return wordnet.ADJ
+    if tag.startswith('V'): return wordnet.VERB
+    if tag.startswith('N'): return wordnet.NOUN
+    if tag.startswith('R'): return wordnet.ADV
+    return wordnet.NOUN
+
+def is_spanish_token(tok: str) -> bool:
+    # Detecta caracteres típicos del español
+    return bool(re.search(r"[ñáéíóúü]", tok))
+
+def lemmatize_or_stem(tokens):
+    """
+    - Filtrado de tokens muy cortos
+    """
+    clean_toks = [t for t in tokens if isinstance(t, str) and len(t) > 2]
+    es_toks = [t for t in clean_toks if is_spanish_token(t)]
+    en_toks = [t for t in clean_toks if not is_spanish_token(t)]
+
+    es_lemmas = [stemmer_es.stem(t) for t in es_toks]
+
+    en_lemmas = []
+    if en_toks:
+        tags = pos_tag(en_toks)
+        en_lemmas = [lemmatizer_en.lemmatize(tok, map_pos_to_wordnet(tag)) for tok, tag in tags]
+
+    return es_lemmas + en_lemmas
+```
+
+## Mostramos las palabras mas conunes para etiquetar
+
+```{python}
+from collections import Counter
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Crear la columna lemmas
+df['lemmas'] = df['tokens_filtrados'].apply(lemmatize_or_stem)
+
+# Contar y visualizar
+all_lemmas = [lemma for sublist in df['lemmas'] for lemma in (sublist or [])]
+freq_lemmas = Counter(all_lemmas).most_common(30)
+freq_df_lemmas = pd.DataFrame(freq_lemmas, columns=['lema', 'frecuencia'])
+
+plt.figure(figsize=(10,6))
+plt.barh(freq_df_lemmas['lema'][::-1], freq_df_lemmas['frecuencia'][::-1])
+plt.title("Lemas más frecuentes después de lematización / stemming")
+plt.xlabel("Frecuencia")
+plt.show()
+
+freq_df_lemmas.head(20)
+```
+
+# Creación de al etiqueta
+
+## Filtrado de patrones para luisa presidenta
+
+```{python}
+import re
+
+def label_luisa(text):
+    """
+    Crea la etiqueta binaria:
+    0 -> si el tweet menciona a Luisa presidenta
+    1 -> si no lo menciona
+    """
+    text = str(text).lower()
+    # buscar las palabras clave
+    #pattern = r"\bluisa\b|\bpresidenta\b|luisapresidenta"
+    pattern = r"luisapresidenta|dictadura|dictador|impunidad|presidenta|revolucion|revolucionciudadana|rafaelcorrea|patria|victoria|luisaeselpueblo|somosmas|votaporluisa|luisa2025|represion|derecha|ricos|mili|traicion"
+    if re.search(pattern, text):
+        return 0
+    else:
+        return 1
+
+df["luisa_presidenta"] = df["clean_text"].apply(label_luisa)
+df["luisa_presidenta"].value_counts(normalize=True)
+```
+
+
+```{python}
+# Mostrar texto completo en pandas (sin truncar)
+pd.set_option("display.max_colwidth", None)
+pd.set_option("display.max_rows", 100)  # opcional, para ver más filas
+```
+
+## Listado de observaciones donde aparece posrura de luisa
+```{python}
+df.query("luisa_presidenta == 0")[["content"]].head(10)
+```
+
+
+## Listado de observaciones donde aparece postura de luisa
+```{python}
+df.query("luisa_presidenta == 1")[["content"]].head(10)
+```
+
+# Selecciones de Features y Target
+## Creación del DF
+```{python}
+df_model = df[[
+    "clean_text",
+    "authorVerified","account_age_days",
+    "luisa_presidenta"
+]].copy()
+
+df_model.info()
+
+```
+
+
+
+```{python}
+X = df_model.drop("luisa_presidenta", axis=1)
+y = df_model["luisa_presidenta"]
+```
+
+## Features y Target
+
+```{python}
+text_features = ["clean_text"]
+categorical_features = ["authorVerified"]
+numeric_features = ["account_age_days"]
+```
+
+## Split de variables Features y Target
+
+```{python}
+# División de datos
+X_train, X_test, y_train, y_test = tts(
+    X, y, test_size=0.25, random_state=42, stratify=y
+)
+
+```
+
+## Procesamiento
+
+```{python}
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.compose import ColumnTransformer
+
+preprocessor = ColumnTransformer(
+    transformers=[
+        ("text", TfidfVectorizer(max_features=3000, ngram_range=(1,2)), "clean_text"),
+        ("cat", OneHotEncoder(handle_unknown="ignore"), categorical_features),
+        ("num", StandardScaler(), numeric_features),
+    ]
+)
+```
+
+## Entrenamiento del modelo
+
+```{python}
+from sklearn.pipeline import Pipeline
+from sklearn.linear_model import LogisticRegression
+
+model = Pipeline(steps=[
+    ("preprocessor", preprocessor),
+    ("classifier", LogisticRegression(max_iter=200, random_state=42))
+])
+```
+
+## Matriz de Confusión
+
+```{python}
+from sklearn.metrics import classification_report, confusion_matrix, ConfusionMatrixDisplay
+import matplotlib.pyplot as plt
+
+
+# Entrenar
+model.fit(X_train, y_train)
+
+# Predicciones
+y_pred = model.predict(X_test)
+
+# Reporte
+print("=== Classification Report ===")
+print(classification_report(y_test, y_pred))
+
+# Matriz de confusión
+cm = confusion_matrix(y_test, y_pred)
+disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=model.classes_)
+disp.plot(cmap="Blues")
+plt.title("Matriz de confusión - Clasificador Luisa Presidenta")
+plt.show()
+```
