@@ -1,181 +1,125 @@
 ---
-title: "REPORTE QUARTO"
-author: "Alexander Gonzalez - Yachay Tech University"
-date: "25-09-2025"
+title: "Machine Learning Portal"
+subtitle: "Documentación, proyectos y experimentos "
+author: "Alexander Gonzalez"
+date: "10/10/2025"
+toc: true
+toc-depth: 3
+toc-title: "Navegación general"
+page-layout: article
+number-sections: false
+execute:
+  echo: false
 ---
 
-# Mi primer Quarto 
-## Graficas de Prueba
+::: {.callout-tip}
+💡 **Bienvenido al Portal Machine Learning**  
+Explora análisis exploratorios, modelos supervisados y procesamiento de lenguaje natural.  
+Toda la documentación fue desarrollada en **Quarto + Python**, con datasets reales y notebooks reproducibles.
+:::
 
+---
 
-```{python}
-print("Hola Mundo")
+# 📘 Exploratory Data Analysis (EDA)
 
-for i in range(10):
-    print(f"Elemento del for i: {i}")
+::: {.card-grid columns=2}
+::: {.card}
+### 🔍 [EDA](eda.qmd)
+Análisis exploratorio, detección de outliers, estadísticos básicos y visualizaciones interactivas.
+:::
+::: {.card}
+### 🧾 [CNJ](cnj.qmd)
+Caso CNJ: limpieza, transformación y visualización de datos judiciales o administrativos.
+:::
+:::
 
-```
+---
 
-```{python}
-import altair as alt
+# 🤖 Classification
 
-from vega_datasets import data
-cars = data.cars()
-print(cars.head())
-```
+::: {.card-grid columns=3}
+::: {.card}
+### 📋 [Overview de Clasificación](classification.qmd)
+Resumen de técnicas supervisadas y comparativa de modelos.
+:::
+::: {.card}
+### 🧩 [Ejemplo de Categorización](categorical_encoding.qmd)
+Codificación de variables categóricas con *LabelEncoder*, *OneHotEncoder* y *OrdinalEncoder*.
+:::
+::: {.card}
+### ⚙️ [Categorización con Pipeline](categorical_pipeline.qmd)
+Integración de preprocesamiento y modelado con *Pipeline* de scikit-learn.
+:::
+:::
 
+---
 
-```{python}
-alt.Chart(cars).mark_point().encode(
-    x="Miles_per_Gallon"
-)
-```
+# 📈 MidTerm Projects
 
-```{python}
-alt.Chart(cars).mark_point().encode(
-    x="Miles_per_Gallon",
-    y="Horsepower",
-    tooltip=["Name","Origin","Miles_per_Gallon","Horsepower"]
-).interactive()
+::: {.card-grid columns=2}
+::: {.card}
+### 📊 [Regresión](midterm_regression.qmd)
+Predicción continua con modelos lineales y métricas (MAE, RMSE, R²).
+:::
+::: {.card}
+### 🧠 [Clasificación](midterm_classification.qmd)
+Evaluación de modelos predictivos con *Accuracy*, *Recall*, *F1-score* y *AUC*.
+:::
+:::
 
-```
+---
 
-```{python}
-alt.Chart(cars).mark_point().encode(
-    x="Miles_per_Gallon",
-    y="Horsepower",
-    color="Origin",
-    tooltip=["Name","Origin","Miles_per_Gallon","Horsepower"]
-).interactive()
+# 🗣️ Natural Language Processing (NLP)
 
-```
+::: {.card-grid columns=3}
+::: {.card}
+### 🧮 [NLTK](nltk.qmd)
+Tokenización, lematización y POS tagging con *Natural Language Toolkit*.
+:::
+::: {.card}
+### 💬 [Bag of Words](bagofwords.qmd)
+Vectorización de texto y análisis de frecuencias.
+:::
+::: {.card}
+### 🔤 [TF-IDF](tfidf.qmd)
+Ponderación de términos con *Term Frequency–Inverse Document Frequency*.
+:::
+:::
 
-```{python}
-alt.Chart(cars).mark_point().encode(
-    x="Weight_in_lbs",
-    y="Miles_per_Gallon",
-    color="Origin",
-    shape="Origin",
-    tooltip=["Name","Origin","Miles_per_Gallon","Weight_in_lbs"]
-).interactive()
+---
 
-```
+# 🧾 Tabla de Contenido Completa
 
+| 📂 Sección | 📘 Subpáginas | 🧰 Descripción |
+|-------------|----------------|----------------|
+| **Exploratory Data Analysis (EDA)** | [EDA](eda.qmd), [CNJ](cnj.qmd) | Análisis exploratorio y gráficos estadísticos. |
+| **Classification** | [Overview](classification.qmd), [Categorical Encoding](categorical_encoding.qmd), [Pipeline](categorical_pipeline.qmd) | Modelos supervisados y codificación de variables. |
+| **MidTerm Projects** | [Regresión](midterm_regression.qmd), [Clasificación](midterm_classification.qmd) | Evaluación intermedia con datasets del curso. |
+| **Natural Language Processing (NLP)** | [NLTK](nltk.qmd), [Bag of Words](bagofwords.qmd), [TF-IDF](tfidf.qmd) | Procesamiento de texto y vectorización. |
+| **Otros / Global** | [CV](cv.qmd), [Whoami](whoami.qmd) | Información personal y hoja de vida académica. |
 
-```{python}
-alt.Chart(cars).mark_point().encode(
-    x="Weight_in_lbs"
-)
-```
+---
 
-```{python}
-alt.Chart(cars).mark_point().encode(
-    x="Weight_in_lbs",
-    y="Miles_per_Gallon",
-    color="Origin",
-    shape="Origin",
-    tooltip=["Name","Origin","Miles_per_Gallon","Weight_in_lbs"]
-).interactive()
-```
+# 🧠 Siguientes pasos
 
+::: {.callout-note}
+**En desarrollo:**  
+Se agregarán secciones de *Deep Learning (CNN, RNN, Transformers)* y *Despliegue de Modelos con FastAPI y AWS EC2*.
+:::
 
+---
 
-```{python}
-alt.Chart(cars).mark_point().encode(
-    x="Weight_in_lbs",
-    y="Miles_per_Gallon",
-    color="Origin",
-    shape="Origin",
-    tooltip=["Name","Origin","Miles_per_Gallon","Weight_in_lbs"]
-).interactive()
-```
+# ⚖️ Ética y Créditos
 
+::: {.callout-warning}
+**Uso Responsable:**  
+Este material es con fines **educativos y académicos**.  
+No debe ser reutilizado para producción sin revisión de código, licencia o derechos de datos.
+:::
 
+**Autor:** Alexander Gonzalez   
+**Repositorio:** [GitHub - alexandergrg/site-ml](https://github.com/alexandergrg/site-ml)
 
-```{python}
-alt.Chart(cars).mark_point().encode(
-    x="Weight_in_lbs",
-    y="Miles_per_Gallon",
-    color="Origin",
-    shape="Origin",
-    tooltip=["Name","Origin","Miles_per_Gallon","Weight_in_lbs"]
-).interactive()
-```
+---
 
-
-
-```{python}
-alt.Chart(cars).mark_point().encode(
-    x="Weight_in_lbs",
-    y="Miles_per_Gallon",
-    color="Origin",
-    shape="Origin",
-    tooltip=["Name","Origin","Miles_per_Gallon","Weight_in_lbs"]
-).interactive()
-```
-
-```{python}
-alt.Chart(cars).mark_point().encode(
-    x="Weight_in_lbs",
-    y="Miles_per_Gallon",
-    color="Origin",
-    shape="Origin",
-    tooltip=["Name","Origin","Miles_per_Gallon","Weight_in_lbs"]
-).interactive()
-```
-
-
-
-```{python}
-alt.Chart(cars).mark_point().encode(
-    x="Miles_per_Gallon",
-    y="Horsepower",
-    color="Origin",
-    shape="Origin",
-    tooltip=["Name","Origin","Miles_per_Gallon","Horsepower"]
-).interactive()
-```
-
-
-## Agregaciones 
- Grafico de barra
-
-Número de Obervaciones
-
-### Count
-`count()` De Cada uno de los Origenes
-```{python}
-alt.Chart(cars).mark_bar().encode(
-    alt.X('Origin',sort='-y'),
-    alt.Y('count()')
-) 
-```
-
-### Mean
-`mean()` de cada uno de los origines
-
-```{python}
-alt.Chart(cars).mark_bar().encode(
-    alt.X('Origin',sort='-y'),
-    alt.Y('mean(Weight_in_lbs)'),
-    tooltip=['Origin','mean(Weight_in_lbs)']
-).properties(
-    width=200,
-    height=200
-)
-```
-
-### Gráfico Linea
-
-
-```{python}
-alt.Chart(cars).mark_line(point=True).encode(
-    alt.X('Year'),
-    alt.Y('mean(Weight_in_lbs)'),
-    alt.Color('Origin'),
-    tooltip=['Origin','mean(Weight_in_lbs)']
-).properties(
-    width=600,
-    height=600
-).interactive()
-```
+© {{< meta date >}} Alexander Gonzalez · Hecho con ❤️ y [Quarto](https://quarto.org/)

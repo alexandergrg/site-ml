@@ -1,0 +1,181 @@
+---
+title: "REPORTE QUARTO"
+author: "Alexander Gonzalez - Yachay Tech University"
+date: "25-09-2025"
+---
+
+# Mi primer Quarto 
+## Graficas de Prueba
+
+
+```{python}
+print("Hola Mundo")
+
+for i in range(10):
+    print(f"Elemento del for i: {i}")
+
+```
+
+```{python}
+import altair as alt
+
+from vega_datasets import data
+cars = data.cars()
+print(cars.head())
+```
+
+
+```{python}
+alt.Chart(cars).mark_point().encode(
+    x="Miles_per_Gallon"
+)
+```
+
+```{python}
+alt.Chart(cars).mark_point().encode(
+    x="Miles_per_Gallon",
+    y="Horsepower",
+    tooltip=["Name","Origin","Miles_per_Gallon","Horsepower"]
+).interactive()
+
+```
+
+```{python}
+alt.Chart(cars).mark_point().encode(
+    x="Miles_per_Gallon",
+    y="Horsepower",
+    color="Origin",
+    tooltip=["Name","Origin","Miles_per_Gallon","Horsepower"]
+).interactive()
+
+```
+
+```{python}
+alt.Chart(cars).mark_point().encode(
+    x="Weight_in_lbs",
+    y="Miles_per_Gallon",
+    color="Origin",
+    shape="Origin",
+    tooltip=["Name","Origin","Miles_per_Gallon","Weight_in_lbs"]
+).interactive()
+
+```
+
+
+```{python}
+alt.Chart(cars).mark_point().encode(
+    x="Weight_in_lbs"
+)
+```
+
+```{python}
+alt.Chart(cars).mark_point().encode(
+    x="Weight_in_lbs",
+    y="Miles_per_Gallon",
+    color="Origin",
+    shape="Origin",
+    tooltip=["Name","Origin","Miles_per_Gallon","Weight_in_lbs"]
+).interactive()
+```
+
+
+
+```{python}
+alt.Chart(cars).mark_point().encode(
+    x="Weight_in_lbs",
+    y="Miles_per_Gallon",
+    color="Origin",
+    shape="Origin",
+    tooltip=["Name","Origin","Miles_per_Gallon","Weight_in_lbs"]
+).interactive()
+```
+
+
+
+```{python}
+alt.Chart(cars).mark_point().encode(
+    x="Weight_in_lbs",
+    y="Miles_per_Gallon",
+    color="Origin",
+    shape="Origin",
+    tooltip=["Name","Origin","Miles_per_Gallon","Weight_in_lbs"]
+).interactive()
+```
+
+
+
+```{python}
+alt.Chart(cars).mark_point().encode(
+    x="Weight_in_lbs",
+    y="Miles_per_Gallon",
+    color="Origin",
+    shape="Origin",
+    tooltip=["Name","Origin","Miles_per_Gallon","Weight_in_lbs"]
+).interactive()
+```
+
+```{python}
+alt.Chart(cars).mark_point().encode(
+    x="Weight_in_lbs",
+    y="Miles_per_Gallon",
+    color="Origin",
+    shape="Origin",
+    tooltip=["Name","Origin","Miles_per_Gallon","Weight_in_lbs"]
+).interactive()
+```
+
+
+
+```{python}
+alt.Chart(cars).mark_point().encode(
+    x="Miles_per_Gallon",
+    y="Horsepower",
+    color="Origin",
+    shape="Origin",
+    tooltip=["Name","Origin","Miles_per_Gallon","Horsepower"]
+).interactive()
+```
+
+
+## Agregaciones 
+ Grafico de barra
+
+Número de Obervaciones
+
+### Count
+`count()` De Cada uno de los Origenes
+```{python}
+alt.Chart(cars).mark_bar().encode(
+    alt.X('Origin',sort='-y'),
+    alt.Y('count()')
+) 
+```
+
+### Mean
+`mean()` de cada uno de los origines
+
+```{python}
+alt.Chart(cars).mark_bar().encode(
+    alt.X('Origin',sort='-y'),
+    alt.Y('mean(Weight_in_lbs)'),
+    tooltip=['Origin','mean(Weight_in_lbs)']
+).properties(
+    width=200,
+    height=200
+)
+```
+
+### Gráfico Linea
+
+
+```{python}
+alt.Chart(cars).mark_line(point=True).encode(
+    alt.X('Year'),
+    alt.Y('mean(Weight_in_lbs)'),
+    alt.Color('Origin'),
+    tooltip=['Origin','mean(Weight_in_lbs)']
+).properties(
+    width=600,
+    height=600
+).interactive()
+```

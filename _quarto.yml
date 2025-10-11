@@ -13,6 +13,11 @@ website:
       - text: "Welcome"
         href: index.qmd
 
+      - section: "Pagina de Quarto y Altair"
+        contents:
+          - href: altair.qmd
+            text: "Quarto y Altair"
+
       - section: "Exploratory Data Analysis (EDA)"
         contents:
           - href: eda.qmd
@@ -48,13 +53,13 @@ website:
   navbar:
     left: 
       - text: "Home"
-        href: cv.qmd
+        href: index.qmd
       - text: "Whoami"
-        href: cv.qmd
+        href: index.qmd
 
     right:
       - text: "CV"
-        href: cv.qmd
+        href: index.qmd
 
 format:
   html:
