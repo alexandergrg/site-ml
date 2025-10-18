@@ -1,0 +1,812 @@
+---
+title: "Lab-Final "
+
+format:
+  html:
+    theme: cosmo
+---
+
+# Introducción
+
+El presente examen tiene como objetivo desarrollar un flujo completo de Machine Learning utilizando un dataset compuesto por **1500 tweets en español publicados desde Ecuador**, los cuales incluyen metadatos y un puntaje de **toxicidad (TOXICITY)** previamente calculado mediante la API de Perspective.
+
+El análisis busca evaluar la capacidad de aplicar, justificar y documentar las distintas etapas del ciclo de Machine Learning de manera estructurada y reproducible. Para ello, se trabajará bajo un enfoque mixto que combina técnicas de aprendizaje supervisado y no supervisado, aplicadas sobre datos reales de redes sociales.
+
+A lo largo del desarrollo se abordarán los siguientes componentes:
+
+- **Análisis exploratorio (EDA)** para comprender la distribución, calidad y naturaleza de los datos.
+- **Preprocesamiento** mediante técnicas de vectorización, codificación de categorías y escalamiento.
+- **Clasificación supervisada** transformando el puntaje continuo de toxicidad en clases discretas.
+- **Regresión supervisada** utilizando el valor continuo de toxicidad como variable objetivo.
+- **Clustering no supervisado** para identificar agrupaciones naturales de tweets y compararlas con los patrones de toxicidad.
+- **Interpretación y conclusiones** basadas en el comportamiento de los datos y el desempeño de los modelos.
+
+Este documento integra tanto código como visualizaciones y reflexiones, siguiendo buenas prácticas de ingeniería de datos y reproducibilidad mediante el uso de Quarto para su publicación en GitHub Pages.
+
+
+
+## Resumen del Dataset
+
+El dataset contiene **1500 tweets en español provenientes de Ecuador**. Cada registro incluye el texto del tweet, metadatos asociados al usuario y a la interacción, y una columna adicional llamada **`TOXICITY`**, la cual representa un puntaje continuo calculado previamente mediante la API de Perspective.
+
+**Características generales:**
+
+- **Filas**: 1500 registros (tweets)
+- **Columna objetivo (target)**: `TOXICITY` (valor continuo entre 0 y 1)
+- **Columna principal de texto**: `content`
+- **Metadatos disponibles** (pueden variar según la extracción):
+  - Identificador del tweet (`tweetId`)
+  - Ubicación del usuario (`user_location` o similar)
+  - Engagement (ej. `retweet_count`, `favorite_count`)
+  - Fecha de creación (`createdAt`)
+  - Otros campos categóricos y numéricos asociados al tweet o al autor
+
+**Adecuación para el examen**
+
+Este dataset permite desarrollar todas las fases requeridas:
+
+| Fase del examen | Justificación |
+|-----------------|----------------|
+| EDA | Se cuenta con texto, variables numéricas, categóricas y el target TOXICITY |
+| Preprocesamiento | Se puede vectorizar texto, codificar categorías y escalar números |
+| Clasificación | TOXICITY puede discretizarse para generar clases |
+| Regresión | TOXICITY ya es continuo, apto para modelos supervisados |
+| Clustering | El contenido + metadatos permiten segmentar patrones sin supervisión |
+
+En conclusión, el dataset es **completo y adecuado** para construir un pipeline de Machine Learning con análisis, modelos supervisados y no supervisados, y reflexiones finales sobre toxicidad en contenido digital.
+
+# Análisis Exploratorio de Datos (EDA):
+
+## Importación de Librerias
+
+```{python}
+import pandas as pd
+import re
+from sklearn.preprocessing import FunctionTransformer
+from sklearn.feature_extraction.text import CountVectorizer,TfidfVectorizer
+from sklearn.cluster import KMeans
+import altair as alt
+# ---
+from sklearn.preprocessing import OneHotEncoder, StandardScaler, MinMaxScaler
+from sklearn.pipeline import Pipeline
+from sklearn.compose import ColumnTransformer
+from sklearn.metrics import silhouette_score
+from sklearn.impute import SimpleImputer
+from sklearn.linear_model import LogisticRegression, LinearRegression
+from sklearn.cluster import KMeans
+
+# Split
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, classification_report,confusion_matrix, roc_curve, auc, precision_recall_curve, average_precision_score, mean_absolute_error, mean_squared_error, r2_score
+
+import nltk 
+nltk.download('stopwords') # necessary for removal of stop words
+from nltk.corpus import stopwords
+from nltk import word_tokenize, pos_tag
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+from nltk.corpus import wordnet
+import numpy as np
+
+
+nltk.download('punkt') # necessary for tokenization
+nltk.download('wordnet') # necessary for lemmatization
+nltk.download('stopwords') # necessary for removal of stop words
+nltk.download('averaged_perceptron_tagger') # necessary for POS tagging
+nltk.download('maxent_ne_chunker') # necessary for entity extraction
+nltk.download('omw-1.4') # necessary for lemmatization
+nltk.download('words')
+```
+
+## Carga del Dataset
+### Cargando datos del CSV desde URL
+
+```{python}
+URL = "https://raw.githubusercontent.com/erickedu85/dataset/refs/heads/master/tweets/1500_tweets_con_toxicity.csv"
+df = pd.read_csv(URL)
+df
+```
+
+### Identificación de valores Duplicados
+
+```{python}
+df.duplicated(subset=['tweetId']).sum()
+```
+
+```{python}
+df.info()
+```
+
+## Preparación
+### Selección
+
+**Tipo y cantidad de variables**
+
+- **Texto (1):**
+  - `content`
+
+- **Categóricas (2):**
+  - `isReply`
+  - `authorVerified`
+
+- **Numéricas (2):**
+  - `account_age_days`
+  - `mentions_count`
+
+- **Target (1):**
+  - `toxicity_score` (variable continua objetivo)
+
+```{python}
+df = df[['isReply', 'authorVerified','account_age_days','mentions_count','content','toxicity_score']]
+df
+
+cat_cols = ['isReply','authorVerified']   # tratamos booleanas como categóricas
+num_cols = ['account_age_days','mentions_count']
+target = 'toxicity_score'
+text_col = 'content'
+df.info()
+```
+
+## Estadísticas descriptivas (mínimos, máximos, media, mediana, distribución).
+
+### Decripción General
+
+```{python}
+df.describe()
+```
+
+### Valores caracteristicas numerocas
+
+```{python}
+desc = df[['account_age_days','mentions_count','toxicity_score']].describe().T
+desc['median'] = df[['account_age_days','mentions_count','toxicity_score']].median()
+desc
+
+
+```
+
+### Distribución de la variable target
+
+**Interpretación de la distribución**
+
+La variable `toxicity_score` presenta una distribución claramente sesgada hacia valores bajos: la mayoría de los tweets se concentran entre 0.00 y 0.15, mientras que los niveles altos de toxicidad aparecen con mucha menor frecuencia. Esto indica que el conjunto de datos está compuesto mayoritariamente por contenido no tóxico, con solo un subconjunto reducido de tweets que presentan toxicidad media o alta.
+```{python}
+# --- gráfico ANTES (dataset original con nulos en toxicity_score) ---
+chart_before = (
+    alt.Chart(df)  # df original
+    .mark_bar()
+    .encode(
+        x=alt.X("toxicity_score:Q", bin=alt.Bin(maxbins=30), title="Toxicity score"),
+        y=alt.Y("count():Q", title="Frecuencia"),
+        tooltip=["count():Q"]
+    )
+    .properties(width=500, height=300, title="Antes (con nulos)")
+    .interactive()
+)
+chart_before
+```
+
+
+## Eliminación de datos nulos 
+### Valores nulos
+```{python}
+df.isna().sum()
+```
+
+### Eliminación de nulos
+
+```{python}
+# Eliminación de filas con toxicidad nula
+df = df.dropna(subset=['toxicity_score'])
+# Verificación después de la limpieza
+df.isna().sum()
+```
+
+### **Interpretación de la distribución** Sin valores nulos
+
+```{python}
+# --- gráfico DESPUÉS (dataset limpio) ---
+chart_after = (
+    alt.Chart(df)
+    .mark_bar()
+    .encode(
+        x=alt.X("toxicity_score:Q", bin=alt.Bin(maxbins=30), title="Toxicity score"),
+        y=alt.Y("count():Q", title="Frecuencia"),
+        tooltip=["count():Q"]
+    )
+    .properties(width=500, height=300, title="Después (sin nulos)")
+    .interactive()
+)
+
+# comparación lado a lado
+chart_before | chart_after
+```
+### Total de registros
+```{python}
+df.info()
+```
+## Separación
+
+## Visualizaciones Por tipo de datos
+
+Los histogramas muestran que tanto `account_age_days` como `mentions_count` presentan distribuciones no uniformes y claramente sesgadas: en el caso de `account_age_days` hay dos zonas de concentración —cuentas muy nuevas y cuentas de varios años de antigüedad— mientras que `mentions_count` está fuertemente concentrada entre 0 y 2 menciones.  
+Los boxplots confirman la presencia de **outliers**, especialmente en `mentions_count` y también en `toxicity_score`, donde se observan pocos valores altos que se distancian del grueso de la distribución. Estos patrones sugieren la necesidad de un tratamiento específico para valores atípicos o el uso de escaladores robustos antes del modelado.
+
+
+```{python}
+# Histograma de cada numérica
+charts_hist = []
+for col in num_cols + [target]:
+    ch = (
+        alt.Chart(df)
+        .mark_bar()
+        .encode(
+            x=alt.X(f"{col}:Q", bin=alt.Bin(maxbins=30), title=col),
+            y=alt.Y("count():Q", title="Frecuencia"),
+            tooltip=["count():Q"]
+        )
+        .properties(width=400, height=200, title=f"Histograma — {col}")
+    )
+    charts_hist.append(ch)
+
+# Boxplot de cada numérica
+charts_box = []
+for col in num_cols + [target]:
+    ch = (
+        alt.Chart(df)
+        .mark_boxplot()
+        .encode(
+            y=alt.Y(f"{col}:Q", title=col)
+        )
+        .properties(width=300, height=120, title=f"Boxplot — {col}")
+    )
+    charts_box.append(ch)
+
+# Mostrar en grilla (hist arriba, box abajo)
+(hist_row := alt.hconcat(*charts_hist)) & (box_row := alt.hconcat(*charts_box))
+```
+
+**Hallazgos clave del EDA**
+
+1) **Predominio de baja toxicidad:** La distribución de `toxicity_score` está fuertemente sesgada hacia valores cercanos a 0, lo que indica que la mayoría de los tweets no presentan contenido tóxico. Los valores altos existen, pero en proporción reducida.
+
+2) **Variables numéricas con asimetría y outliers:** Tanto `account_age_days` como `mentions_count` muestran distribuciones no uniformes y presencia de valores atípicos según los boxplots. Esto sugiere que podrían requerir escalado robusto o tratamiento específico antes del modelado.
+
+3) **Categóricas desbalanceadas:** Las variables `isReply` y `authorVerified` presentan una mayor concentración en una sola categoría (por ejemplo, más cuentas no verificadas y mayor cantidad de tweets que no son reply), lo que puede influir en la capacidad predictiva de esas variables y debe considerarse en su codificación.
+
+
+# Preprocesamiento y codificación:
+
+## Limpieza del texto y metadatos.
+
+```{python}
+def clean_text(s: pd.Series) -> pd.Series:
+    s = s.fillna("").astype(str).str.lower()
+    s = s.str.replace(r"http\S+|www\S+", " ", regex=True)   # URLs
+    s = s.str.replace(r"@[\w_]+", " ", regex=True)           # menciones
+    s = s.str.replace(r"#", " ", regex=True)                  # hashtag simbolo
+    s = s.str.replace(r"[^a-záéíóúñü0-9\s]", " ", regex=True) # signos, acepta letras españolas
+    s = s.str.replace(r"\s+", " ", regex=True).str.strip()
+    return s
+
+# aplicar limpieza de texto IN-PLACE (opción simple y clara)
+df[text_col] = clean_text(df[text_col])
+
+```
+
+```{python}
+df.head(10)
+
+
+```
+
+## codificación de datos con PipeLine
+### Preprocesamiento de categoricas
+
+
+```{python}
+# Opción recomendada (Nominal): OneHotEncoder
+cat_onehot = Pipeline([       
+     ('ohe_cat',OneHotEncoder(handle_unknown='ignore')),
+])
+```
+
+### Escalamiento de Numericas
+
+```{python}
+num_scale = Pipeline([
+    ('scaler_nume', StandardScaler()),
+])
+```
+
+### Preprocesaro de Variables categoricas y numericas
+
+
+### TFIDF
+
+```{python}
+
+custom_stopwords = [
+    "de","la","que","el","en","y","a","los","del","se","las","por","un","para",
+    "con","no","una","su","al","lo","como","más","pero","sus","le","ya","o","este",
+    "sí","porque","esta","entre","cuando","muy","sin","sobre","también","me","hasta",
+    "hay","donde","quien","desde","todo","nos","durante","todos","uno","les","ni",
+    "contra","otros","ese","eso","ante","ellos","e","esto","mí","antes","algunos",
+    "qué","unos","yo","otro","otras","otra","él","tanto","esa","estos","mucho","quienes",
+    "nada","muchos","cual","poco","ella","estar","estas","algunas","algo","nosotros",
+    "mi","mis","tú","te","ti","tu","tus","ellas","nosotras","vosostros","vosostras",
+    "os","mío","mía","míos","mías","tuyo","tuya","tuyos","tuyas","suyo","suya","suyos",
+    "suyas","nuestro","nuestra","nuestros","nuestras","vuestro","vuestra","vuestros",
+    "vuestras","esos","esas","estoy","estás","está","estamos","estáis","están","esté",
+    "estés","estemos","estéis","estén","estaré","estarás","estará","estaremos","estaréis",
+    "estarán","he","has","ha","hemos","habéis","han","haya","hayas","hayamos","hayáis",
+    "hayan","habré","habrás","habrá","habremos","habréis","habrán", "voto","votos","voy",
+    "vos","xq","2025","votar","vuelta","video","única","acá","adn","vez","viven","único",
+    "vida", "viene", "vivir", "único","veo","ver","si","ve","vean","vaya","veces","van","vas","veo","abre"
+] 
+
+text_pipe = Pipeline(steps=[
+    ("to_series", FunctionTransformer(lambda x: pd.Series(x), validate=False)),
+    ("clean",     FunctionTransformer(clean_text, validate=False)),
+    ("tfidf",     TfidfVectorizer(
+        stop_words=custom_stopwords,
+        ngram_range=(1,2),
+        max_features=1000,
+        min_df=2
+    ))
+])
+
+```
+### Preprocesamiento
+
+```{python}
+df[cat_cols] = df[cat_cols].astype(str)
+
+preprocessor_all = ColumnTransformer(
+    transformers=[
+        ("cat",  cat_onehot, cat_cols),
+        ("num",  num_scale,  num_cols),
+        ("text", text_pipe,  text_col),  
+    ]
+)
+```
+
+
+```{python}
+
+```
+
+
+```{python}
+# Features / target
+X = df[[text_col] + cat_cols + num_cols].copy()
+y = (df[target] >= 0.20).astype(int)
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=42, stratify=y
+)
+
+model = Pipeline([
+    ("preprocessor", preprocessor_all),
+    ("clf", LogisticRegression(max_iter=200, random_state=42))
+])
+
+model.fit(X_train, y_train)
+```
+
+# Clasificación
+
+### ¿Por qué usamos 0.20 como corte para definir “tóxico”?
+
+Al analizar el gráfico del `toxicity_score` vimos que la mayoría de tweets están cerca de 0.00, es decir, son neutros. A partir de valores alrededor de **0.20** la frecuencia empieza a bajar y aparecen mensajes más agresivos o conflictivos.
+
+Por eso decidimos que:
+
+- Si el puntaje es **menor a 0.20 → No tóxico (0)**
+- Si el puntaje es **mayor o igual a 0.20 → Tóxico (1)**
+
+
+```{python}
+X_trans = preprocessor_all.fit_transform(X_train)
+feature_names = []
+
+# --- cat ---
+cat_names = preprocessor_all.named_transformers_["cat"]\
+                ["ohe_cat"].get_feature_names_out(cat_cols).tolist()
+feature_names += cat_names
+
+# --- num ---
+feature_names += num_cols  # scaler no cambia nombres
+
+# --- text ---
+tfidf_names = preprocessor_all.named_transformers_["text"]\
+                    ["tfidf"].get_feature_names_out().tolist()
+feature_names += tfidf_names
+X_trans_df = pd.DataFrame(X_trans.toarray(), columns=feature_names)
+X_trans_df.head()
+```
+
+## Listas tabla tranformado 
+```{python}
+X_trans_df.info()
+```
+
+
+```{python}
+# X_trans_df.columns()
+```
+
+```{python}
+y.head(20)
+```
+
+### Clasificación supervisada (baseline)
+
+Entrenamos un modelo base con **Regresión Logística** usando el `ColumnTransformer` ya definido para texto (TF-IDF), categóricas (OneHot) y numéricas (StandardScaler).
+
+
+```{python}
+clf_lr = Pipeline([
+    ("preprocessor", preprocessor_all),
+    ("clf", LogisticRegression(max_iter=200, random_state=42))
+])
+
+clf_lr.fit(X_train, y_train)
+
+# Predicciones y probabilidades
+y_pred = clf_lr.predict(X_test)
+y_prob = clf_lr.predict_proba(X_test)[:, 1]
+```
+
+
+```{python}
+
+metrics_dict = {
+    "Accuracy":  accuracy_score(y_test, y_pred),
+    "Precision": precision_score(y_test, y_pred, zero_division=0),
+    "Recall":    recall_score(y_test, y_pred, zero_division=0),
+    "F1-Score":  f1_score(y_test, y_pred, zero_division=0),
+    "ROC-AUC":   roc_auc_score(y_test, y_prob)
+}
+metrics_df = pd.DataFrame(metrics_dict, index=["LogisticRegression"]).T
+metrics_df
+```
+
+
+### Visualizaciones con Altair
+A continuación se presentan la **matriz de confusión** y la **curva ROC**.
+
+
+
+```{python}
+import numpy as np
+import pandas as pd
+import altair as alt
+from sklearn.metrics import confusion_matrix
+
+cm = confusion_matrix(y_test, y_pred, labels=[0, 1])
+
+cm_df = pd.DataFrame({
+    "real": np.repeat([0, 1], 2),
+    "pred": [0, 1, 0, 1],
+    "value": cm.ravel()
+})
+
+cm_df["real"] = pd.Categorical(cm_df["real"], categories=[0, 1])
+cm_df["pred"] = pd.Categorical(cm_df["pred"], categories=[0, 1])
+
+heat = alt.Chart(cm_df).mark_rect().encode(
+    x=alt.X("pred:N", title="Predicción"),
+    y=alt.Y("real:N", title="Real"),
+    color=alt.Color("value:Q", title="Cantidad", scale=alt.Scale(scheme="blues"))
+).properties(width=320, height=240, title="Matriz de confusión")
+
+text = alt.Chart(cm_df).mark_text(baseline="middle").encode(
+    x="pred:N",
+    y="real:N",
+    text="value:Q",
+    color=alt.value("black")
+)
+
+heat + text  
+```
+
+
+
+### Resumen e interpretación (breve)
+- **Rendimiento general**: (comentar usando la tabla de métricas mostrada arriba).
+- **Matriz de confusión**: (comentar dónde se concentran los aciertos/errores).
+
+> Nota: Este modelo sirve como **baseline**. En pasos siguientes podemos comparar con **SVM**, **Random Forest** o **Naive Bayes**, y/o ajustar el umbral de decisión si buscamos priorizar Recall (detectar más tóxicos) o Precision (evitar falsos positivos).
+
+
+
+# Regresión:
+
+## Modelado de Regresión sobre el valor continuo de TOXICITY
+
+Hasta este punto trabajamos la toxicidad como una variable binaria (tóxico / no tóxico).  
+Ahora utilizamos el valor original de `toxicity_score` como un **valor continuo entre 0 y 1**,  
+y planteamos el problema como **regresión supervisada**, es decir, predecir qué tan tóxico es un
+mensaje según sus características.
+
+Para ello:
+
+- Mantendremos el mismo esquema de preprocesamiento (TF-IDF para texto, OneHot para categóricas, escalado para numéricas).
+- Entrenaremos al menos un modelo de regresión (baseline).
+- Evaluaremos con métricas específicas de regresión:
+  - **MAE** (Mean Absolute Error),
+  - **RMSE** (Root Mean Squared Error),
+  - **R²** (Coeficiente de determinación).
+- Presentaremos visualizaciones interpretables (real vs. predicho, errores residuales, etc.).
+
+
+```{python}
+
+X_reg = df[[text_col] + cat_cols + num_cols].copy()
+y_reg = df[target].astype(float)   # valor continuo original de toxicity_score
+
+from sklearn.model_selection import train_test_split
+
+X_train_reg, X_test_reg, y_train_reg, y_test_reg = train_test_split(
+    X_reg, y_reg, test_size=0.25, random_state=42
+)
+
+reg_model = Pipeline([
+    ("preprocessor", preprocessor_all),   # TFIDF + OHE + SCALER ya armado en clasificación
+    ("reg", LinearRegression())
+])
+
+reg_model.fit(X_train_reg, y_train_reg)
+y_pred_reg = reg_model.predict(X_test_reg)
+
+y_true = np.asarray(y_test_reg, dtype=float).ravel()
+y_pred = np.asarray(y_pred_reg, dtype=float).ravel()
+
+y_pred = np.clip(y_pred, 0.0, 1.0)
+
+mae  = mean_absolute_error(y_true, y_pred)
+mse  = mean_squared_error(y_true, y_pred)
+rmse = np.sqrt(mse)   # <<< en vez de squared=False
+r2   = r2_score(y_true, y_pred)
+
+pd.DataFrame({"MAE":[mae], "RMSE":[rmse], "R2":[r2]})
+
+```
+
+
+```{python}
+
+df_plot = pd.DataFrame({
+    "Real": y_test_reg,
+    "Predicho": y_pred_reg
+})
+
+# línea de referencia y=x
+linea_ref = pd.DataFrame({"x":[0,1], "y":[0,1]})
+
+scatter = (
+    alt.Chart(df_plot)
+    .mark_circle(size=50, opacity=0.4)
+    .encode(
+        x=alt.X("Real:Q", scale=alt.Scale(domain=[0,1]), title="Toxicidad real"),
+        y=alt.Y("Predicho:Q", scale=alt.Scale(domain=[0,1]), title="Toxicidad predicha"),
+        tooltip=["Real","Predicho"]
+    )
+)
+
+ref = (
+    alt.Chart(linea_ref)
+    .mark_line(strokeDash=[4,4], color="red")
+    .encode(x="x:Q", y="y:Q")
+)
+chart_reg = (scatter + ref).properties(
+    title="Real vs Predicho — Baseline de Regresión",
+    width=350, height=300
+).interactive()
+
+chart_reg  
+```
+
+### 📝 Resumen del resultado de regresión
+
+Entrenamos un modelo para **predecir el valor continuo del puntaje de toxicidad (0–1)**.  
+Aunque el modelo logra aproximarse, el rendimiento no es bueno: las predicciones están bastante alejadas de los valores reales.
+
+En la gráfica de **Real vs Predicho** se observa que los puntos están **muy dispersos** y no siguen la línea diagonal roja (que representa predicción perfecta). Esto confirma que el modelo **no logra capturar bien el valor exacto de toxicidad**.
+
+Este resultado es esperable por dos razones principales:
+
+- La toxicidad es una señal compleja y difícil de estimar exactamente a partir de texto.
+- Este es un **modelo baseline sin ajustes ni modelos más avanzados**.
+
+
+
+## Clustering
+
+En esta sección aplicamos **aprendizaje no supervisado** para intentar agrupar los tweets según su similitud —sin usar la etiqueta de toxicidad que usamos antes en clasificación—.  
+El objetivo es observar si los **patrones del texto y metadatos** forman grupos naturales (clusters) y luego comparar estos grupos con las **clases binarias** que definimos en el modelo supervisado (tóxico / no tóxico).
+
+Lo que haremos:
+
+1) **Aplicar un algoritmo de clustering** —usaremos K-Means como método base.
+2) **Visualizar la separación de clusters** en un plano reducido (por ejemplo, usando reducción de dimensión si es necesario).
+3) **Reflexionar** si los clusters descubiertos coinciden o no con la clasificación anterior.
+   - Si los clusters se parecen al target (0/1), sugiere que la toxicidad tiene una estructura natural en los datos.
+   - Si no se parecen, puede indicar que la toxicidad no es el principal factor de agrupación y hay otros patrones dominantes (tema político, replies, cuentas verificadas, etc.).
+
+
+
+```{python}
+results = []
+
+# Usamos X_trans_df (ya transformado)
+X_km = X_trans_df.values 
+
+for k in range(3, 9):
+    km = KMeans(n_clusters=k, random_state=42, n_init='auto')
+    km.fit(X_km)
+
+    inertia = km.inertia_
+    sil = silhouette_score(X_km, km.labels_)
+
+    results.append({"k": k, "inertia": inertia, "silhouette": sil})
+
+pd.DataFrame(results)
+```
+
+### 📌 Selección del número de clusters (K-Means)
+
+Se evaluaron valores de **k entre 3 y 8** utilizando dos métricas:
+
+- **Inertia (↓ mejor)** — mide la compacidad interna de los clusters.
+- **Silhouette (↑ mejor)** — mide qué tan separados están los clusters entre sí.
+
+| k | Inertia | Silhouette |
+|---|---------|------------|
+| 3 | 1592.37 | **0.304** |
+| 4 | 1417.09 | 0.231 |
+| 5 | 1264.14 | 0.207 |
+| 6 | 1202.17 | 0.195 |
+| 7 | 1126.90 | 0.183 |
+| 8 | 1166.81 | 0.142 |
+
+#### ✅ Interpretación
+
+- El mejor valor de **silhouette** se obtiene con **k = 3**.
+- A partir de k > 3 el silhouette **disminuye**, indicando peor calidad de separación.
+- Aunque la inertia baja cuando k aumenta (lo cual es normal), no compensa la caída del silhouette.
+
+#### 🎯 Conclusión
+
+> **Se selecciona `k = 3` como número óptimo de clusters** para continuar con el análisis.
+
+
+
+```{python}
+# --- Data de entrada (mismas columnas que vienes usando) ---
+X = df[[text_col] + cat_cols + num_cols].copy()
+y_bin = (df[target] >= 0.20).astype(int).values  # solo para análisis comparativo (no se usa en el fit)
+
+# --- Selecciona el k óptimo que encontraste antes (ej. 3) ---
+k_opt = 3
+
+# --- Pipeline de clustering ---
+cluster_pipe = Pipeline([
+    ("preprocess", preprocessor_all),                             # TF-IDF + OneHot + StandardScaler
+    ("densify",  FunctionTransformer(lambda X: X.toarray(),       # sparse -> dense
+                                     accept_sparse=True)),
+    ("kmeans",   KMeans(n_clusters=k_opt, random_state=42, n_init=10))
+])
+
+# Ajustar pipeline
+cluster_pipe.fit(X)
+
+# Etiquetas de cluster aprendidas
+clusters = cluster_pipe.named_steps["kmeans"].labels_
+
+# Matriz ya transformada (para silueta y PCA)
+Z_dense = cluster_pipe.named_steps["densify"].transform(
+    cluster_pipe.named_steps["preprocess"].transform(X)
+)
+
+# Silhouette (calidad del clustering)
+sil = silhouette_score(Z_dense, clusters)
+sil
+```
+
+
+```{python}
+import altair as alt
+from sklearn.decomposition import PCA
+
+# Reducimos a 2D para visualización
+pca = PCA(n_components=2, random_state=42)
+coords2d = pca.fit_transform(Z_dense)
+
+plot_df = pd.DataFrame({
+    "pc1": coords2d[:, 0],
+    "pc2": coords2d[:, 1],
+    "cluster": clusters.astype(str),
+    "tox_bin": y_bin.astype(int)
+})
+```
+
+
+
+```{python}
+
+scatter_clusters = (
+    alt.Chart(plot_df)
+    .mark_circle(size=60, opacity=0.6)
+    .encode(
+        x=alt.X("pc1:Q", title="PC1"),
+        y=alt.Y("pc2:Q", title="PC2"),
+        color=alt.Color("cluster:N", title="Cluster"),
+        tooltip=["cluster", "tox_bin"]
+    )
+    .properties(width=350, height=300, title=f"Clusters encontrados (k={k_opt})")
+)
+scatter_clusters
+```
+
+### 🧩 Conclusión del gráfico de clustering (k = 3)
+
+El gráfico demuestra que al aplicar **K-Means con k=3** los tweets no quedaron mezclados al azar, sino que se formaron **tres grupos bien definidos** según similitudes en su contenido.
+
+Puntos clave en simple:
+
+- Los puntos del mismo color se agrupan, lo que significa que hay **patrones de texto repetidos** entre tweets del mismo cluster.
+- Aunque el modelo NO sabía nada de toxicidad al agrupar, es probable que cada grupo tenga **formas de escribir o tonos diferentes** (por ejemplo: insultos, ironía, neutralidad).
+- Esto sugiere que los usuarios tienden a escribir de manera similar cuando transmiten el mismo tipo de mensaje o emoción.
+
+> En resumen: el clustering sirvió para comprobar que **existen comportamientos y estilos de escritura que se repiten**, lo cual da sentido a luego usar clasificación supervisada para separar lo tóxico de lo no tóxico de forma más precisa.
+
+## ✅ 6. Conclusiones finales
+
+### Calidad de los datos
+- El dataset tenía un alto número de tweets con **toxicidad cercana a 0**, lo cual generaba un cierto desbalance natural.
+- Aun así, al convertir la columna `toxicity_score` en binaria usando el umbral 0.20 se obtuvo un **target balanceado**, lo que permitió entrenar modelos de forma justa sin sesgo fuerte hacia una sola clase.
+- El texto requirió limpieza (URLs, menciones, símbolos, stopwords) para eliminar ruido y dejar solo contenido útil.
+
+### Utilidad del target generado
+- La discretización (0 = no tóxico / 1 = tóxico) fue coherente con la distribución observada en los histogramas.
+- El umbral elegido permitió capturar tweets con tono agresivo sin perder demasiada muestra.
+- El target resultó **interpretativo y defendible** para un modelo supervisado.
+
+### Rendimiento de los modelos
+- La **Regresión Logística**, como modelo base, logró un rendimiento aceptable sin tuning, lo cual valida que las features (TF-IDF + cat + num) capturan información relevante.
+- La parte de regresión sobre el valor continuo evidenció que predecir toxicidad exacta es más difícil (bajo R²), lo que justifica usar **clasificación** en lugar de regresión en este caso.
+
+### Patrones encontrados (Clustering)
+- El análisis no supervisado mostró que existen **agrupamientos naturales en el texto**, incluso sin conocer el target.
+- Los clusters identificados confirmaron que hay estilos y grupos de discurso coherentes — lo cual respalda la existencia de patrones reales en el lenguaje del dataset.
+
+---
+
+6 Conclusiones
+
+## 🚀 Próximos pasos y mejoras sugeridas
+
+1) **Mejorar features de texto**
+   - Probar embeddings más avanzados (Word2Vec, SBERT, FastText)
+   - Incorporar bigramas/trigramas con ajuste de vocabulario
+
+2) **Probar modelos más complejos**
+   - Random Forest / XGBoost / SVM / Redes neuronales livianas
+   - Búsqueda de hiperparámetros (Grid/Random/Optuna)
+
+3) **Refinar el target**
+   - Probar cortes alternativos (0.15 / 0.25) y comparar métricas
+   - Construir una clase adicional “neutral” (multiclase)
+
+4) **Evaluación más robusta**
+   - Validación cruzada en vez de un solo split
+   - Curvas Precision-Recall comparativas
+
+5) **Perspectiva aplicada**
+   - Integrar el modelo en un pipeline real (detección en vivo)
+   - Generar interpretabilidad (SHAP/LIME) para explicar decisiones
+
+---
+
+> En conclusión, el proyecto permitió demostrar que existen patrones detectables en el lenguaje de los tweets y que es viable construir un modelo de clasificación de toxicidad con resultados sólidos como baseline. Los siguientes pasos deben enfocarse en mejorar la representación del texto y explorar modelos más sofisticados para incrementar el rendimiento.

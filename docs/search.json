@@ -1537,7 +1537,7 @@
     "href": "lab2.html#lista-de-stopwords-personalizadas-exeptuando-si-o-no",
     "title": "Classificación de Texto",
     "section": "lista de Stopwords personalizadas ( exeptuando SI o NO )",
-    "text": "lista de Stopwords personalizadas ( exeptuando SI o NO )\n\nfrom nltk.corpus import stopwords\n\n# Base NLTK en español\nstop_es = set(stopwords.words(\"spanish\"))\n\n# Stopwords personalizadas palabras frecuentes (máx. 2 sílabas y muy comunes)\ncustom_stop = {\n    # ——— Conectores y artículos frecuentes ———\n    \"de\",\"que\",\"la\",\"y\",\"a\",\"el\",\"no\",\"en\",\"los\",\"es\",\"con\",\"por\",\"se\",\"lo\",\"para\",\"te\",\"un\",\"tu\",\n    \"las\",\"si\",\"del\",\"ya\",\"mas\",\"una\",\"al\",\"su\",\"le\",\"ni\",\"o\",\"son\",\"eso\",\"solo\",\"su\",\"sin\",\"sus\",\n    \"nos\",\"me\",\"mi\",\"te\",\"tu\",\"su\",\"al\",\"del\",\"es\",\"en\",\"de\",\"el\",\"la\",\"los\",\"las\",\n    \"como\",\"pero\",\"porque\",\"todo\",\"esto\",\"eso\",\"esa\",\"ese\",\"soy\",\"eres\",\"fui\",\"ser\",\"este\",\"esta\",\n    \"pues\",\"hay\",\"ya\",\"muy\",\"más\",\"ni\",\"si\",\"no\",\"q\",\"solo\",\"todo\",\"otros\",\"otras\",\"otro\",\"otra\",\n\n    # ——— Nuevas que detectaste (verbos y pronombres del sistema verbal español) ———\n    \"esta\",\"suyas\",\"mías\",\"este\",\"habrás\",\"estarían\",\"tuyas\",\"serías\",\"son\",\"tienes\",\"algo\",\n    \"seamos\",\"habíais\",\"estuvimos\",\"yo\",\"siente\",\"por\",\"habidas\",\"suyos\",\"estarán\",\"estabas\",\n    \"serán\",\"eres\",\"tenemos\",\"tuvo\",\"estaremos\",\"era\",\"hubisteis\",\"la\",\"vosotros\",\"tuviste\",\n    \"fuerais\",\"hubiéramos\",\"tened\",\"seréis\",\"otros\",\"algunas\",\"al\",\"tuviese\",\n\n    # ——— Muletillas / ruido de redes sociales ———\n    \"rt\",\"via\",\"xd\",\"jajaja\",\"jaja\",\"ajja\",\"jj\",\"aja\",\"ajajaja\",\"sip\",\"gracias\",\"hola\",\n    \"buenos\",\"dias\",\"buenas\",\"tardes\",\"noches\",\n\n    # ——— Nombres o contexto país (si no quieres sesgo local) ———\n    #\"ecuador\",\"luisa\",\"noboa\",\"pais\",\"presidente\"\n}\n# {\"ecuador\", \"luisa\", \"noboa\", \"pais\", \"presidente\"}  # palabras que distorsionan\n# \nstop_words = stop_es.union(custom_stop)\n\nprint(f\"Total de stopwords: {len(stop_words)}\")\nlist(stop_words)[:40]\n\nTotal de stopwords: 336\n\n\n['fue',\n 'estaré',\n 'habrías',\n 'estaríais',\n 'sip',\n 'buenas',\n 'vosotros',\n 'mías',\n 'estad',\n 'estuvieron',\n 'esos',\n 'tardes',\n 'sentidas',\n 'les',\n 'sentidos',\n 'estáis',\n 'él',\n 'jaja',\n 'habiendo',\n 'sobre',\n 'muchos',\n 'hemos',\n 'suyos',\n 'soy',\n 'seremos',\n 'nosotros',\n 'estando',\n 'ya',\n 'fuiste',\n 'mucho',\n 'como',\n 'tus',\n 'sentid',\n 'suyas',\n 'poco',\n 'seáis',\n 'tendrán',\n 'estas',\n 'de',\n 'tendrías']",
+    "text": "lista de Stopwords personalizadas ( exeptuando SI o NO )\n\nfrom nltk.corpus import stopwords\n\n# Base NLTK en español\nstop_es = set(stopwords.words(\"spanish\"))\n\n# Stopwords personalizadas palabras frecuentes (máx. 2 sílabas y muy comunes)\ncustom_stop = {\n    # ——— Conectores y artículos frecuentes ———\n    \"de\",\"que\",\"la\",\"y\",\"a\",\"el\",\"no\",\"en\",\"los\",\"es\",\"con\",\"por\",\"se\",\"lo\",\"para\",\"te\",\"un\",\"tu\",\n    \"las\",\"si\",\"del\",\"ya\",\"mas\",\"una\",\"al\",\"su\",\"le\",\"ni\",\"o\",\"son\",\"eso\",\"solo\",\"su\",\"sin\",\"sus\",\n    \"nos\",\"me\",\"mi\",\"te\",\"tu\",\"su\",\"al\",\"del\",\"es\",\"en\",\"de\",\"el\",\"la\",\"los\",\"las\",\n    \"como\",\"pero\",\"porque\",\"todo\",\"esto\",\"eso\",\"esa\",\"ese\",\"soy\",\"eres\",\"fui\",\"ser\",\"este\",\"esta\",\n    \"pues\",\"hay\",\"ya\",\"muy\",\"más\",\"ni\",\"si\",\"no\",\"q\",\"solo\",\"todo\",\"otros\",\"otras\",\"otro\",\"otra\",\n\n    # ——— Nuevas que detectaste (verbos y pronombres del sistema verbal español) ———\n    \"esta\",\"suyas\",\"mías\",\"este\",\"habrás\",\"estarían\",\"tuyas\",\"serías\",\"son\",\"tienes\",\"algo\",\n    \"seamos\",\"habíais\",\"estuvimos\",\"yo\",\"siente\",\"por\",\"habidas\",\"suyos\",\"estarán\",\"estabas\",\n    \"serán\",\"eres\",\"tenemos\",\"tuvo\",\"estaremos\",\"era\",\"hubisteis\",\"la\",\"vosotros\",\"tuviste\",\n    \"fuerais\",\"hubiéramos\",\"tened\",\"seréis\",\"otros\",\"algunas\",\"al\",\"tuviese\",\n\n    # ——— Muletillas / ruido de redes sociales ———\n    \"rt\",\"via\",\"xd\",\"jajaja\",\"jaja\",\"ajja\",\"jj\",\"aja\",\"ajajaja\",\"sip\",\"gracias\",\"hola\",\n    \"buenos\",\"dias\",\"buenas\",\"tardes\",\"noches\",\n\n    # ——— Nombres o contexto país (si no quieres sesgo local) ———\n    #\"ecuador\",\"luisa\",\"noboa\",\"pais\",\"presidente\"\n}\n# {\"ecuador\", \"luisa\", \"noboa\", \"pais\", \"presidente\"}  # palabras que distorsionan\n# \nstop_words = stop_es.union(custom_stop)\n\nprint(f\"Total de stopwords: {len(stop_words)}\")\nlist(stop_words)[:40]\n\nTotal de stopwords: 336\n\n\n['tendré',\n 'estaréis',\n 'ante',\n 'fui',\n 'estuviese',\n 'donde',\n 'estuvieron',\n 'sintiendo',\n 'ti',\n 'estada',\n 'han',\n 'sería',\n 'mía',\n 'xd',\n 'jajaja',\n 'mío',\n 'sí',\n 'poco',\n 'tardes',\n 'estuvisteis',\n 'durante',\n 'hubisteis',\n 'habrías',\n 'eras',\n 'estáis',\n 'tenida',\n 'había',\n 'tuvieron',\n 'tenemos',\n 'serán',\n 'habré',\n 'tendrán',\n 'estuviera',\n 'estaba',\n 'están',\n 'tuvimos',\n 'nada',\n 'tengáis',\n 'antes',\n 'hay']",
     "crumbs": [
       "Home",
       "Lab 2",
@@ -1669,7 +1669,7 @@
     "href": "lab2.html#entrenamiento-del-modelo",
     "title": "Classificación de Texto",
     "section": "Entrenamiento del modelo",
-    "text": "Entrenamiento del modelo\n\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression\n\nmodel = Pipeline(steps=[\n    (\"preprocessor\", preprocessor),\n    (\"classifier\", LogisticRegression(max_iter=200, random_state=42))\n])",
+    "text": "Entrenamiento del modelo\n\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import LogisticRegression\n\nmodel = Pipeline([\n    (\"preprocessor\", preprocessor),\n    (\"classifier\", LogisticRegression(max_iter=200, random_state=42))\n])",
     "crumbs": [
       "Home",
       "Lab 2",
@@ -1686,6 +1686,642 @@
       "Home",
       "Lab 2",
       "Lab 2 Procesamiento de Texto Twiter "
+    ]
+  },
+  {
+    "objectID": "knn.html",
+    "href": "knn.html",
+    "title": "Natural Lenguaje ToolKit",
+    "section": "",
+    "text": "import pandas as pdnp\nfrom sklearn.datasets import fetch_openml\nfrom sklearn.model_selection import GridSearchCV, cross_val_score\nfrom sklearn.impute import SimpleImputer\nfrom sklearn.preprocessing import OneHotEncoder, StandardScaler\nfrom sklearn.compose import ColumnTransformer\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.neighbors import KNeighborsClassifier\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.metrics import classification_report,ConfusionMatrixDisplay, confusion_matrix",
+    "crumbs": [
+      "Home",
+      "Aprendizaje No Supervisado",
+      "KNN "
+    ]
+  },
+  {
+    "objectID": "knn.html#importación-de-librerias",
+    "href": "knn.html#importación-de-librerias",
+    "title": "Natural Lenguaje ToolKit",
+    "section": "",
+    "text": "import pandas as pdnp\nfrom sklearn.datasets import fetch_openml\nfrom sklearn.model_selection import GridSearchCV, cross_val_score\nfrom sklearn.impute import SimpleImputer\nfrom sklearn.preprocessing import OneHotEncoder, StandardScaler\nfrom sklearn.compose import ColumnTransformer\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.neighbors import KNeighborsClassifier\nfrom sklearn.metrics import classification_report, confusion_matrix\nfrom sklearn.model_selection import train_test_split",
+    "crumbs": [
+      "Home",
+      "Aprendizaje No Supervisado",
+      "KNN "
+    ]
+  },
+  {
+    "objectID": "knn.html#informaciónndel-dataset",
+    "href": "knn.html#informaciónndel-dataset",
+    "title": "Natural Lenguaje ToolKit",
+    "section": "Informaciónndel Dataset",
+    "text": "Informaciónndel Dataset\n\ndf.info()\n\n&lt;class 'pandas.core.frame.DataFrame'&gt;\nRangeIndex: 1309 entries, 0 to 1308\nData columns (total 14 columns):\n #   Column     Non-Null Count  Dtype   \n---  ------     --------------  -----   \n 0   pclass     1309 non-null   int64   \n 1   survived   1309 non-null   category\n 2   name       1309 non-null   object  \n 3   sex        1309 non-null   category\n 4   age        1046 non-null   float64 \n 5   sibsp      1309 non-null   int64   \n 6   parch      1309 non-null   int64   \n 7   ticket     1309 non-null   object  \n 8   fare       1308 non-null   float64 \n 9   cabin      295 non-null    object  \n 10  embarked   1307 non-null   category\n 11  boat       486 non-null    object  \n 12  body       121 non-null    float64 \n 13  home.dest  745 non-null    object  \ndtypes: category(3), float64(3), int64(3), object(5)\nmemory usage: 116.8+ KB",
+    "crumbs": [
+      "Home",
+      "Aprendizaje No Supervisado",
+      "KNN "
+    ]
+  },
+  {
+    "objectID": "knn.html#filtrado",
+    "href": "knn.html#filtrado",
+    "title": "Natural Lenguaje ToolKit",
+    "section": "Filtrado",
+    "text": "Filtrado\n\ndf=df[['pclass', 'survived','sex','age','sibsp','parch','embarked']]\ndf\n\n\n\n\n\n\n\n\npclass\nsurvived\nsex\nage\nsibsp\nparch\nembarked\n\n\n\n\n0\n1\n1\nfemale\n29.0000\n0\n0\nS\n\n\n1\n1\n1\nmale\n0.9167\n1\n2\nS\n\n\n2\n1\n0\nfemale\n2.0000\n1\n2\nS\n\n\n3\n1\n0\nmale\n30.0000\n1\n2\nS\n\n\n4\n1\n0\nfemale\n25.0000\n1\n2\nS\n\n\n...\n...\n...\n...\n...\n...\n...\n...\n\n\n1304\n3\n0\nfemale\n14.5000\n1\n0\nC\n\n\n1305\n3\n0\nfemale\nNaN\n1\n0\nC\n\n\n1306\n3\n0\nmale\n26.5000\n0\n0\nC\n\n\n1307\n3\n0\nmale\n27.0000\n0\n0\nC\n\n\n1308\n3\n0\nmale\n29.0000\n0\n0\nS\n\n\n\n\n1309 rows × 7 columns",
+    "crumbs": [
+      "Home",
+      "Aprendizaje No Supervisado",
+      "KNN "
+    ]
+  },
+  {
+    "objectID": "knn.html#eliminación-de-datos-nulos",
+    "href": "knn.html#eliminación-de-datos-nulos",
+    "title": "Natural Lenguaje ToolKit",
+    "section": "Eliminación de datos nulos",
+    "text": "Eliminación de datos nulos\n\ndf = df[df['survived'].notna()]\ndf['survived'] = df['survived'].astype(int)",
+    "crumbs": [
+      "Home",
+      "Aprendizaje No Supervisado",
+      "KNN "
+    ]
+  },
+  {
+    "objectID": "knn.html#información-del-dataset",
+    "href": "knn.html#información-del-dataset",
+    "title": "Natural Lenguaje ToolKit",
+    "section": "Información del Dataset",
+    "text": "Información del Dataset\n\ndf.info()\n\n&lt;class 'pandas.core.frame.DataFrame'&gt;\nRangeIndex: 1309 entries, 0 to 1308\nData columns (total 14 columns):\n #   Column     Non-Null Count  Dtype   \n---  ------     --------------  -----   \n 0   pclass     1309 non-null   int64   \n 1   survived   1309 non-null   category\n 2   name       1309 non-null   object  \n 3   sex        1309 non-null   category\n 4   age        1046 non-null   float64 \n 5   sibsp      1309 non-null   int64   \n 6   parch      1309 non-null   int64   \n 7   ticket     1309 non-null   object  \n 8   fare       1308 non-null   float64 \n 9   cabin      295 non-null    object  \n 10  embarked   1307 non-null   category\n 11  boat       486 non-null    object  \n 12  body       121 non-null    float64 \n 13  home.dest  745 non-null    object  \ndtypes: category(3), float64(3), int64(3), object(5)\nmemory usage: 116.8+ KB",
+    "crumbs": [
+      "Home",
+      "Aprendizaje No Supervisado",
+      "KNN "
+    ]
+  },
+  {
+    "objectID": "knn.html#separación",
+    "href": "knn.html#separación",
+    "title": "Natural Lenguaje ToolKit",
+    "section": "Separación",
+    "text": "Separación\n\nX = df.drop(columns='survived')\ny = df['survived']",
+    "crumbs": [
+      "Home",
+      "Aprendizaje No Supervisado",
+      "KNN "
+    ]
+  },
+  {
+    "objectID": "knn.html#identificación-de-features",
+    "href": "knn.html#identificación-de-features",
+    "title": "Natural Lenguaje ToolKit",
+    "section": "Identificación de Features",
+    "text": "Identificación de Features\n\ncat_cols = ['sex','embarked']\nnum_cols = ['age','sibsp','parch','pclass']",
+    "crumbs": [
+      "Home",
+      "Aprendizaje No Supervisado",
+      "KNN "
+    ]
+  },
+  {
+    "objectID": "knn.html#preproecsamiento",
+    "href": "knn.html#preproecsamiento",
+    "title": "Natural Lenguaje ToolKit",
+    "section": "Preproecsamiento",
+    "text": "Preproecsamiento\n\nCategorilas\n\ncat_pipeline = Pipeline([\n    ('imputacion_cat',SimpleImputer(strategy='most_frequent')), \n    ('encodage_cat',OneHotEncoder(handle_unknown='ignore')),\n])",
+    "crumbs": [
+      "Home",
+      "Aprendizaje No Supervisado",
+      "KNN "
+    ]
+  },
+  {
+    "objectID": "knn.html#numerical-pipelines",
+    "href": "knn.html#numerical-pipelines",
+    "title": "Natural Lenguaje ToolKit",
+    "section": "Numerical PipeLines",
+    "text": "Numerical PipeLines\n\nnum_pipeline = Pipeline([\n    ('imputacion_num',SimpleImputer(strategy='most_frequent')), \n    ('escalado_num',StandardScaler()),\n])",
+    "crumbs": [
+      "Home",
+      "Aprendizaje No Supervisado",
+      "KNN "
+    ]
+  },
+  {
+    "objectID": "knn.html#preprocessor",
+    "href": "knn.html#preprocessor",
+    "title": "Natural Lenguaje ToolKit",
+    "section": "Preprocessor",
+    "text": "Preprocessor\n\npreprocessor = ColumnTransformer([\n    ('cat',cat_pipeline,cat_cols),\n    ('num',num_pipeline,num_cols)\n])",
+    "crumbs": [
+      "Home",
+      "Aprendizaje No Supervisado",
+      "KNN "
+    ]
+  },
+  {
+    "objectID": "knn.html#pipeline-de-clasificador",
+    "href": "knn.html#pipeline-de-clasificador",
+    "title": "Natural Lenguaje ToolKit",
+    "section": "Pipeline de Clasificador",
+    "text": "Pipeline de Clasificador\n\npipeline = Pipeline([\n    ('preprocessor',preprocessor),\n    ('clasificador',KNeighborsClassifier())\n])",
+    "crumbs": [
+      "Home",
+      "Aprendizaje No Supervisado",
+      "KNN "
+    ]
+  },
+  {
+    "objectID": "knn.html#train_test_split",
+    "href": "knn.html#train_test_split",
+    "title": "Natural Lenguaje ToolKit",
+    "section": "Train_test_split",
+    "text": "Train_test_split\n\nX_train, X_test, y_train, y_test = train_test_split(\n    X,\n    y,\n    test_size= 0.2,\n    stratify=y,\n    random_state=42,\n)",
+    "crumbs": [
+      "Home",
+      "Aprendizaje No Supervisado",
+      "KNN "
+    ]
+  },
+  {
+    "objectID": "knn.html#parametros-de-knn-para-paramgrid",
+    "href": "knn.html#parametros-de-knn-para-paramgrid",
+    "title": "Natural Lenguaje ToolKit",
+    "section": "Parametros de KNN para ParamGrid",
+    "text": "Parametros de KNN para ParamGrid\n\nparam_grid = {\n    'clasificador__n_neighbors': list(range(1, 51)),\n    'clasificador__weights':['uniform','distance'],\n    'clasificador__metric':['euclidean','manhattan','minkowski']\n}",
+    "crumbs": [
+      "Home",
+      "Aprendizaje No Supervisado",
+      "KNN "
+    ]
+  },
+  {
+    "objectID": "knn.html#gridserach",
+    "href": "knn.html#gridserach",
+    "title": "Natural Lenguaje ToolKit",
+    "section": "GridSerach",
+    "text": "GridSerach\n\ngrid = GridSearchCV(pipeline, param_grid, cv=5, scoring='accuracy', n_jobs=-1)\ngrid.fit(X_train, y_train)\n\nGridSearchCV(cv=5,\n             estimator=Pipeline(steps=[('preprocessor',\n                                        ColumnTransformer(transformers=[('cat',\n                                                                         Pipeline(steps=[('imputacion_cat',\n                                                                                          SimpleImputer(strategy='most_frequent')),\n                                                                                         ('encodage_cat',\n                                                                                          OneHotEncoder(handle_unknown='ignore'))]),\n                                                                         ['sex',\n                                                                          'embarked']),\n                                                                        ('num',\n                                                                         Pipeline(steps=[('imputacion_num',\n                                                                                          SimpleImputer(strategy='most_frequent')),\n                                                                                         ('escalado_num',\n                                                                                          StandardScaler())]),\n                                                                         ['age',\n                                                                          'sibsp',\n                                                                          'parch',\n                                                                          'pclass'])])),\n                                       ('clasificador',\n                                        KNeighborsClassifier())]),\n             n_jobs=-1,\n             param_grid={'clasificador__metric': ['euclidean', 'manhattan',\n                                                  'minkowski'],\n                         'clasificador__n_neighbors': [1, 2, 3, 4, 5, 6, 7, 8,\n                                                       9, 10, 11, 12, 13, 14,\n                                                       15, 16, 17, 18, 19, 20,\n                                                       21, 22, 23, 24, 25, 26,\n                                                       27, 28, 29, 30, ...],\n                         'clasificador__weights': ['uniform', 'distance']},\n             scoring='accuracy')In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.GridSearchCV?Documentation for GridSearchCViFitted\n        \n            \n                Parameters\n                \n\n\n\n\nestimator \nPipeline(step...lassifier())])\n\n\n\nparam_grid \n{'clasificador__metric': ['euclidean', 'manhattan', ...], 'clasificador__n_neighbors': [1, 2, ...], 'clasificador__weights': ['uniform', 'distance']}\n\n\n\nscoring \n'accuracy'\n\n\n\nn_jobs \n-1\n\n\n\nrefit \nTrue\n\n\n\ncv \n5\n\n\n\nverbose \n0\n\n\n\npre_dispatch \n'2*n_jobs'\n\n\n\nerror_score \nnan\n\n\n\nreturn_train_score \nFalse\n\n\n\n\n            \n        \n    best_estimator_: Pipelinepreprocessor: ColumnTransformer?Documentation for preprocessor: ColumnTransformer\n        \n            \n                Parameters\n                \n\n\n\n\ntransformers \n[('cat', ...), ('num', ...)]\n\n\n\nremainder \n'drop'\n\n\n\nsparse_threshold \n0.3\n\n\n\nn_jobs \nNone\n\n\n\ntransformer_weights \nNone\n\n\n\nverbose \nFalse\n\n\n\nverbose_feature_names_out \nTrue\n\n\n\nforce_int_remainder_cols \n'deprecated'\n\n\n\n\n            \n        \n    cat['sex', 'embarked']SimpleImputer?Documentation for SimpleImputer\n        \n            \n                Parameters\n                \n\n\n\n\nmissing_values \nnan\n\n\n\nstrategy \n'most_frequent'\n\n\n\nfill_value \nNone\n\n\n\ncopy \nTrue\n\n\n\nadd_indicator \nFalse\n\n\n\nkeep_empty_features \nFalse\n\n\n\n\n            \n        \n    OneHotEncoder?Documentation for OneHotEncoder\n        \n            \n                Parameters\n                \n\n\n\n\ncategories \n'auto'\n\n\n\ndrop \nNone\n\n\n\nsparse_output \nTrue\n\n\n\ndtype \n&lt;class 'numpy.float64'&gt;\n\n\n\nhandle_unknown \n'ignore'\n\n\n\nmin_frequency \nNone\n\n\n\nmax_categories \nNone\n\n\n\nfeature_name_combiner \n'concat'\n\n\n\n\n            \n        \n    num['age', 'sibsp', 'parch', 'pclass']SimpleImputer?Documentation for SimpleImputer\n        \n            \n                Parameters\n                \n\n\n\n\nmissing_values \nnan\n\n\n\nstrategy \n'most_frequent'\n\n\n\nfill_value \nNone\n\n\n\ncopy \nTrue\n\n\n\nadd_indicator \nFalse\n\n\n\nkeep_empty_features \nFalse\n\n\n\n\n            \n        \n    StandardScaler?Documentation for StandardScaler\n        \n            \n                Parameters\n                \n\n\n\n\ncopy \nTrue\n\n\n\nwith_mean \nTrue\n\n\n\nwith_std \nTrue\n\n\n\n\n            \n        \n    KNeighborsClassifier?Documentation for KNeighborsClassifier\n        \n            \n                Parameters\n                \n\n\n\n\nn_neighbors \n17\n\n\n\nweights \n'uniform'\n\n\n\nalgorithm \n'auto'\n\n\n\nleaf_size \n30\n\n\n\np \n2\n\n\n\nmetric \n'manhattan'\n\n\n\nmetric_params \nNone\n\n\n\nn_jobs \nNone\n\n\n\n\n            \n        \n    \n\n\n\nbest_model = grid.best_estimator_\n\n\nprint(\"MEJORES PARAMETROS : \\n\",grid.best_params_['clasificador__n_neighbors'])\n\nMEJORES PARAMETROS : \n 17\n\n\n\nprint(\"Los Mejores Parametros: \", grid.best_params_)\n\nLos Mejores Parametros:  {'clasificador__metric': 'manhattan', 'clasificador__n_neighbors': 17, 'clasificador__weights': 'uniform'}\n\n\n\ny_pred = best_model.predict(X_test)\n\n\nprint(\"REPORTE DE CLASIFICACIÓN: \\n\", classification_report(y_test, y_pred))\n\nREPORTE DE CLASIFICACIÓN: \n               precision    recall  f1-score   support\n\n           0       0.84      0.91      0.87       162\n           1       0.83      0.72      0.77       100\n\n    accuracy                           0.84       262\n   macro avg       0.83      0.81      0.82       262\nweighted avg       0.84      0.84      0.83       262\n\n\n\n\nConfusionMatrixDisplay.from_predictions(y_test, y_pred)",
+    "crumbs": [
+      "Home",
+      "Aprendizaje No Supervisado",
+      "KNN "
+    ]
+  },
+  {
+    "objectID": "kmeans.html",
+    "href": "kmeans.html",
+    "title": "K-Means",
+    "section": "",
+    "text": "import pandas as pd\nfrom sklearn.cluster import KMeans\nimport altair as alt\n# ---\nfrom sklearn.preprocessing import OneHotEncoder, StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.compose import ColumnTransformer\nfrom sklearn.metrics import silhouette_score",
+    "crumbs": [
+      "Home",
+      "K-Means",
+      "K-Means "
+    ]
+  },
+  {
+    "objectID": "kmeans.html#visualizar-el-sse-vs-k_range",
+    "href": "kmeans.html#visualizar-el-sse-vs-k_range",
+    "title": "K-Means",
+    "section": "Visualizar el SSE vs K_range",
+    "text": "Visualizar el SSE vs K_range\n\nelbow_df = pd.DataFrame(\n    {\n        'K':list(k_range),\n        'SSE': sse\n    }\n)\n\nalt.Chart(elbow_df).mark_line().encode(\n    alt.X('K'),\n    alt.Y('SSE'),\n    tooltip=['K','SSE']\n)\n\n\n\n\n\n\n\n\nk_cluster = 3\ncluster = KMeans(n_clusters=k_cluster,random_state=42)\ndf['clusters'] = cluster.fit_predict(df[['age','annual_income($)']])\ndf\n\n\n\n\n\n\n\n\nage\nannual_income($)\nclusters\n\n\n\n\n0\n17\n17123\n2\n\n\n1\n17\n18375\n2\n\n\n2\n16\n18557\n2\n\n\n3\n23\n17721\n2\n\n\n4\n22\n17291\n2\n\n\n...\n...\n...\n...\n\n\n145\n66\n21653\n0\n\n\n146\n75\n20631\n0\n\n\n147\n74\n20572\n0\n\n\n148\n69\n21452\n0\n\n\n149\n73\n20754\n0\n\n\n\n\n150 rows × 3 columns",
+    "crumbs": [
+      "Home",
+      "K-Means",
+      "K-Means "
+    ]
+  },
+  {
+    "objectID": "kmeans.html#visualizar-el-cluster",
+    "href": "kmeans.html#visualizar-el-cluster",
+    "title": "K-Means",
+    "section": "Visualizar el Cluster",
+    "text": "Visualizar el Cluster\n\nalt.Chart(df).mark_circle(size=60).encode(\n    x='age',\n    y='annual_income($)',\n    color='clusters:N',\n    tooltip=['age', 'annual_income($)', 'clusters']\n).interactive()",
+    "crumbs": [
+      "Home",
+      "K-Means",
+      "K-Means "
+    ]
+  },
+  {
+    "objectID": "kmeans.html#column-transformer",
+    "href": "kmeans.html#column-transformer",
+    "title": "K-Means",
+    "section": "Column Transformer",
+    "text": "Column Transformer\n\nnum_cols = ['age', 'annual_income($)']\npreprocessor = ColumnTransformer(\n    transformers=[\n        ('standar', StandardScaler(), num_cols)\n    ]\n)",
+    "crumbs": [
+      "Home",
+      "K-Means",
+      "K-Means "
+    ]
+  },
+  {
+    "objectID": "kmeans.html#pipeline",
+    "href": "kmeans.html#pipeline",
+    "title": "K-Means",
+    "section": "PipeLine",
+    "text": "PipeLine\n\npipeline = Pipeline([\n    ('scaler', preprocessor),\n    ('kmeans', KMeans(random_state=42)),\n])",
+    "crumbs": [
+      "Home",
+      "K-Means",
+      "K-Means "
+    ]
+  },
+  {
+    "objectID": "kmeans.html#metodo-de-elbow",
+    "href": "kmeans.html#metodo-de-elbow",
+    "title": "K-Means",
+    "section": "Metodo de Elbow",
+    "text": "Metodo de Elbow\n\nk_range = range(2,11)\nsse_standar = []\nsilhouette_scores = []\n\nfor k in k_range:\n    pipeline.set_params(kmeans__n_clusters=k)\n    pipeline.fit(df[num_cols])\n    sse_standar.append(\n        pipeline.named_steps['kmeans'].inertia_\n    )\n# sse_standar\n\n    pred = pipeline.predict(df[num_cols])\n    print(\"K :\",k)\n    print(\"PRED :\", pred)\n    score = silhouette_score(pipeline.named_steps['scaler'].transform(df[num_cols]), pred)\n    print(\"SILHOUTTE SCORE\", score)\n    print(\"\\n\")\n\nK : 2\nPRED : [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\n 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n 1 1]\nSILHOUTTE SCORE 0.5584253334367935\n\n\nK : 3\nPRED : [2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 0 0 0 0 0 0 0\n 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n 1 1]\nSILHOUTTE SCORE 0.48862751188830505\n\n\nK : 4\nPRED : [2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 0 0 0 0 0 0 0\n 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 3 1\n 1 1 1 1 1 1 1 1 1 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3\n 3 3]\nSILHOUTTE SCORE 0.6197880502586567\n\n\nK : 5\nPRED : [2 2 2 2 2 4 2 4 2 2 2 2 2 4 4 4 2 4 2 4 2 2 2 4 4 4 4 2 2 4 0 0 0 0 0 0 0\n 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 3 1\n 1 1 1 1 1 1 1 1 1 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3\n 3 3]\nSILHOUTTE SCORE 0.5870741352565944\n\n\nK : 6\nPRED : [2 2 2 2 2 4 2 4 2 2 2 2 2 4 4 4 2 4 2 4 2 2 2 4 4 4 4 2 2 4 0 0 0 0 0 0 0\n 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 5 5 5 5 5 5 5 5 5 5 5 5 1 5\n 5 5 5 1 5 1 1 5 5 5 5 5 5 5 5 5 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n 1 1 1 1 1 1 1 1 1 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3\n 3 3]\nSILHOUTTE SCORE 0.5496403913716197\n\n\nK : 7\nPRED : [2 2 2 2 2 4 2 4 2 2 2 2 2 4 4 4 2 4 2 4 2 2 2 4 4 4 4 2 2 4 0 0 0 0 0 0 0\n 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 5 5 6 6 6 5 6 6 5 6 5 6 1 5\n 6 6 5 5 5 5 5 6 5 6 6 6 6 6 6 5 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n 1 1 1 1 1 1 1 1 1 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3\n 3 3]\nSILHOUTTE SCORE 0.5351154400530848\n\n\nK : 8\nPRED : [3 3 3 3 3 6 3 6 6 3 3 3 3 6 6 6 3 6 3 6 3 3 3 6 6 6 6 3 3 6 4 4 0 4 0 4 0\n 4 4 0 0 0 4 0 0 0 0 0 4 4 4 4 0 4 0 0 0 4 4 4 5 5 7 7 7 5 5 5 5 5 5 5 1 5\n 7 5 5 5 5 5 5 7 5 7 5 5 7 5 7 5 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2\n 2 2]\nSILHOUTTE SCORE 0.49714020005833653\n\n\nK : 9\nPRED : [3 3 3 3 3 6 3 6 6 3 3 3 3 6 6 6 3 6 3 6 3 3 3 6 6 6 6 3 3 6 4 4 0 4 0 4 0\n 4 4 0 0 0 4 0 0 0 0 0 4 4 4 4 0 4 0 0 0 4 4 4 8 5 7 7 7 8 5 5 8 5 5 5 8 8\n 7 5 8 8 5 8 8 7 8 7 5 5 7 5 7 5 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2\n 2 2]\nSILHOUTTE SCORE 0.48277202641477174\n\n\nK : 10\nPRED : [3 3 3 3 3 6 3 6 6 3 3 3 3 6 6 6 3 6 3 6 3 3 3 6 6 6 6 3 3 6 4 4 0 4 0 4 0\n 4 4 0 0 0 4 0 0 0 4 0 4 4 4 4 0 4 0 0 0 4 4 4 9 9 7 7 5 9 5 5 9 5 9 5 8 9\n 5 5 9 8 5 9 9 7 9 5 5 5 7 5 7 5 1 8 8 8 1 1 8 1 8 8 8 8 1 8 1 8 1 8 8 1 1\n 8 8 8 8 8 1 8 8 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2\n 2 2]\nSILHOUTTE SCORE 0.49114927636373373",
+    "crumbs": [
+      "Home",
+      "K-Means",
+      "K-Means "
+    ]
+  },
+  {
+    "objectID": "kmeans.html#cargando-datos-del-csv-desde-url",
+    "href": "kmeans.html#cargando-datos-del-csv-desde-url",
+    "title": "K-Means",
+    "section": "Cargando datos del CSV desde URL",
+    "text": "Cargando datos del CSV desde URL\n\nurl = \"https://raw.githubusercontent.com/erickedu85/dataset/master/age_income.csv\"\ndf = pd.read_csv(url)\ndf\n\n\n\n\n\n\n\n\nage\nannual_income($)\n\n\n\n\n0\n17\n17123\n\n\n1\n17\n18375\n\n\n2\n16\n18557\n\n\n3\n23\n17721\n\n\n4\n22\n17291\n\n\n...\n...\n...\n\n\n145\n66\n21653\n\n\n146\n75\n20631\n\n\n147\n74\n20572\n\n\n148\n69\n21452\n\n\n149\n73\n20754\n\n\n\n\n150 rows × 2 columns\n\n\n\n\nalt.Chart(df).mark_circle().encode(\n    alt.X('age'),\n    alt.Y('annual_income($)'),\n    tooltip=['age','annual_income($)']\n).interactive()\n\n\n\n\n\n\n\n\nsse = [] #innertia\nk_range = range(2,11)\n\nfor k in k_range:\n    kmeans = KMeans(n_clusters=k, random_state=42)\n    kmeans.fit(df[['age','annual_income($)']])\n    sse.append(kmeans.inertia_)\n\nprint(\"Innertia: \\n\", sse)\n\nInnertia: \n [275802340.84656477, 103879919.55, 82797577.45817566, 38460868.83850575, 27144269.551419165, 19757179.06558105, 14468762.582687736, 11828359.755827505, 9333390.053670242]",
+    "crumbs": [
+      "Home",
+      "K-Means",
+      "K-Means "
+    ]
+  },
+  {
+    "objectID": "kmeans.html#calcular-el-sum-of-squared-errors-sse-silhouette",
+    "href": "kmeans.html#calcular-el-sum-of-squared-errors-sse-silhouette",
+    "title": "K-Means",
+    "section": "Calcular el Sum of Squared Errors (SSE) + Silhouette",
+    "text": "Calcular el Sum of Squared Errors (SSE) + Silhouette\n\nk_range = range(2,11)\nsse_standar = []\nsilhouette_scores = []\n\nfor k in k_range:\n    pipeline.set_params(kmeans__n_clusters=k)\n    pipeline.fit(df[num_cols])\n    sse_standar.append(\n        pipeline.named_steps['kmeans'].inertia_\n    )\n# sse_standar\n\n    pred = pipeline.predict(df[num_cols])\n    print(\"K :\",k)\n    print(\"PRED :\", pred)\n    score = silhouette_score(pipeline.named_steps['scaler'].transform(df[num_cols]), pred)\n    print(\"SILHOUTTE SCORE\", score)\n    print(\"\\n\")\n    silhouette_scores.append(score)\n\nK : 2\nPRED : [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0\n 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n 1 1]\nSILHOUTTE SCORE 0.5584253334367935\n\n\nK : 3\nPRED : [2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 0 0 0 0 0 0 0\n 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n 1 1]\nSILHOUTTE SCORE 0.48862751188830505\n\n\nK : 4\nPRED : [2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 0 0 0 0 0 0 0\n 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 3 1\n 1 1 1 1 1 1 1 1 1 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3\n 3 3]\nSILHOUTTE SCORE 0.6197880502586567\n\n\nK : 5\nPRED : [2 2 2 2 2 4 2 4 2 2 2 2 2 4 4 4 2 4 2 4 2 2 2 4 4 4 4 2 2 4 0 0 0 0 0 0 0\n 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 3 1\n 1 1 1 1 1 1 1 1 1 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3\n 3 3]\nSILHOUTTE SCORE 0.5870741352565944\n\n\nK : 6\nPRED : [2 2 2 2 2 4 2 4 2 2 2 2 2 4 4 4 2 4 2 4 2 2 2 4 4 4 4 2 2 4 0 0 0 0 0 0 0\n 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 5 5 5 5 5 5 5 5 5 5 5 5 1 5\n 5 5 5 1 5 1 1 5 5 5 5 5 5 5 5 5 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n 1 1 1 1 1 1 1 1 1 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3\n 3 3]\nSILHOUTTE SCORE 0.5496403913716197\n\n\nK : 7\nPRED : [2 2 2 2 2 4 2 4 2 2 2 2 2 4 4 4 2 4 2 4 2 2 2 4 4 4 4 2 2 4 0 0 0 0 0 0 0\n 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 5 5 6 6 6 5 6 6 5 6 5 6 1 5\n 6 6 5 5 5 5 5 6 5 6 6 6 6 6 6 5 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n 1 1 1 1 1 1 1 1 1 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3\n 3 3]\nSILHOUTTE SCORE 0.5351154400530848\n\n\nK : 8\nPRED : [3 3 3 3 3 6 3 6 6 3 3 3 3 6 6 6 3 6 3 6 3 3 3 6 6 6 6 3 3 6 4 4 0 4 0 4 0\n 4 4 0 0 0 4 0 0 0 0 0 4 4 4 4 0 4 0 0 0 4 4 4 5 5 7 7 7 5 5 5 5 5 5 5 1 5\n 7 5 5 5 5 5 5 7 5 7 5 5 7 5 7 5 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2\n 2 2]\nSILHOUTTE SCORE 0.49714020005833653\n\n\nK : 9\nPRED : [3 3 3 3 3 6 3 6 6 3 3 3 3 6 6 6 3 6 3 6 3 3 3 6 6 6 6 3 3 6 4 4 0 4 0 4 0\n 4 4 0 0 0 4 0 0 0 0 0 4 4 4 4 0 4 0 0 0 4 4 4 8 5 7 7 7 8 5 5 8 5 5 5 8 8\n 7 5 8 8 5 8 8 7 8 7 5 5 7 5 7 5 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2\n 2 2]\nSILHOUTTE SCORE 0.48277202641477174\n\n\nK : 10\nPRED : [3 3 3 3 3 6 3 6 6 3 3 3 3 6 6 6 3 6 3 6 3 3 3 6 6 6 6 3 3 6 4 4 0 4 0 4 0\n 4 4 0 0 0 4 0 0 0 4 0 4 4 4 4 0 4 0 0 0 4 4 4 9 9 7 7 5 9 5 5 9 5 9 5 8 9\n 5 5 9 8 5 9 9 7 9 5 5 5 7 5 7 5 1 8 8 8 1 1 8 1 8 8 8 8 1 8 1 8 1 8 8 1 1\n 8 8 8 8 8 1 8 8 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2\n 2 2]\nSILHOUTTE SCORE 0.49114927636373373",
+    "crumbs": [
+      "Home",
+      "K-Means",
+      "K-Means "
+    ]
+  },
+  {
+    "objectID": "kmeans.html#visualizar-el-sum-of-squared-errors-sse-silhouette-vs-k",
+    "href": "kmeans.html#visualizar-el-sum-of-squared-errors-sse-silhouette-vs-k",
+    "title": "K-Means",
+    "section": "Visualizar el Sum of Squared Errors (SSE), Silhouette vs K",
+    "text": "Visualizar el Sum of Squared Errors (SSE), Silhouette vs K\n\nsse_standard_df = pd.DataFrame(\n    {\n        'K':k_range,\n        'SSE_STANDARD':sse_standar\n    }\n)\n\nsilhouette_df = pd.DataFrame(\n    {\n        'K':k_range,\n        'SILHOUETTE':silhouette_scores\n    }\n)\n\nviz_sse_standard = alt.Chart(sse_standard_df).mark_line(point=True).encode(\n    alt.X('K'),\n    alt.Y('SSE_STANDARD'),\n    tooltip=['K',\"SSE_STANDARD\"]\n).properties(\n    title='METODO DEL CODO CON PIPELINE + ESTANDARIZACION'\n).interactive()\n\n\nviz_silhouette = alt.Chart(silhouette_df).mark_line(point=True).encode(\n    alt.X('K'),\n    alt.Y('SILHOUETTE'),\n    tooltip=['K',\"SILHOUETTE\"]\n).properties(\n    title='SILHOUETTE SCORE CON PIPELINE + ESTANDARIZACION'\n).interactive()\n\nviz_sse_standard | viz_silhouette",
+    "crumbs": [
+      "Home",
+      "K-Means",
+      "K-Means "
+    ]
+  },
+  {
+    "objectID": "kmeans.html#clusterizacion-con-pipeline-standardscaler",
+    "href": "kmeans.html#clusterizacion-con-pipeline-standardscaler",
+    "title": "K-Means",
+    "section": "Clusterizacion con Pipeline + StandardScaler()",
+    "text": "Clusterizacion con Pipeline + StandardScaler()\n\nk_optimo = k_range[silhouette_scores.index(max(silhouette_scores))]\nprint(\"K_OPTIMO\",k_optimo)\n\npipeline.set_params(kmeans__n_clusters=k_optimo)\ndf['clusters_standard'] = pipeline.fit_predict(df[num_cols])\ndf.head()\n\nK_OPTIMO 4\n\n\n\n\n\n\n\n\n\nage\nannual_income($)\nclusters\nclusters_standard\n\n\n\n\n0\n17\n17123\n2\n2\n\n\n1\n17\n18375\n2\n2\n\n\n2\n16\n18557\n2\n2\n\n\n3\n23\n17721\n2\n2\n\n\n4\n22\n17291\n2\n2",
+    "crumbs": [
+      "Home",
+      "K-Means",
+      "K-Means "
+    ]
+  },
+  {
+    "objectID": "kmeans.html#visualizar-la-clusterización",
+    "href": "kmeans.html#visualizar-la-clusterización",
+    "title": "K-Means",
+    "section": "Visualizar la clusterización",
+    "text": "Visualizar la clusterización\n\nalt.Chart(df).mark_circle(size=20).encode(\n    alt.X('age'),\n    alt.Y('annual_income($)'),\n    alt.Color('clusters_standard:N'),\n    tooltip=['age','annual_income($)','clusters_standard:N']\n).properties(\n    title='CLUSTERIZACION CON PIPELINE + STANDARSCALER()'\n).interactive()",
+    "crumbs": [
+      "Home",
+      "K-Means",
+      "K-Means "
+    ]
+  },
+  {
+    "objectID": "hac.html",
+    "href": "hac.html",
+    "title": "Hierachical Aglomerative Clustering (HAC)",
+    "section": "",
+    "text": "import pandas as pd\nfrom sklearn.cluster import KMeans\nimport altair as alt\n# ---\nfrom sklearn.preprocessing import OneHotEncoder, StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.compose import ColumnTransformer\nfrom sklearn.metrics import silhouette_score\nfrom sklearn.cluster import AgglomerativeClustering\nfrom sklearn.datasets import load_iris\nfrom scipy.cluster.hierarchy import dendrogram, linkage",
+    "crumbs": [
+      "Home",
+      "K-Means",
+      "Hierachical Aglomerative Clustering (HAC)"
+    ]
+  },
+  {
+    "objectID": "hac.html#cargando-datos-del-csv-desde-url",
+    "href": "hac.html#cargando-datos-del-csv-desde-url",
+    "title": "Hierachical Aglomerative Clustering (HAC)",
+    "section": "Cargando datos del CSV desde URL",
+    "text": "Cargando datos del CSV desde URL\n\niris = load_iris()\nX = pd.DataFrame(iris.data, columns=iris.feature_names)[['sepal length (cm)','sepal width (cm)']]\nX\n\n\n\n\n\n\n\n\nsepal length (cm)\nsepal width (cm)\n\n\n\n\n0\n5.1\n3.5\n\n\n1\n4.9\n3.0\n\n\n2\n4.7\n3.2\n\n\n3\n4.6\n3.1\n\n\n4\n5.0\n3.6\n\n\n...\n...\n...\n\n\n145\n6.7\n3.0\n\n\n146\n6.3\n2.5\n\n\n147\n6.5\n3.0\n\n\n148\n6.2\n3.4\n\n\n149\n5.9\n3.0\n\n\n\n\n150 rows × 2 columns\n\n\n\n#Cargar el Dataset\n\npipeline = Pipeline ([\n    ('scaler',StandardScaler()),\n    ('agglo',AgglomerativeClustering(n_clusters=2))\n])",
+    "crumbs": [
+      "Home",
+      "K-Means",
+      "Hierachical Aglomerative Clustering (HAC)"
+    ]
+  },
+  {
+    "objectID": "final.html",
+    "href": "final.html",
+    "title": "Lab-Final",
+    "section": "",
+    "text": "El presente examen tiene como objetivo desarrollar un flujo completo de Machine Learning utilizando un dataset compuesto por 1500 tweets en español publicados desde Ecuador, los cuales incluyen metadatos y un puntaje de toxicidad (TOXICITY) previamente calculado mediante la API de Perspective.\nEl análisis busca evaluar la capacidad de aplicar, justificar y documentar las distintas etapas del ciclo de Machine Learning de manera estructurada y reproducible. Para ello, se trabajará bajo un enfoque mixto que combina técnicas de aprendizaje supervisado y no supervisado, aplicadas sobre datos reales de redes sociales.\nA lo largo del desarrollo se abordarán los siguientes componentes:\n\nAnálisis exploratorio (EDA) para comprender la distribución, calidad y naturaleza de los datos.\nPreprocesamiento mediante técnicas de vectorización, codificación de categorías y escalamiento.\nClasificación supervisada transformando el puntaje continuo de toxicidad en clases discretas.\nRegresión supervisada utilizando el valor continuo de toxicidad como variable objetivo.\nClustering no supervisado para identificar agrupaciones naturales de tweets y compararlas con los patrones de toxicidad.\nInterpretación y conclusiones basadas en el comportamiento de los datos y el desempeño de los modelos.\n\nEste documento integra tanto código como visualizaciones y reflexiones, siguiendo buenas prácticas de ingeniería de datos y reproducibilidad mediante el uso de Quarto para su publicación en GitHub Pages.\n\n\nEl dataset contiene 1500 tweets en español provenientes de Ecuador. Cada registro incluye el texto del tweet, metadatos asociados al usuario y a la interacción, y una columna adicional llamada TOXICITY, la cual representa un puntaje continuo calculado previamente mediante la API de Perspective.\nCaracterísticas generales:\n\nFilas: 1500 registros (tweets)\nColumna objetivo (target): TOXICITY (valor continuo entre 0 y 1)\nColumna principal de texto: content\nMetadatos disponibles (pueden variar según la extracción):\n\nIdentificador del tweet (tweetId)\nUbicación del usuario (user_location o similar)\nEngagement (ej. retweet_count, favorite_count)\nFecha de creación (createdAt)\nOtros campos categóricos y numéricos asociados al tweet o al autor\n\n\nAdecuación para el examen\nEste dataset permite desarrollar todas las fases requeridas:\n\n\n\n\n\n\n\nFase del examen\nJustificación\n\n\n\n\nEDA\nSe cuenta con texto, variables numéricas, categóricas y el target TOXICITY\n\n\nPreprocesamiento\nSe puede vectorizar texto, codificar categorías y escalar números\n\n\nClasificación\nTOXICITY puede discretizarse para generar clases\n\n\nRegresión\nTOXICITY ya es continuo, apto para modelos supervisados\n\n\nClustering\nEl contenido + metadatos permiten segmentar patrones sin supervisión\n\n\n\nEn conclusión, el dataset es completo y adecuado para construir un pipeline de Machine Learning con análisis, modelos supervisados y no supervisados, y reflexiones finales sobre toxicidad en contenido digital.",
+    "crumbs": [
+      "Home",
+      "Exmanen Final",
+      "Examen Final"
+    ]
+  },
+  {
+    "objectID": "final.html#cargando-datos-del-csv-desde-url",
+    "href": "final.html#cargando-datos-del-csv-desde-url",
+    "title": "Lab-Final",
+    "section": "Cargando datos del CSV desde URL",
+    "text": "Cargando datos del CSV desde URL",
+    "crumbs": [
+      "Home",
+      "Exmanen Final",
+      "Examen Final"
+    ]
+  },
+  {
+    "objectID": "final.html#filtrado",
+    "href": "final.html#filtrado",
+    "title": "Lab-Final",
+    "section": "Filtrado",
+    "text": "Filtrado\n\ndf = df[['isReply', 'authorVerified','account_age_days','mentions_count','content','toxicity_score']]\ndf\n\n\n\n\n\n\n\n\nisReply\nauthorVerified\naccount_age_days\nmentions_count\ncontent\ntoxicity_score\n\n\n\n\n0\nTrue\nFalse\n5261\n2\n@DanielNoboaOk @DiegoBorjaPC Lávate el hocico ...\n0.543256\n\n\n1\nTrue\nFalse\n1399\n1\n@DanielNoboaOk De esa arrastrada no te levanta...\n0.426917\n\n\n2\nTrue\nFalse\n68\n2\n@LuisaGonzalezEc @RC5Oficial Protegiendo a los...\n0.555970\n\n\n3\nTrue\nFalse\n4955\n1\n@DanielNoboaOk #NoboaPresidente. Todo 7!\n0.046615\n\n\n4\nTrue\nFalse\n4208\n5\n@slider1908 @LuisaGonzalezEc @DianaAtamaint @c...\n0.846027\n\n\n...\n...\n...\n...\n...\n...\n...\n\n\n1495\nTrue\nFalse\n505\n1\n@LuisaGonzalezEc De parte de un pensador indep...\n0.028739\n\n\n1496\nTrue\nFalse\n1205\n1\n@LuisaGonzalezEc Todito 5️⃣5️⃣💙🗣️\nNaN\n\n\n1497\nTrue\nFalse\n1026\n2\n@DanielNoboaOk @DiegoBorjaPC Los que lloran so...\n0.285484\n\n\n1498\nTrue\nFalse\n4035\n1\n@LuisaGonzalezEc Será que revela como se puede...\n0.010241\n\n\n1499\nTrue\nFalse\n1614\n1\n@DanielNoboaOk Te van a enterrar en las urnas....\n0.202656\n\n\n\n\n1500 rows × 6 columns",
+    "crumbs": [
+      "Home",
+      "Exmanen Final",
+      "Examen Final"
+    ]
+  },
+  {
+    "objectID": "final.html#eliminación-de-datos-nulos",
+    "href": "final.html#eliminación-de-datos-nulos",
+    "title": "Lab-Final",
+    "section": "Eliminación de datos nulos",
+    "text": "Eliminación de datos nulos\n\nValores nulos\n\ndf.isna().sum()\n\nisReply               0\nauthorVerified        0\naccount_age_days      0\nmentions_count        0\ncontent               0\ntoxicity_score      153\ndtype: int64\n\n\n\n\nEliminación de nulos\n\n# Eliminación de filas con toxicidad nula\ndf = df.dropna(subset=['toxicity_score'])\n# Verificación después de la limpieza\ndf.isna().sum()\n\nisReply             0\nauthorVerified      0\naccount_age_days    0\nmentions_count      0\ncontent             0\ntoxicity_score      0\ndtype: int64\n\n\n\n\nInterpretación de la distribución Sin valores nulos\n\n# --- gráfico DESPUÉS (dataset limpio) ---\nchart_after = (\n    alt.Chart(df)\n    .mark_bar()\n    .encode(\n        x=alt.X(\"toxicity_score:Q\", bin=alt.Bin(maxbins=30), title=\"Toxicity score\"),\n        y=alt.Y(\"count():Q\", title=\"Frecuencia\"),\n        tooltip=[\"count():Q\"]\n    )\n    .properties(width=500, height=300, title=\"Después (sin nulos)\")\n    .interactive()\n)\n\n# comparación lado a lado\nchart_before | chart_after\n\n\n\n\n\n\n\n\n\nTotal de registros\n\ndf.info()\n\n&lt;class 'pandas.core.frame.DataFrame'&gt;\nIndex: 1347 entries, 0 to 1499\nData columns (total 6 columns):\n #   Column            Non-Null Count  Dtype  \n---  ------            --------------  -----  \n 0   isReply           1347 non-null   bool   \n 1   authorVerified    1347 non-null   bool   \n 2   account_age_days  1347 non-null   int64  \n 3   mentions_count    1347 non-null   int64  \n 4   content           1347 non-null   object \n 5   toxicity_score    1347 non-null   float64\ndtypes: bool(2), float64(1), int64(2), object(1)\nmemory usage: 55.2+ KB",
+    "crumbs": [
+      "Home",
+      "Exmanen Final",
+      "Examen Final"
+    ]
+  },
+  {
+    "objectID": "final.html#separación",
+    "href": "final.html#separación",
+    "title": "Lab-Final",
+    "section": "Separación",
+    "text": "Separación",
+    "crumbs": [
+      "Home",
+      "Exmanen Final",
+      "Examen Final"
+    ]
+  },
+  {
+    "objectID": "final.html#identificación-de-features-numericas-y-categoricas",
+    "href": "final.html#identificación-de-features-numericas-y-categoricas",
+    "title": "Lab-Final",
+    "section": "Identificación de Features Numericas y categoricas",
+    "text": "Identificación de Features Numericas y categoricas",
+    "crumbs": [
+      "Home",
+      "Exmanen Final",
+      "Examen Final"
+    ]
+  },
+  {
+    "objectID": "final.html#numerical-pipelines",
+    "href": "final.html#numerical-pipelines",
+    "title": "Lab-Final",
+    "section": "Numerical Pipelines",
+    "text": "Numerical Pipelines",
+    "crumbs": [
+      "Home",
+      "Exmanen Final",
+      "Examen Final"
+    ]
+  },
+  {
+    "objectID": "final.html#categorical-pipelines",
+    "href": "final.html#categorical-pipelines",
+    "title": "Lab-Final",
+    "section": "Categorical Pipelines",
+    "text": "Categorical Pipelines",
+    "crumbs": [
+      "Home",
+      "Exmanen Final",
+      "Examen Final"
+    ]
+  },
+  {
+    "objectID": "final.html#pipeline-de-preprocessor-clasificador",
+    "href": "final.html#pipeline-de-preprocessor-clasificador",
+    "title": "Lab-Final",
+    "section": "Pipeline de Preprocessor Clasificador",
+    "text": "Pipeline de Preprocessor Clasificador",
+    "crumbs": [
+      "Home",
+      "Exmanen Final",
+      "Examen Final"
+    ]
+  },
+  {
+    "objectID": "final.html#train_test_split",
+    "href": "final.html#train_test_split",
+    "title": "Lab-Final",
+    "section": "Train_test_split",
+    "text": "Train_test_split",
+    "crumbs": [
+      "Home",
+      "Exmanen Final",
+      "Examen Final"
+    ]
+  },
+  {
+    "objectID": "final.html#resumen-del-dataset",
+    "href": "final.html#resumen-del-dataset",
+    "title": "Lab-Final",
+    "section": "",
+    "text": "El dataset contiene 1500 tweets en español provenientes de Ecuador. Cada registro incluye el texto del tweet, metadatos asociados al usuario y a la interacción, y una columna adicional llamada TOXICITY, la cual representa un puntaje continuo calculado previamente mediante la API de Perspective.\nCaracterísticas generales:\n\nFilas: 1500 registros (tweets)\nColumna objetivo (target): TOXICITY (valor continuo entre 0 y 1)\nColumna principal de texto: content\nMetadatos disponibles (pueden variar según la extracción):\n\nIdentificador del tweet (tweetId)\nUbicación del usuario (user_location o similar)\nEngagement (ej. retweet_count, favorite_count)\nFecha de creación (createdAt)\nOtros campos categóricos y numéricos asociados al tweet o al autor\n\n\nAdecuación para el examen\nEste dataset permite desarrollar todas las fases requeridas:\n\n\n\n\n\n\n\nFase del examen\nJustificación\n\n\n\n\nEDA\nSe cuenta con texto, variables numéricas, categóricas y el target TOXICITY\n\n\nPreprocesamiento\nSe puede vectorizar texto, codificar categorías y escalar números\n\n\nClasificación\nTOXICITY puede discretizarse para generar clases\n\n\nRegresión\nTOXICITY ya es continuo, apto para modelos supervisados\n\n\nClustering\nEl contenido + metadatos permiten segmentar patrones sin supervisión\n\n\n\nEn conclusión, el dataset es completo y adecuado para construir un pipeline de Machine Learning con análisis, modelos supervisados y no supervisados, y reflexiones finales sobre toxicidad en contenido digital.",
+    "crumbs": [
+      "Home",
+      "Exmanen Final",
+      "Examen Final"
+    ]
+  },
+  {
+    "objectID": "final.html#importación-de-librerias",
+    "href": "final.html#importación-de-librerias",
+    "title": "Lab-Final",
+    "section": "Importación de Librerias",
+    "text": "Importación de Librerias\n\nimport pandas as pd\nimport re\nfrom sklearn.preprocessing import FunctionTransformer\nfrom sklearn.feature_extraction.text import CountVectorizer,TfidfVectorizer\nfrom sklearn.cluster import KMeans\nimport altair as alt\n# ---\nfrom sklearn.preprocessing import OneHotEncoder, StandardScaler, MinMaxScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.compose import ColumnTransformer\nfrom sklearn.metrics import silhouette_score\nfrom sklearn.impute import SimpleImputer\nfrom sklearn.linear_model import LogisticRegression, LinearRegression\nfrom sklearn.cluster import KMeans\n\n# Split\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, classification_report,confusion_matrix, roc_curve, auc, precision_recall_curve, average_precision_score, mean_absolute_error, mean_squared_error, r2_score\n\nimport nltk \nnltk.download('stopwords') # necessary for removal of stop words\nfrom nltk.corpus import stopwords\nfrom nltk import word_tokenize, pos_tag\nfrom nltk.stem import PorterStemmer, WordNetLemmatizer\nfrom nltk.corpus import wordnet\nimport numpy as np\n\n\nnltk.download('punkt') # necessary for tokenization\nnltk.download('wordnet') # necessary for lemmatization\nnltk.download('stopwords') # necessary for removal of stop words\nnltk.download('averaged_perceptron_tagger') # necessary for POS tagging\nnltk.download('maxent_ne_chunker') # necessary for entity extraction\nnltk.download('omw-1.4') # necessary for lemmatization\nnltk.download('words')\n\n[nltk_data] Downloading package stopwords to\n[nltk_data]     /Users/usr-s3c/nltk_data...\n[nltk_data]   Package stopwords is already up-to-date!\n[nltk_data] Downloading package punkt to /Users/usr-s3c/nltk_data...\n[nltk_data]   Package punkt is already up-to-date!\n[nltk_data] Downloading package wordnet to /Users/usr-s3c/nltk_data...\n[nltk_data]   Package wordnet is already up-to-date!\n[nltk_data] Downloading package stopwords to\n[nltk_data]     /Users/usr-s3c/nltk_data...\n[nltk_data]   Package stopwords is already up-to-date!\n[nltk_data] Downloading package averaged_perceptron_tagger to\n[nltk_data]     /Users/usr-s3c/nltk_data...\n[nltk_data]   Package averaged_perceptron_tagger is already up-to-\n[nltk_data]       date!\n[nltk_data] Downloading package maxent_ne_chunker to\n[nltk_data]     /Users/usr-s3c/nltk_data...\n[nltk_data]   Package maxent_ne_chunker is already up-to-date!\n[nltk_data] Downloading package omw-1.4 to /Users/usr-s3c/nltk_data...\n[nltk_data]   Package omw-1.4 is already up-to-date!\n[nltk_data] Downloading package words to /Users/usr-s3c/nltk_data...\n[nltk_data]   Package words is already up-to-date!\n\n\nTrue",
+    "crumbs": [
+      "Home",
+      "Exmanen Final",
+      "Examen Final"
+    ]
+  },
+  {
+    "objectID": "final.html#carga-del-dataset",
+    "href": "final.html#carga-del-dataset",
+    "title": "Lab-Final",
+    "section": "Carga del Dataset",
+    "text": "Carga del Dataset\n\nCargando datos del CSV desde URL\n\nURL = \"https://raw.githubusercontent.com/erickedu85/dataset/refs/heads/master/tweets/1500_tweets_con_toxicity.csv\"\ndf = pd.read_csv(URL)\ndf\n\n\n\n\n\n\n\n\ntweetId\ntweetUrl\ncontent\nisReply\nreplyTo\ncreatedAt\nauthorId\nauthorName\nauthorUsername\nauthorVerified\n...\ninReplyToId\nDate\ntime_response\naccount_age_days\nmentions_count\nhashtags_count\ncontent_length\nhas_profile_picture\nsentiment_polarity\ntoxicity_score\n\n\n\n\n0\n1878630970745900800\nhttps://x.com/Pableins15/status/18786309707459...\n@DanielNoboaOk @DiegoBorjaPC Lávate el hocico ...\nTrue\nDanielNoboaOk\n2025-01-13 02:31:00\n176948611\nPablo Balarezo\nPableins15\nFalse\n...\n1878539079249547520\n2025-01-12 20:26:32\n364.466667\n5261\n2\n0\n309\nFalse\n0.0\n0.543256\n\n\n1\n1904041877503984128\nhttps://x.com/solma1201/status/190404187750398...\n@DanielNoboaOk De esa arrastrada no te levanta...\nTrue\nDanielNoboaOk\n2025-03-24 05:25:00\n1368663286582030336\nSolma1201\nsolma1201\nFalse\n...\n1904003201143115776\n2025-03-24 02:51:52\n153.133333\n1399\n1\n0\n70\nTrue\n0.0\n0.426917\n\n\n2\n1877463444649046016\nhttps://x.com/Mediterran67794/status/187746344...\n@LuisaGonzalezEc @RC5Oficial Protegiendo a los...\nTrue\nLuisaGonzalezEc\n2025-01-09 21:12:00\n1851005619106451712\nMédico Escritor Filósofo Hermeneútico\nMediterran67794\nFalse\n...\n1877158437236228352\n2025-01-09 01:00:22\n1211.633333\n68\n2\n0\n122\nTrue\n0.0\n0.555970\n\n\n3\n1881356046108885248\nhttps://x.com/ardededa/status/1881356046108885494\n@DanielNoboaOk #NoboaPresidente. Todo 7!\nTrue\nDanielNoboaOk\n2025-01-20 15:00:00\n315799544\nDenise\nardededa\nFalse\n...\n1881165128185560832\n2025-01-20 02:21:31\n758.483333\n4955\n1\n0\n41\nTrue\n0.0\n0.046615\n\n\n4\n1888331962063978752\nhttps://x.com/LMarquinezm/status/1888331962063...\n@slider1908 @LuisaGonzalezEc @DianaAtamaint @c...\nTrue\nslider1908\n2025-02-08 20:59:00\n1551883554\nLuis Marquínez\nLMarquinezm\nFalse\n...\n1888256000085397504\n2025-02-08 14:59:07\n359.883333\n4208\n5\n0\n101\nTrue\n0.0\n0.846027\n\n\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n\n\n1495\n1887488422178107648\nhttps://x.com/JHONNYFEIJ7458/status/1887488422...\n@LuisaGonzalezEc De parte de un pensador indep...\nTrue\nLuisaGonzalezEc\n2025-02-06 13:08:00\n1692557729028550656\nJHONNY FEIJOO\nJHONNYFEIJ7458\nFalse\n...\n1887343838118781440\n2025-02-06 03:33:30\n574.500000\n505\n1\n0\n202\nTrue\n0.0\n0.028739\n\n\n1496\n1887596929628184832\nhttps://x.com/OdalisSnchezC/status/18875969296...\n@LuisaGonzalezEc Todito 5️⃣5️⃣💙🗣️\nTrue\nLuisaGonzalezEc\n2025-02-06 20:19:00\n1438655140580429824\nOdalis Sánchez\nOdalisSnchezC\nFalse\n...\n1887343838118781440\n2025-02-06 03:33:30\n1005.500000\n1205\n1\n0\n33\nTrue\n0.0\nNaN\n\n\n1497\n1878601191715930368\nhttps://x.com/coronelgye/status/18786011917159...\n@DanielNoboaOk @DiegoBorjaPC Los que lloran so...\nTrue\nDanielNoboaOk\n2025-01-13 00:33:00\n1503538924395896832\nCarlos Luis Coronel Reyes\ncoronelgye\nFalse\n...\n1878539079249547520\n2025-01-12 20:26:32\n246.466667\n1026\n2\n0\n108\nTrue\n0.0\n0.285484\n\n\n1498\n1879229315189240064\nhttps://x.com/mantis_jm07/status/1879229315189...\n@LuisaGonzalezEc Será que revela como se puede...\nTrue\nLuisaGonzalezEc\n2025-01-14 18:09:00\n2231112581\n𝓜𝓪𝓻𝓬𝓸 𝓐𝓷𝓽𝓸𝓷𝓲𝓸\nmantis_jm07\nFalse\n...\n1878970600263504384\n2025-01-14 01:01:15\n1027.750000\n4035\n1\n0\n75\nTrue\n0.0\n0.010241\n\n\n1499\n1884764164863721216\nhttps://x.com/B_Dominguez11/status/18847641648...\n@DanielNoboaOk Te van a enterrar en las urnas....\nTrue\nDanielNoboaOk\n2025-01-30 00:42:00\n1290772948220076032\nBraulio Domínguez\nB_Dominguez11\nFalse\n...\n1884761628970791168\n2025-01-30 00:32:44\n9.266667\n1614\n1\n0\n68\nTrue\n0.0\n0.202656\n\n\n\n\n1500 rows × 27 columns\n\n\n\n\n\nIdentificación de valores Duplicados\n\ndf.duplicated(subset=['tweetId']).sum()\n\n0\n\n\n\ndf.info()\n\n&lt;class 'pandas.core.frame.DataFrame'&gt;\nRangeIndex: 1500 entries, 0 to 1499\nData columns (total 27 columns):\n #   Column               Non-Null Count  Dtype  \n---  ------               --------------  -----  \n 0   tweetId              1500 non-null   int64  \n 1   tweetUrl             1500 non-null   object \n 2   content              1500 non-null   object \n 3   isReply              1500 non-null   bool   \n 4   replyTo              1490 non-null   object \n 5   createdAt            1500 non-null   object \n 6   authorId             1500 non-null   int64  \n 7   authorName           1500 non-null   object \n 8   authorUsername       1500 non-null   object \n 9   authorVerified       1500 non-null   bool   \n 10  authorFollowers      1500 non-null   int64  \n 11  authorProfilePic     1500 non-null   object \n 12  authorJoinDate       1500 non-null   object \n 13  source               1500 non-null   object \n 14  hashtags             121 non-null    object \n 15  mentions             1499 non-null   object \n 16  conversationId       1500 non-null   int64  \n 17  inReplyToId          1500 non-null   int64  \n 18  Date                 1500 non-null   object \n 19  time_response        1500 non-null   float64\n 20  account_age_days     1500 non-null   int64  \n 21  mentions_count       1500 non-null   int64  \n 22  hashtags_count       1500 non-null   int64  \n 23  content_length       1500 non-null   int64  \n 24  has_profile_picture  1500 non-null   bool   \n 25  sentiment_polarity   1500 non-null   float64\n 26  toxicity_score       1347 non-null   float64\ndtypes: bool(3), float64(3), int64(9), object(12)\nmemory usage: 285.8+ KB",
+    "crumbs": [
+      "Home",
+      "Exmanen Final",
+      "Examen Final"
+    ]
+  },
+  {
+    "objectID": "final.html#preparación",
+    "href": "final.html#preparación",
+    "title": "Lab-Final",
+    "section": "Preparación",
+    "text": "Preparación\n\nSelección\nTipo y cantidad de variables\n\nTexto (1):\n\ncontent\n\nCategóricas (2):\n\nisReply\nauthorVerified\n\nNuméricas (2):\n\naccount_age_days\nmentions_count\n\nTarget (1):\n\ntoxicity_score (variable continua objetivo)\n\n\n\ndf = df[['isReply', 'authorVerified','account_age_days','mentions_count','content','toxicity_score']]\ndf\n\ncat_cols = ['isReply','authorVerified']   # tratamos booleanas como categóricas\nnum_cols = ['account_age_days','mentions_count']\ntarget = 'toxicity_score'\ntext_col = 'content'\ndf.info()\n\n&lt;class 'pandas.core.frame.DataFrame'&gt;\nRangeIndex: 1500 entries, 0 to 1499\nData columns (total 6 columns):\n #   Column            Non-Null Count  Dtype  \n---  ------            --------------  -----  \n 0   isReply           1500 non-null   bool   \n 1   authorVerified    1500 non-null   bool   \n 2   account_age_days  1500 non-null   int64  \n 3   mentions_count    1500 non-null   int64  \n 4   content           1500 non-null   object \n 5   toxicity_score    1347 non-null   float64\ndtypes: bool(2), float64(1), int64(2), object(1)\nmemory usage: 49.9+ KB",
+    "crumbs": [
+      "Home",
+      "Exmanen Final",
+      "Examen Final"
+    ]
+  },
+  {
+    "objectID": "final.html#estadísticas-descriptivas-mínimos-máximos-media-mediana-distribución.",
+    "href": "final.html#estadísticas-descriptivas-mínimos-máximos-media-mediana-distribución.",
+    "title": "Lab-Final",
+    "section": "Estadísticas descriptivas (mínimos, máximos, media, mediana, distribución).",
+    "text": "Estadísticas descriptivas (mínimos, máximos, media, mediana, distribución).\n\nDecripción General\n\ndf.describe()\n\n\n\n\n\n\n\n\naccount_age_days\nmentions_count\ntoxicity_score\n\n\n\n\ncount\n1500.000000\n1500.000000\n1347.000000\n\n\nmean\n2271.134000\n1.723333\n0.253879\n\n\nstd\n1984.156805\n0.946248\n0.243942\n\n\nmin\n-90.000000\n0.000000\n0.001940\n\n\n25%\n455.750000\n1.000000\n0.028444\n\n\n50%\n1538.000000\n2.000000\n0.188392\n\n\n75%\n4420.750000\n2.000000\n0.426917\n\n\nmax\n6506.000000\n10.000000\n0.939145\n\n\n\n\n\n\n\n\n\nValores caracteristicas numerocas\n\ndesc = df[['account_age_days','mentions_count','toxicity_score']].describe().T\ndesc['median'] = df[['account_age_days','mentions_count','toxicity_score']].median()\ndesc\n\n\n\n\n\n\n\n\ncount\nmean\nstd\nmin\n25%\n50%\n75%\nmax\nmedian\n\n\n\n\naccount_age_days\n1500.0\n2271.134000\n1984.156805\n-90.00000\n455.750000\n1538.000000\n4420.750000\n6506.000000\n1538.000000\n\n\nmentions_count\n1500.0\n1.723333\n0.946248\n0.00000\n1.000000\n2.000000\n2.000000\n10.000000\n2.000000\n\n\ntoxicity_score\n1347.0\n0.253879\n0.243942\n0.00194\n0.028444\n0.188392\n0.426917\n0.939145\n0.188392\n\n\n\n\n\n\n\n\n\nDistribución de la variable target\nInterpretación de la distribución\nLa variable toxicity_score presenta una distribución claramente sesgada hacia valores bajos: la mayoría de los tweets se concentran entre 0.00 y 0.15, mientras que los niveles altos de toxicidad aparecen con mucha menor frecuencia. Esto indica que el conjunto de datos está compuesto mayoritariamente por contenido no tóxico, con solo un subconjunto reducido de tweets que presentan toxicidad media o alta.\n\n# --- gráfico ANTES (dataset original con nulos en toxicity_score) ---\nchart_before = (\n    alt.Chart(df)  # df original\n    .mark_bar()\n    .encode(\n        x=alt.X(\"toxicity_score:Q\", bin=alt.Bin(maxbins=30), title=\"Toxicity score\"),\n        y=alt.Y(\"count():Q\", title=\"Frecuencia\"),\n        tooltip=[\"count():Q\"]\n    )\n    .properties(width=500, height=300, title=\"Antes (con nulos)\")\n    .interactive()\n)\nchart_before",
+    "crumbs": [
+      "Home",
+      "Exmanen Final",
+      "Examen Final"
+    ]
+  },
+  {
+    "objectID": "final.html#eliminación-de-datos-nulos-y-duplicados",
+    "href": "final.html#eliminación-de-datos-nulos-y-duplicados",
+    "title": "Lab-Final",
+    "section": "Eliminación de datos nulos y duplicados",
+    "text": "Eliminación de datos nulos y duplicados\n\nValores nulos\n\ndf.isna().sum()\n\nisReply               0\nauthorVerified        0\naccount_age_days      0\nmentions_count        0\ncontent               0\ntoxicity_score      153\ndtype: int64\n\n\n\n\nVAlores Duplicados",
+    "crumbs": [
+      "Home",
+      "Exmanen Final",
+      "Examen Final"
+    ]
+  },
+  {
+    "objectID": "final.html#visualizaciones-apropiadas-al-tipo-de-dato",
+    "href": "final.html#visualizaciones-apropiadas-al-tipo-de-dato",
+    "title": "Lab-Final",
+    "section": "visualizaciones apropiadas al tipo de dato",
+    "text": "visualizaciones apropiadas al tipo de dato\n\n# Histograma de cada numérica\ncharts_hist = []\nfor col in num_cols + [target]:\n    ch = (\n        alt.Chart(df)\n        .mark_bar()\n        .encode(\n            x=alt.X(f\"{col}:Q\", bin=alt.Bin(maxbins=30), title=col),\n            y=alt.Y(\"count():Q\", title=\"Frecuencia\"),\n            tooltip=[\"count():Q\"]\n        )\n        .properties(width=400, height=200, title=f\"Histograma — {col}\")\n    )\n    charts_hist.append(ch)\n\n# Boxplot de cada numérica\ncharts_box = []\nfor col in num_cols + [target]:\n    ch = (\n        alt.Chart(df)\n        .mark_boxplot()\n        .encode(\n            y=alt.Y(f\"{col}:Q\", title=col)\n        )\n        .properties(width=300, height=120, title=f\"Boxplot — {col}\")\n    )\n    charts_box.append(ch)\n\n# Mostrar en grilla (hist arriba, box abajo)\n(hist_row := alt.hconcat(*charts_hist)) & (box_row := alt.hconcat(*charts_box))\n\n\n\n\n\n\n\n\nCategóricas — barras de conteo",
+    "crumbs": [
+      "Home",
+      "Exmanen Final",
+      "Examen Final"
+    ]
+  },
+  {
+    "objectID": "final.html#visualizaciones-por-tipo-de-datos",
+    "href": "final.html#visualizaciones-por-tipo-de-datos",
+    "title": "Lab-Final",
+    "section": "Visualizaciones Por tipo de datos",
+    "text": "Visualizaciones Por tipo de datos\nLos histogramas muestran que tanto account_age_days como mentions_count presentan distribuciones no uniformes y claramente sesgadas: en el caso de account_age_days hay dos zonas de concentración —cuentas muy nuevas y cuentas de varios años de antigüedad— mientras que mentions_count está fuertemente concentrada entre 0 y 2 menciones.\nLos boxplots confirman la presencia de outliers, especialmente en mentions_count y también en toxicity_score, donde se observan pocos valores altos que se distancian del grueso de la distribución. Estos patrones sugieren la necesidad de un tratamiento específico para valores atípicos o el uso de escaladores robustos antes del modelado.\n\n# Histograma de cada numérica\ncharts_hist = []\nfor col in num_cols + [target]:\n    ch = (\n        alt.Chart(df)\n        .mark_bar()\n        .encode(\n            x=alt.X(f\"{col}:Q\", bin=alt.Bin(maxbins=30), title=col),\n            y=alt.Y(\"count():Q\", title=\"Frecuencia\"),\n            tooltip=[\"count():Q\"]\n        )\n        .properties(width=400, height=200, title=f\"Histograma — {col}\")\n    )\n    charts_hist.append(ch)\n\n# Boxplot de cada numérica\ncharts_box = []\nfor col in num_cols + [target]:\n    ch = (\n        alt.Chart(df)\n        .mark_boxplot()\n        .encode(\n            y=alt.Y(f\"{col}:Q\", title=col)\n        )\n        .properties(width=300, height=120, title=f\"Boxplot — {col}\")\n    )\n    charts_box.append(ch)\n\n# Mostrar en grilla (hist arriba, box abajo)\n(hist_row := alt.hconcat(*charts_hist)) & (box_row := alt.hconcat(*charts_box))\n\n\n\n\n\n\n\nHallazgos clave del EDA\n\nPredominio de baja toxicidad: La distribución de toxicity_score está fuertemente sesgada hacia valores cercanos a 0, lo que indica que la mayoría de los tweets no presentan contenido tóxico. Los valores altos existen, pero en proporción reducida.\nVariables numéricas con asimetría y outliers: Tanto account_age_days como mentions_count muestran distribuciones no uniformes y presencia de valores atípicos según los boxplots. Esto sugiere que podrían requerir escalado robusto o tratamiento específico antes del modelado.\nCategóricas desbalanceadas: Las variables isReply y authorVerified presentan una mayor concentración en una sola categoría (por ejemplo, más cuentas no verificadas y mayor cantidad de tweets que no son reply), lo que puede influir en la capacidad predictiva de esas variables y debe considerarse en su codificación.",
+    "crumbs": [
+      "Home",
+      "Exmanen Final",
+      "Examen Final"
+    ]
+  },
+  {
+    "objectID": "final.html#limpieza-del-texto-y-metadatos.",
+    "href": "final.html#limpieza-del-texto-y-metadatos.",
+    "title": "Lab-Final",
+    "section": "Limpieza del texto y metadatos.",
+    "text": "Limpieza del texto y metadatos.\n\ndef clean_text(s: pd.Series) -&gt; pd.Series:\n    s = s.fillna(\"\").astype(str).str.lower()\n    s = s.str.replace(r\"http\\S+|www\\S+\", \" \", regex=True)   # URLs\n    s = s.str.replace(r\"@[\\w_]+\", \" \", regex=True)           # menciones\n    s = s.str.replace(r\"#\", \" \", regex=True)                  # hashtag simbolo\n    s = s.str.replace(r\"[^a-záéíóúñü0-9\\s]\", \" \", regex=True) # signos, acepta letras españolas\n    s = s.str.replace(r\"\\s+\", \" \", regex=True).str.strip()\n    return s\n\n# aplicar limpieza de texto IN-PLACE (opción simple y clara)\ndf[text_col] = clean_text(df[text_col])\n\n/var/folders/8j/llgk77912n1_x415m3ds8q7h0000gn/T/ipykernel_77355/1171792866.py:11: SettingWithCopyWarning: \nA value is trying to be set on a copy of a slice from a DataFrame.\nTry using .loc[row_indexer,col_indexer] = value instead\n\nSee the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy\n  df[text_col] = clean_text(df[text_col])\n\n\n\ndf.head(10)\n\n\n\n\n\n\n\n\nisReply\nauthorVerified\naccount_age_days\nmentions_count\ncontent\ntoxicity_score\n\n\n\n\n0\nTrue\nFalse\n5261\n2\nlávate el hocico presidente de cartón habla la...\n0.543256\n\n\n1\nTrue\nFalse\n1399\n1\nde esa arrastrada no te levantas nunca chao ca...\n0.426917\n\n\n2\nTrue\nFalse\n68\n2\nprotegiendo a los narcotraficantes criminales ...\n0.555970\n\n\n3\nTrue\nFalse\n4955\n1\nnoboapresidente todo 7\n0.046615\n\n\n4\nTrue\nFalse\n4208\n5\ntroll de mierda a callarse la boca\n0.846027\n\n\n6\nTrue\nFalse\n5038\n1\nla desesperación en la que estás porque sabes ...\n0.200562\n\n\n7\nTrue\nFalse\n4092\n1\npor fin un gobierno que le da valor a los ecua...\n0.022728\n\n\n8\nTrue\nFalse\n2516\n3\ny por que no hizo nada cuando le pidió ayuda p...\n0.338998\n\n\n9\nTrue\nFalse\n4866\n1\nte revolcaron luisa vergüenza de candidata nun...\n0.386017\n\n\n10\nTrue\nFalse\n271\n2\n\n0.013194",
+    "crumbs": [
+      "Home",
+      "Exmanen Final",
+      "Examen Final"
+    ]
+  },
+  {
+    "objectID": "final.html#codificación-de-datos-con-pipeline",
+    "href": "final.html#codificación-de-datos-con-pipeline",
+    "title": "Lab-Final",
+    "section": "codificación de datos con PipeLine",
+    "text": "codificación de datos con PipeLine\n\nPreprocesamiento de categoricas\n\n# Opción recomendada (Nominal): OneHotEncoder\ncat_onehot = Pipeline([       \n     ('ohe_cat',OneHotEncoder(handle_unknown='ignore')),\n])\n\n\n\nEscalamiento de Numericas\n\nnum_scale = Pipeline([\n    ('scaler_nume', StandardScaler()),\n])\n\n\n\nPreprocesaro de Variables categoricas y numericas\n\n\nTFIDF\n\ncustom_stopwords = [\n    \"de\",\"la\",\"que\",\"el\",\"en\",\"y\",\"a\",\"los\",\"del\",\"se\",\"las\",\"por\",\"un\",\"para\",\n    \"con\",\"no\",\"una\",\"su\",\"al\",\"lo\",\"como\",\"más\",\"pero\",\"sus\",\"le\",\"ya\",\"o\",\"este\",\n    \"sí\",\"porque\",\"esta\",\"entre\",\"cuando\",\"muy\",\"sin\",\"sobre\",\"también\",\"me\",\"hasta\",\n    \"hay\",\"donde\",\"quien\",\"desde\",\"todo\",\"nos\",\"durante\",\"todos\",\"uno\",\"les\",\"ni\",\n    \"contra\",\"otros\",\"ese\",\"eso\",\"ante\",\"ellos\",\"e\",\"esto\",\"mí\",\"antes\",\"algunos\",\n    \"qué\",\"unos\",\"yo\",\"otro\",\"otras\",\"otra\",\"él\",\"tanto\",\"esa\",\"estos\",\"mucho\",\"quienes\",\n    \"nada\",\"muchos\",\"cual\",\"poco\",\"ella\",\"estar\",\"estas\",\"algunas\",\"algo\",\"nosotros\",\n    \"mi\",\"mis\",\"tú\",\"te\",\"ti\",\"tu\",\"tus\",\"ellas\",\"nosotras\",\"vosostros\",\"vosostras\",\n    \"os\",\"mío\",\"mía\",\"míos\",\"mías\",\"tuyo\",\"tuya\",\"tuyos\",\"tuyas\",\"suyo\",\"suya\",\"suyos\",\n    \"suyas\",\"nuestro\",\"nuestra\",\"nuestros\",\"nuestras\",\"vuestro\",\"vuestra\",\"vuestros\",\n    \"vuestras\",\"esos\",\"esas\",\"estoy\",\"estás\",\"está\",\"estamos\",\"estáis\",\"están\",\"esté\",\n    \"estés\",\"estemos\",\"estéis\",\"estén\",\"estaré\",\"estarás\",\"estará\",\"estaremos\",\"estaréis\",\n    \"estarán\",\"he\",\"has\",\"ha\",\"hemos\",\"habéis\",\"han\",\"haya\",\"hayas\",\"hayamos\",\"hayáis\",\n    \"hayan\",\"habré\",\"habrás\",\"habrá\",\"habremos\",\"habréis\",\"habrán\", \"voto\",\"votos\",\"voy\",\n    \"vos\",\"xq\",\"2025\",\"votar\",\"vuelta\",\"video\",\"única\",\"acá\",\"adn\",\"vez\",\"viven\",\"único\",\n    \"vida\", \"viene\", \"vivir\", \"único\",\"veo\",\"ver\",\"si\",\"ve\",\"vean\",\"vaya\",\"veces\",\"van\",\"vas\",\"veo\",\"abre\"\n] \n\ntext_pipe = Pipeline(steps=[\n    (\"to_series\", FunctionTransformer(lambda x: pd.Series(x), validate=False)),\n    (\"clean\",     FunctionTransformer(clean_text, validate=False)),\n    (\"tfidf\",     TfidfVectorizer(\n        stop_words=custom_stopwords,\n        ngram_range=(1,2),\n        max_features=1000,\n        min_df=2\n    ))\n])\n\n\n\nPreprocesamiento\n\ndf[cat_cols] = df[cat_cols].astype(str)\n\npreprocessor_all = ColumnTransformer(\n    transformers=[\n        (\"cat\",  cat_onehot, cat_cols),\n        (\"num\",  num_scale,  num_cols),\n        (\"text\", text_pipe,  text_col),  \n    ]\n)\n\n/var/folders/8j/llgk77912n1_x415m3ds8q7h0000gn/T/ipykernel_77355/3620598987.py:1: SettingWithCopyWarning: \nA value is trying to be set on a copy of a slice from a DataFrame.\nTry using .loc[row_indexer,col_indexer] = value instead\n\nSee the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy\n  df[cat_cols] = df[cat_cols].astype(str)\n\n\n\n# Features / target\nX = df[[text_col] + cat_cols + num_cols].copy()\ny = (df[target] &gt;= 0.20).astype(int)\n\nX_train, X_test, y_train, y_test = train_test_split(\n    X, y, test_size=0.25, random_state=42, stratify=y\n)\n\nmodel = Pipeline([\n    (\"preprocessor\", preprocessor_all),\n    (\"clf\", LogisticRegression(max_iter=200, random_state=42))\n])\n\nmodel.fit(X_train, y_train)\n\nPipeline(steps=[('preprocessor',\n                 ColumnTransformer(transformers=[('cat',\n                                                  Pipeline(steps=[('ohe_cat',\n                                                                   OneHotEncoder(handle_unknown='ignore'))]),\n                                                  ['isReply',\n                                                   'authorVerified']),\n                                                 ('num',\n                                                  Pipeline(steps=[('scaler_nume',\n                                                                   StandardScaler())]),\n                                                  ['account_age_days',\n                                                   'mentions_count']),\n                                                 ('text',\n                                                  Pipeline(steps=[('to_series',\n                                                                   FunctionTransformer(func=&lt;function &lt;lambda&gt; at 0x...\n                                                                   FunctionTransformer(func=&lt;function clean_text at 0x1340dbd80&gt;)),\n                                                                  ('tfidf',\n                                                                   TfidfVectorizer(max_features=1000,\n                                                                                   min_df=2,\n                                                                                   ngram_range=(1,\n                                                                                                2),\n                                                                                   stop_words=['de',\n                                                                                               'la',\n                                                                                               'que',\n                                                                                               'el',\n                                                                                               'en',\n                                                                                               'y',\n                                                                                               'a',\n                                                                                               'los',\n                                                                                               'del',\n                                                                                               'se',\n                                                                                               'las',\n                                                                                               'por',\n                                                                                               'un',\n                                                                                               'para',\n                                                                                               'con',\n                                                                                               'no',\n                                                                                               'una',\n                                                                                               'su',\n                                                                                               'al',\n                                                                                               'lo',\n                                                                                               'como',\n                                                                                               'más',\n                                                                                               'pero',\n                                                                                               'sus',\n                                                                                               'le',\n                                                                                               'ya',\n                                                                                               'o',\n                                                                                               'este',\n                                                                                               'sí',\n                                                                                               'porque', ...]))]),\n                                                  'content')])),\n                ('clf', LogisticRegression(max_iter=200, random_state=42))])In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.Pipeline?Documentation for PipelineiFitted\n        \n            \n                Parameters\n                \n\n\n\n\nsteps \n[('preprocessor', ...), ('clf', ...)]\n\n\n\ntransform_input \nNone\n\n\n\nmemory \nNone\n\n\n\nverbose \nFalse\n\n\n\n\n            \n        \n    preprocessor: ColumnTransformer?Documentation for preprocessor: ColumnTransformer\n        \n            \n                Parameters\n                \n\n\n\n\ntransformers \n[('cat', ...), ('num', ...), ...]\n\n\n\nremainder \n'drop'\n\n\n\nsparse_threshold \n0.3\n\n\n\nn_jobs \nNone\n\n\n\ntransformer_weights \nNone\n\n\n\nverbose \nFalse\n\n\n\nverbose_feature_names_out \nTrue\n\n\n\nforce_int_remainder_cols \n'deprecated'\n\n\n\n\n            \n        \n    cat['isReply', 'authorVerified']OneHotEncoder?Documentation for OneHotEncoder\n        \n            \n                Parameters\n                \n\n\n\n\ncategories \n'auto'\n\n\n\ndrop \nNone\n\n\n\nsparse_output \nTrue\n\n\n\ndtype \n&lt;class 'numpy.float64'&gt;\n\n\n\nhandle_unknown \n'ignore'\n\n\n\nmin_frequency \nNone\n\n\n\nmax_categories \nNone\n\n\n\nfeature_name_combiner \n'concat'\n\n\n\n\n            \n        \n    num['account_age_days', 'mentions_count']StandardScaler?Documentation for StandardScaler\n        \n            \n                Parameters\n                \n\n\n\n\ncopy \nTrue\n\n\n\nwith_mean \nTrue\n\n\n\nwith_std \nTrue\n\n\n\n\n            \n        \n    textcontent&lt;lambda&gt;FunctionTransformer?Documentation for FunctionTransformer\n        \n            \n                Parameters\n                \n\n\n\n\nfunc \n&lt;function &lt;la...t 0x13442afc0&gt;\n\n\n\ninverse_func \nNone\n\n\n\nvalidate \nFalse\n\n\n\naccept_sparse \nFalse\n\n\n\ncheck_inverse \nTrue\n\n\n\nfeature_names_out \nNone\n\n\n\nkw_args \nNone\n\n\n\ninv_kw_args \nNone\n\n\n\n\n            \n        \n    clean_textFunctionTransformer?Documentation for FunctionTransformer\n        \n            \n                Parameters\n                \n\n\n\n\nfunc \n&lt;function cle...t 0x1340dbd80&gt;\n\n\n\ninverse_func \nNone\n\n\n\nvalidate \nFalse\n\n\n\naccept_sparse \nFalse\n\n\n\ncheck_inverse \nTrue\n\n\n\nfeature_names_out \nNone\n\n\n\nkw_args \nNone\n\n\n\ninv_kw_args \nNone\n\n\n\n\n            \n        \n    TfidfVectorizer?Documentation for TfidfVectorizer\n        \n            \n                Parameters\n                \n\n\n\n\ninput \n'content'\n\n\n\nencoding \n'utf-8'\n\n\n\ndecode_error \n'strict'\n\n\n\nstrip_accents \nNone\n\n\n\nlowercase \nTrue\n\n\n\npreprocessor \nNone\n\n\n\ntokenizer \nNone\n\n\n\nanalyzer \n'word'\n\n\n\nstop_words \n['de', 'la', ...]\n\n\n\ntoken_pattern \n'(?u)\\\\b\\\\w\\\\w+\\\\b'\n\n\n\nngram_range \n(1, ...)\n\n\n\nmax_df \n1.0\n\n\n\nmin_df \n2\n\n\n\nmax_features \n1000\n\n\n\nvocabulary \nNone\n\n\n\nbinary \nFalse\n\n\n\ndtype \n&lt;class 'numpy.float64'&gt;\n\n\n\nnorm \n'l2'\n\n\n\nuse_idf \nTrue\n\n\n\nsmooth_idf \nTrue\n\n\n\nsublinear_tf \nFalse\n\n\n\n\n            \n        \n    LogisticRegression?Documentation for LogisticRegression\n        \n            \n                Parameters\n                \n\n\n\n\npenalty \n'l2'\n\n\n\ndual \nFalse\n\n\n\ntol \n0.0001\n\n\n\nC \n1.0\n\n\n\nfit_intercept \nTrue\n\n\n\nintercept_scaling \n1\n\n\n\nclass_weight \nNone\n\n\n\nrandom_state \n42\n\n\n\nsolver \n'lbfgs'\n\n\n\nmax_iter \n200\n\n\n\nmulti_class \n'deprecated'\n\n\n\nverbose \n0\n\n\n\nwarm_start \nFalse\n\n\n\nn_jobs \nNone\n\n\n\nl1_ratio \nNone",
+    "crumbs": [
+      "Home",
+      "Exmanen Final",
+      "Examen Final"
+    ]
+  },
+  {
+    "objectID": "final.html#listas-tabla-tranformado",
+    "href": "final.html#listas-tabla-tranformado",
+    "title": "Lab-Final",
+    "section": "Listas tabla tranformado",
+    "text": "Listas tabla tranformado\n\nX_trans_df.info()\n\n&lt;class 'pandas.core.frame.DataFrame'&gt;\nRangeIndex: 1010 entries, 0 to 1009\nColumns: 1004 entries, isReply_True to último\ndtypes: float64(1004)\nmemory usage: 7.7 MB\n\n\n\n# X_trans_df.columns()\n\n\ny.head(20)\n\n0     1\n1     1\n2     1\n3     0\n4     1\n6     1\n7     0\n8     1\n9     1\n10    0\n11    0\n12    1\n13    1\n14    1\n15    0\n16    1\n17    1\n18    1\n19    0\n20    1\nName: toxicity_score, dtype: int64\n\n\n\nClasificación supervisada (baseline)\nEntrenamos un modelo base con Regresión Logística usando el ColumnTransformer ya definido para texto (TF-IDF), categóricas (OneHot) y numéricas (StandardScaler).\n\nclf_lr = Pipeline([\n    (\"preprocessor\", preprocessor_all),\n    (\"clf\", LogisticRegression(max_iter=200, random_state=42))\n])\n\nclf_lr.fit(X_train, y_train)\n\n# Predicciones y probabilidades\ny_pred = clf_lr.predict(X_test)\ny_prob = clf_lr.predict_proba(X_test)[:, 1]\n\n\nmetrics_dict = {\n    \"Accuracy\":  accuracy_score(y_test, y_pred),\n    \"Precision\": precision_score(y_test, y_pred, zero_division=0),\n    \"Recall\":    recall_score(y_test, y_pred, zero_division=0),\n    \"F1-Score\":  f1_score(y_test, y_pred, zero_division=0),\n    \"ROC-AUC\":   roc_auc_score(y_test, y_prob)\n}\nmetrics_df = pd.DataFrame(metrics_dict, index=[\"LogisticRegression\"]).T\nmetrics_df\n\n\n\n\n\n\n\n\nLogisticRegression\n\n\n\n\nAccuracy\n0.724036\n\n\nPrecision\n0.736486\n\n\nRecall\n0.668712\n\n\nF1-Score\n0.700965\n\n\nROC-AUC\n0.802341\n\n\n\n\n\n\n\n\n\nVisualizaciones con Altair\nA continuación se presentan la matriz de confusión y la curva ROC.\n\nimport numpy as np\nimport pandas as pd\nimport altair as alt\nfrom sklearn.metrics import confusion_matrix\n\ncm = confusion_matrix(y_test, y_pred, labels=[0, 1])\n\ncm_df = pd.DataFrame({\n    \"real\": np.repeat([0, 1], 2),\n    \"pred\": [0, 1, 0, 1],\n    \"value\": cm.ravel()\n})\n\ncm_df[\"real\"] = pd.Categorical(cm_df[\"real\"], categories=[0, 1])\ncm_df[\"pred\"] = pd.Categorical(cm_df[\"pred\"], categories=[0, 1])\n\nheat = alt.Chart(cm_df).mark_rect().encode(\n    x=alt.X(\"pred:N\", title=\"Predicción\"),\n    y=alt.Y(\"real:N\", title=\"Real\"),\n    color=alt.Color(\"value:Q\", title=\"Cantidad\", scale=alt.Scale(scheme=\"blues\"))\n).properties(width=320, height=240, title=\"Matriz de confusión\")\n\ntext = alt.Chart(cm_df).mark_text(baseline=\"middle\").encode(\n    x=\"pred:N\",\n    y=\"real:N\",\n    text=\"value:Q\",\n    color=alt.value(\"black\")\n)\n\nheat + text  \n\n\n\n\n\n\n\n\n\nResumen e interpretación (breve)\n\nRendimiento general: (comentar usando la tabla de métricas mostrada arriba).\nMatriz de confusión: (comentar dónde se concentran los aciertos/errores).\n\n\nNota: Este modelo sirve como baseline. En pasos siguientes podemos comparar con SVM, Random Forest o Naive Bayes, y/o ajustar el umbral de decisión si buscamos priorizar Recall (detectar más tóxicos) o Precision (evitar falsos positivos).",
+    "crumbs": [
+      "Home",
+      "Exmanen Final",
+      "Examen Final"
+    ]
+  },
+  {
+    "objectID": "final.html#modelado-de-regresión-sobre-el-valor-continuo-de-toxicity",
+    "href": "final.html#modelado-de-regresión-sobre-el-valor-continuo-de-toxicity",
+    "title": "Lab-Final",
+    "section": "Modelado de Regresión sobre el valor continuo de TOXICITY",
+    "text": "Modelado de Regresión sobre el valor continuo de TOXICITY\nHasta este punto trabajamos la toxicidad como una variable binaria (tóxico / no tóxico).\nAhora utilizamos el valor original de toxicity_score como un valor continuo entre 0 y 1,\ny planteamos el problema como regresión supervisada, es decir, predecir qué tan tóxico es un mensaje según sus características.\nPara ello:\n\nMantendremos el mismo esquema de preprocesamiento (TF-IDF para texto, OneHot para categóricas, escalado para numéricas).\nEntrenaremos al menos un modelo de regresión (baseline).\nEvaluaremos con métricas específicas de regresión:\n\nMAE (Mean Absolute Error),\nRMSE (Root Mean Squared Error),\nR² (Coeficiente de determinación).\n\nPresentaremos visualizaciones interpretables (real vs. predicho, errores residuales, etc.).\n\n\nX_reg = df[[text_col] + cat_cols + num_cols].copy()\ny_reg = df[target].astype(float)   # valor continuo original de toxicity_score\n\nfrom sklearn.model_selection import train_test_split\n\nX_train_reg, X_test_reg, y_train_reg, y_test_reg = train_test_split(\n    X_reg, y_reg, test_size=0.25, random_state=42\n)\n\nreg_model = Pipeline([\n    (\"preprocessor\", preprocessor_all),   # TFIDF + OHE + SCALER ya armado en clasificación\n    (\"reg\", LinearRegression())\n])\n\nreg_model.fit(X_train_reg, y_train_reg)\ny_pred_reg = reg_model.predict(X_test_reg)\n\ny_true = np.asarray(y_test_reg, dtype=float).ravel()\ny_pred = np.asarray(y_pred_reg, dtype=float).ravel()\n\ny_pred = np.clip(y_pred, 0.0, 1.0)\n\nmae  = mean_absolute_error(y_true, y_pred)\nmse  = mean_squared_error(y_true, y_pred)\nrmse = np.sqrt(mse)   # &lt;&lt;&lt; en vez de squared=False\nr2   = r2_score(y_true, y_pred)\n\npd.DataFrame({\"MAE\":[mae], \"RMSE\":[rmse], \"R2\":[r2]})\n\n\n\n\n\n\n\n\nMAE\nRMSE\nR2\n\n\n\n\n0\n0.288632\n0.380624\n-1.494406\n\n\n\n\n\n\n\n\ndf_plot = pd.DataFrame({\n    \"Real\": y_test_reg,\n    \"Predicho\": y_pred_reg\n})\n\n# línea de referencia y=x\nlinea_ref = pd.DataFrame({\"x\":[0,1], \"y\":[0,1]})\n\nscatter = (\n    alt.Chart(df_plot)\n    .mark_circle(size=50, opacity=0.4)\n    .encode(\n        x=alt.X(\"Real:Q\", scale=alt.Scale(domain=[0,1]), title=\"Toxicidad real\"),\n        y=alt.Y(\"Predicho:Q\", scale=alt.Scale(domain=[0,1]), title=\"Toxicidad predicha\"),\n        tooltip=[\"Real\",\"Predicho\"]\n    )\n)\n\nref = (\n    alt.Chart(linea_ref)\n    .mark_line(strokeDash=[4,4], color=\"red\")\n    .encode(x=\"x:Q\", y=\"y:Q\")\n)\nchart_reg = (scatter + ref).properties(\n    title=\"Real vs Predicho — Baseline de Regresión\",\n    width=350, height=300\n).interactive()\n\nchart_reg  \n\n\n\n\n\n\n\n\n📝 Resumen del resultado de regresión\nEntrenamos un modelo para predecir el valor continuo del puntaje de toxicidad (0–1).\nAunque el modelo logra aproximarse, el rendimiento no es bueno: las predicciones están bastante alejadas de los valores reales.\nEn la gráfica de Real vs Predicho se observa que los puntos están muy dispersos y no siguen la línea diagonal roja (que representa predicción perfecta). Esto confirma que el modelo no logra capturar bien el valor exacto de toxicidad.\nEste resultado es esperable por dos razones principales:\n\nLa toxicidad es una señal compleja y difícil de estimar exactamente a partir de texto.\nEste es un modelo baseline sin ajustes ni modelos más avanzados.",
+    "crumbs": [
+      "Home",
+      "Exmanen Final",
+      "Examen Final"
+    ]
+  },
+  {
+    "objectID": "final.html#clustering",
+    "href": "final.html#clustering",
+    "title": "Lab-Final",
+    "section": "Clustering",
+    "text": "Clustering\nEn esta sección aplicamos aprendizaje no supervisado para intentar agrupar los tweets según su similitud —sin usar la etiqueta de toxicidad que usamos antes en clasificación—.\nEl objetivo es observar si los patrones del texto y metadatos forman grupos naturales (clusters) y luego comparar estos grupos con las clases binarias que definimos en el modelo supervisado (tóxico / no tóxico).\nLo que haremos:\n\nAplicar un algoritmo de clustering —usaremos K-Means como método base.\nVisualizar la separación de clusters en un plano reducido (por ejemplo, usando reducción de dimensión si es necesario).\nReflexionar si los clusters descubiertos coinciden o no con la clasificación anterior.\n\nSi los clusters se parecen al target (0/1), sugiere que la toxicidad tiene una estructura natural en los datos.\nSi no se parecen, puede indicar que la toxicidad no es el principal factor de agrupación y hay otros patrones dominantes (tema político, replies, cuentas verificadas, etc.).\n\n\n\nresults = []\n\n# Usamos X_trans_df (ya transformado)\nX_km = X_trans_df.values \n\nfor k in range(3, 9):\n    km = KMeans(n_clusters=k, random_state=42, n_init='auto')\n    km.fit(X_km)\n\n    inertia = km.inertia_\n    sil = silhouette_score(X_km, km.labels_)\n\n    results.append({\"k\": k, \"inertia\": inertia, \"silhouette\": sil})\n\npd.DataFrame(results)\n\n\n\n\n\n\n\n\nk\ninertia\nsilhouette\n\n\n\n\n0\n3\n1592.373494\n0.304095\n\n\n1\n4\n1417.086601\n0.231003\n\n\n2\n5\n1264.139175\n0.206838\n\n\n3\n6\n1202.166290\n0.194500\n\n\n4\n7\n1126.899568\n0.183108\n\n\n5\n8\n1166.809350\n0.141740\n\n\n\n\n\n\n\n\n📌 Selección del número de clusters (K-Means)\nSe evaluaron valores de k entre 3 y 8 utilizando dos métricas:\n\nInertia (↓ mejor) — mide la compacidad interna de los clusters.\nSilhouette (↑ mejor) — mide qué tan separados están los clusters entre sí.\n\n\n\n\nk\nInertia\nSilhouette\n\n\n\n\n3\n1592.37\n0.304\n\n\n4\n1417.09\n0.231\n\n\n5\n1264.14\n0.207\n\n\n6\n1202.17\n0.195\n\n\n7\n1126.90\n0.183\n\n\n8\n1166.81\n0.142\n\n\n\n\n✅ Interpretación\n\nEl mejor valor de silhouette se obtiene con k = 3.\nA partir de k &gt; 3 el silhouette disminuye, indicando peor calidad de separación.\nAunque la inertia baja cuando k aumenta (lo cual es normal), no compensa la caída del silhouette.\n\n\n\n🎯 Conclusión\n\nSe selecciona k = 3 como número óptimo de clusters para continuar con el análisis.\n\n\n# --- Data de entrada (mismas columnas que vienes usando) ---\nX = df[[text_col] + cat_cols + num_cols].copy()\ny_bin = (df[target] &gt;= 0.20).astype(int).values  # solo para análisis comparativo (no se usa en el fit)\n\n# --- Selecciona el k óptimo que encontraste antes (ej. 3) ---\nk_opt = 3\n\n# --- Pipeline de clustering ---\ncluster_pipe = Pipeline([\n    (\"preprocess\", preprocessor_all),                             # TF-IDF + OneHot + StandardScaler\n    (\"densify\",  FunctionTransformer(lambda X: X.toarray(),       # sparse -&gt; dense\n                                     accept_sparse=True)),\n    (\"kmeans\",   KMeans(n_clusters=k_opt, random_state=42, n_init=10))\n])\n\n# Ajustar pipeline\ncluster_pipe.fit(X)\n\n# Etiquetas de cluster aprendidas\nclusters = cluster_pipe.named_steps[\"kmeans\"].labels_\n\n# Matriz ya transformada (para silueta y PCA)\nZ_dense = cluster_pipe.named_steps[\"densify\"].transform(\n    cluster_pipe.named_steps[\"preprocess\"].transform(X)\n)\n\n# Silhouette (calidad del clustering)\nsil = silhouette_score(Z_dense, clusters)\nsil\n\n0.30906836076914457\n\n\n\nimport altair as alt\nfrom sklearn.decomposition import PCA\n\n# Reducimos a 2D para visualización\npca = PCA(n_components=2, random_state=42)\ncoords2d = pca.fit_transform(Z_dense)\n\nplot_df = pd.DataFrame({\n    \"pc1\": coords2d[:, 0],\n    \"pc2\": coords2d[:, 1],\n    \"cluster\": clusters.astype(str),\n    \"tox_bin\": y_bin.astype(int)\n})\n\n\nscatter_clusters = (\n    alt.Chart(plot_df)\n    .mark_circle(size=60, opacity=0.6)\n    .encode(\n        x=alt.X(\"pc1:Q\", title=\"PC1\"),\n        y=alt.Y(\"pc2:Q\", title=\"PC2\"),\n        color=alt.Color(\"cluster:N\", title=\"Cluster\"),\n        tooltip=[\"cluster\", \"tox_bin\"]\n    )\n    .properties(width=350, height=300, title=f\"Clusters encontrados (k={k_opt})\")\n)\nscatter_clusters\n\n\n\n\n\n\n\n\n\n\n🧩 Conclusión del gráfico de clustering (k = 3)\nEl gráfico demuestra que al aplicar K-Means con k=3 los tweets no quedaron mezclados al azar, sino que se formaron tres grupos bien definidos según similitudes en su contenido.\nPuntos clave en simple:\n\nLos puntos del mismo color se agrupan, lo que significa que hay patrones de texto repetidos entre tweets del mismo cluster.\nAunque el modelo NO sabía nada de toxicidad al agrupar, es probable que cada grupo tenga formas de escribir o tonos diferentes (por ejemplo: insultos, ironía, neutralidad).\nEsto sugiere que los usuarios tienden a escribir de manera similar cuando transmiten el mismo tipo de mensaje o emoción.\n\n\nEn resumen: el clustering sirvió para comprobar que existen comportamientos y estilos de escritura que se repiten, lo cual da sentido a luego usar clasificación supervisada para separar lo tóxico de lo no tóxico de forma más precisa.",
+    "crumbs": [
+      "Home",
+      "Exmanen Final",
+      "Examen Final"
+    ]
+  },
+  {
+    "objectID": "final.html#conclusiones-finales",
+    "href": "final.html#conclusiones-finales",
+    "title": "Lab-Final",
+    "section": "✅ 6. Conclusiones finales",
+    "text": "✅ 6. Conclusiones finales\n\nCalidad de los datos\n\nEl dataset tenía un alto número de tweets con toxicidad cercana a 0, lo cual generaba un cierto desbalance natural.\nAun así, al convertir la columna toxicity_score en binaria usando el umbral 0.20 se obtuvo un target balanceado, lo que permitió entrenar modelos de forma justa sin sesgo fuerte hacia una sola clase.\nEl texto requirió limpieza (URLs, menciones, símbolos, stopwords) para eliminar ruido y dejar solo contenido útil.\n\n\n\nUtilidad del target generado\n\nLa discretización (0 = no tóxico / 1 = tóxico) fue coherente con la distribución observada en los histogramas.\nEl umbral elegido permitió capturar tweets con tono agresivo sin perder demasiada muestra.\nEl target resultó interpretativo y defendible para un modelo supervisado.\n\n\n\nRendimiento de los modelos\n\nLa Regresión Logística, como modelo base, logró un rendimiento aceptable sin tuning, lo cual valida que las features (TF-IDF + cat + num) capturan información relevante.\nLa parte de regresión sobre el valor continuo evidenció que predecir toxicidad exacta es más difícil (bajo R²), lo que justifica usar clasificación en lugar de regresión en este caso.\n\n\n\nPatrones encontrados (Clustering)\n\nEl análisis no supervisado mostró que existen agrupamientos naturales en el texto, incluso sin conocer el target.\nLos clusters identificados confirmaron que hay estilos y grupos de discurso coherentes — lo cual respalda la existencia de patrones reales en el lenguaje del dataset.\n\n\n6 Conclusiones",
+    "crumbs": [
+      "Home",
+      "Exmanen Final",
+      "Examen Final"
+    ]
+  },
+  {
+    "objectID": "final.html#próximos-pasos-y-mejoras-sugeridas",
+    "href": "final.html#próximos-pasos-y-mejoras-sugeridas",
+    "title": "Lab-Final",
+    "section": "🚀 Próximos pasos y mejoras sugeridas",
+    "text": "🚀 Próximos pasos y mejoras sugeridas\n\nMejorar features de texto\n\nProbar embeddings más avanzados (Word2Vec, SBERT, FastText)\nIncorporar bigramas/trigramas con ajuste de vocabulario\n\nProbar modelos más complejos\n\nRandom Forest / XGBoost / SVM / Redes neuronales livianas\nBúsqueda de hiperparámetros (Grid/Random/Optuna)\n\nRefinar el target\n\nProbar cortes alternativos (0.15 / 0.25) y comparar métricas\nConstruir una clase adicional “neutral” (multiclase)\n\nEvaluación más robusta\n\nValidación cruzada en vez de un solo split\nCurvas Precision-Recall comparativas\n\nPerspectiva aplicada\n\nIntegrar el modelo en un pipeline real (detección en vivo)\nGenerar interpretabilidad (SHAP/LIME) para explicar decisiones\n\n\n\n\nEn conclusión, el proyecto permitió demostrar que existen patrones detectables en el lenguaje de los tweets y que es viable construir un modelo de clasificación de toxicidad con resultados sólidos como baseline. Los siguientes pasos deben enfocarse en mejorar la representación del texto y explorar modelos más sofisticados para incrementar el rendimiento.",
+    "crumbs": [
+      "Home",
+      "Exmanen Final",
+      "Examen Final"
     ]
   }
 ]

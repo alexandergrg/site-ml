@@ -420,7 +420,7 @@ preprocessor = ColumnTransformer(
 from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LogisticRegression
 
-model = Pipeline(steps=[
+model = Pipeline([
     ("preprocessor", preprocessor),
     ("classifier", LogisticRegression(max_iter=200, random_state=42))
 ])

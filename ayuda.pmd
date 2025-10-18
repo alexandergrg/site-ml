@@ -20,9 +20,54 @@ custom_stop = {
     "pues","hay","ya","muy","más","ni"
 }
 
-# {"ecuador", "luisa", "noboa", "pais", "presidente"}  # palabras que distorsionan
-# 
 stop_words = stop_es.union(custom_stop)
 
 print(f"Total de stopwords: {len(stop_words)}")
 list(stop_words)[:40]
+
+
+
+Total de stopwords: 319
+['esta',
+ 'suyas',
+ 'que',
+ 'mías',
+ 'este',
+ 'habrás',
+ 'estarían',
+ 'tuyas',
+ 'serías',
+ 'son',
+ 'tienes',
+ 'algo',
+ 'seamos',
+ 'habíais',
+ 'estuvimos',
+ 'yo',
+ 'siente',
+ 'por',
+ 'habidas',
+ 'suyos',
+ 'estarán',
+ 'estabas',
+ 'serán',
+ 'eres',
+ 'tenemos',
+ 'tuvo',
+ 'estaremos',
+ 'era',
+ 'hubisteis',
+ 'la',
+ 'vosotros',
+ 'tuviste',
+ 'fuerais',
+ 'hubiéramos',
+ 'tened',
+ 'seréis',
+ 'otros',
+ 'algunas',
+ 'al',
+ 'tuviese']
+
+
+

@@ -55,6 +55,24 @@ website:
         contents:
           - href: lab2.qmd
             text: "Lab 2 Procesamiento de Texto Twiter "
+      - section: "Aprendizaje No Supervisado"
+        contents:
+          - href: knn.qmd
+            text: "KNN "
+      - section: "K-Means"
+        contents:
+          - href: kmeans.qmd
+            text: "K-Means "
+          - href: hac.qmd
+            text: "Hierachical Aglomerative Clustering (HAC)"
+      - section: "Exmanen Final"
+        contents:
+          - href: final.qmd
+            text: "Examen Final"
+
+      
+      
+      
 
 
   navbar:

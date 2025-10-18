@@ -402,7 +402,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>#🧩 1. Importar librerías y cargar el dataset</p>
 <section id="importar-librerias" class="level2">
 <h2 class="anchored" data-anchor-id="importar-librerias">Importar Librerias</h2>
-<div id="484ceb25" class="cell" data-execution_count="1">
+<div id="e13fad30" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_20newsgroups</span>
@@ -455,7 +455,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="cargar-el-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="cargar-el-dataset">Cargar el Dataset</h2>
-<div id="8f904e60" class="cell" data-execution_count="2">
+<div id="7316af4c" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/erickedu85/dataset/refs/heads/master/tweets/tweets_totales_con_sentimiento_ml.csv"</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Lectura estricta en UTF-8</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(url, encoding<span class="op">=</span><span class="st">"utf-8"</span>)</span>
@@ -584,7 +584,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>🧮 2. Exploración inicial</h1>
 <section id="verificar-la-base-de-datos" class="level2">
 <h2 class="anchored" data-anchor-id="verificar-la-base-de-datos">Verificar la base de datos</h2>
-<div id="74ae6d25" class="cell" data-execution_count="3">
+<div id="580962c7" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df.info()</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>df.describe()</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>df.isna().<span class="bu">sum</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -656,7 +656,7 @@ dtype: int64</code></pre>
 </section>
 <section id="verificación-de-columnas" class="level2">
 <h2 class="anchored" data-anchor-id="verificación-de-columnas">Verificación de columnas</h2>
-<div id="97b1721f" class="cell" data-execution_count="4">
+<div id="97b7fd71" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>df.columns</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <pre><code>Index(['tweetId', 'tweetUrl', 'content', 'isReply', 'replyTo', 'createdAt',
@@ -671,7 +671,7 @@ dtype: int64</code></pre>
 </section>
 <section id="identificación-del-campo-content" class="level2">
 <h2 class="anchored" data-anchor-id="identificación-del-campo-content">Identificación del campo content</h2>
-<div id="c1f90b6b" class="cell" data-execution_count="5">
+<div id="66d9c2ea" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Confirmar si existe y mostrar ejemplos</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'content'</span> <span class="kw">in</span> df.columns:</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"✅ La columna 'content' está disponible. Ejemplo de texto:"</span>)</span>
@@ -691,7 +691,7 @@ Name: content, dtype: object</code></pre>
 </section>
 <section id="limpieza-inicial-del-texto" class="level2">
 <h2 class="anchored" data-anchor-id="limpieza-inicial-del-texto">Limpieza inicial del texto</h2>
-<div id="1f4e9a31" class="cell" data-execution_count="6">
+<div id="4e85d909" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> unicodedata</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -755,7 +755,7 @@ Name: content, dtype: object</code></pre>
 </section>
 <section id="tokenización-con-nltk" class="level2">
 <h2 class="anchored" data-anchor-id="tokenización-con-nltk">Tokenización con NLTK</h2>
-<div id="4fa86eda" class="cell" data-execution_count="7">
+<div id="5aa2d091" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> nltk</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.tokenize <span class="im">import</span> word_tokenize</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -804,7 +804,7 @@ Name: content, dtype: object</code></pre>
 </section>
 <section id="frecuencia" class="level2">
 <h2 class="anchored" data-anchor-id="frecuencia">Frecuencia</h2>
-<div id="b9538f78" class="cell" data-execution_count="8">
+<div id="dd724329" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Combinar todas las listas de tokens</span></span>
@@ -1088,7 +1088,7 @@ Name: content, dtype: object</code></pre>
 </section>
 <section id="visualizar-palabras-repetidas" class="level2">
 <h2 class="anchored" data-anchor-id="visualizar-palabras-repetidas">Visualizar Palabras Repetidas</h2>
-<div id="939a1c5a" class="cell" data-execution_count="9">
+<div id="8aabe53c" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#import matplotlib.pyplot as plt</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co">#plt.figure(figsize=(10,5))</span></span>
@@ -1100,7 +1100,7 @@ Name: content, dtype: object</code></pre>
 </section>
 <section id="lista-de-stopwords-personalizadas-exeptuando-si-o-no" class="level2">
 <h2 class="anchored" data-anchor-id="lista-de-stopwords-personalizadas-exeptuando-si-o-no">lista de Stopwords personalizadas ( exeptuando SI o NO )</h2>
-<div id="3192b516" class="cell" data-execution_count="10">
+<div id="5d3a5314" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.corpus <span class="im">import</span> stopwords</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Base NLTK en español</span></span>
@@ -1138,52 +1138,52 @@ Name: content, dtype: object</code></pre>
 <pre><code>Total de stopwords: 336</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="10">
-<pre><code>['fue',
- 'estaré',
- 'habrías',
- 'estaríais',
- 'sip',
- 'buenas',
- 'vosotros',
- 'mías',
- 'estad',
+<pre><code>['tendré',
+ 'estaréis',
+ 'ante',
+ 'fui',
+ 'estuviese',
+ 'donde',
  'estuvieron',
- 'esos',
- 'tardes',
- 'sentidas',
- 'les',
- 'sentidos',
- 'estáis',
- 'él',
- 'jaja',
- 'habiendo',
- 'sobre',
- 'muchos',
- 'hemos',
- 'suyos',
- 'soy',
- 'seremos',
- 'nosotros',
- 'estando',
- 'ya',
- 'fuiste',
- 'mucho',
- 'como',
- 'tus',
- 'sentid',
- 'suyas',
+ 'sintiendo',
+ 'ti',
+ 'estada',
+ 'han',
+ 'sería',
+ 'mía',
+ 'xd',
+ 'jajaja',
+ 'mío',
+ 'sí',
  'poco',
- 'seáis',
+ 'tardes',
+ 'estuvisteis',
+ 'durante',
+ 'hubisteis',
+ 'habrías',
+ 'eras',
+ 'estáis',
+ 'tenida',
+ 'había',
+ 'tuvieron',
+ 'tenemos',
+ 'serán',
+ 'habré',
  'tendrán',
- 'estas',
- 'de',
- 'tendrías']</code></pre>
+ 'estuviera',
+ 'estaba',
+ 'están',
+ 'tuvimos',
+ 'nada',
+ 'tengáis',
+ 'antes',
+ 'hay']</code></pre>
 </div>
 </div>
 </section>
 <section id="lista-de-stopwords-personalizadas-exeptuando-si-o-no-para-lematizar" class="level2">
 <h2 class="anchored" data-anchor-id="lista-de-stopwords-personalizadas-exeptuando-si-o-no-para-lematizar">lista de Stopwords personalizadas ( exeptuando SI o NO ) para lematizar</h2>
-<div id="cc14e6b4" class="cell" data-execution_count="11">
+<div id="fc1d5de8" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># PRE-FLIGHT: asegurar columnas previas para lematizar</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re, unicodedata</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> nltk</span>
@@ -1261,7 +1261,7 @@ Name: content, dtype: object</code></pre>
 </section>
 <section id="lematizar" class="level2">
 <h2 class="anchored" data-anchor-id="lematizar">Lematizar</h2>
-<div id="a7867392" class="cell" data-execution_count="12">
+<div id="af41ab83" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> nltk, re</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.stem <span class="im">import</span> SnowballStemmer, WordNetLemmatizer</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk <span class="im">import</span> pos_tag</span>
@@ -1313,7 +1313,7 @@ Name: content, dtype: object</code></pre>
 </section>
 <section id="mostramos-las-palabras-mas-conunes-para-etiquetar" class="level2">
 <h2 class="anchored" data-anchor-id="mostramos-las-palabras-mas-conunes-para-etiquetar">Mostramos las palabras mas conunes para etiquetar</h2>
-<div id="22f7f853" class="cell" data-execution_count="13">
+<div id="54fb4c0c" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -1465,7 +1465,7 @@ Name: content, dtype: object</code></pre>
 <h1>Creación de al etiqueta</h1>
 <section id="filtrado-de-patrones-para-luisa-presidenta" class="level2">
 <h2 class="anchored" data-anchor-id="filtrado-de-patrones-para-luisa-presidenta">Filtrado de patrones para luisa presidenta</h2>
-<div id="38e34e86" class="cell" data-execution_count="14">
+<div id="53877cea" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> label_luisa(text):</span>
@@ -1492,7 +1492,7 @@ Name: content, dtype: object</code></pre>
 Name: proportion, dtype: float64</code></pre>
 </div>
 </div>
-<div id="7cef3ac3" class="cell" data-execution_count="15">
+<div id="709dcbe5" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar texto completo en pandas (sin truncar)</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>pd.set_option(<span class="st">"display.max_colwidth"</span>, <span class="va">None</span>)</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>pd.set_option(<span class="st">"display.max_rows"</span>, <span class="dv">100</span>)  <span class="co"># opcional, para ver más filas</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1500,7 +1500,7 @@ Name: proportion, dtype: float64</code></pre>
 </section>
 <section id="listado-de-observaciones-donde-aparece-posrura-de-luisa" class="level2">
 <h2 class="anchored" data-anchor-id="listado-de-observaciones-donde-aparece-posrura-de-luisa">Listado de observaciones donde aparece posrura de luisa</h2>
-<div id="87e648c3" class="cell" data-execution_count="16">
+<div id="2113eff9" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>df.query(<span class="st">"luisa_presidenta == 0"</span>)[[<span class="st">"content"</span>]].head(<span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="16">
 <div>
@@ -1563,7 +1563,7 @@ Name: proportion, dtype: float64</code></pre>
 </section>
 <section id="listado-de-observaciones-donde-aparece-postura-de-luisa" class="level2">
 <h2 class="anchored" data-anchor-id="listado-de-observaciones-donde-aparece-postura-de-luisa">Listado de observaciones donde aparece postura de luisa</h2>
-<div id="731ab1b8" class="cell" data-execution_count="17">
+<div id="7b8fc5d5" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>df.query(<span class="st">"luisa_presidenta == 1"</span>)[[<span class="st">"content"</span>]].head(<span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="17">
 <div>
@@ -1629,7 +1629,7 @@ Name: proportion, dtype: float64</code></pre>
 <h1>Selecciones de Features y Target</h1>
 <section id="creación-del-df" class="level2">
 <h2 class="anchored" data-anchor-id="creación-del-df">Creación del DF</h2>
-<div id="324fee3a" class="cell" data-execution_count="18">
+<div id="040ccfa9" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>df_model <span class="op">=</span> df[[</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"clean_text"</span>,</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"authorVerified"</span>,<span class="st">"account_age_days"</span>,</span>
@@ -1651,14 +1651,14 @@ dtypes: bool(1), int64(2), object(1)
 memory usage: 3.8+ MB</code></pre>
 </div>
 </div>
-<div id="d3716f87" class="cell" data-execution_count="19">
+<div id="6d73c21b" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> df_model.drop(<span class="st">"luisa_presidenta"</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> df_model[<span class="st">"luisa_presidenta"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="features-y-target" class="level2">
 <h2 class="anchored" data-anchor-id="features-y-target">Features y Target</h2>
-<div id="429d2931" class="cell" data-execution_count="20">
+<div id="9fb7fcc4" class="cell" data-execution_count="20">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>text_features <span class="op">=</span> [<span class="st">"clean_text"</span>]</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>categorical_features <span class="op">=</span> [<span class="st">"authorVerified"</span>]</span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>numeric_features <span class="op">=</span> [<span class="st">"account_age_days"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1666,7 +1666,7 @@ memory usage: 3.8+ MB</code></pre>
 </section>
 <section id="split-de-variables-features-y-target" class="level2">
 <h2 class="anchored" data-anchor-id="split-de-variables-features-y-target">Split de variables Features y Target</h2>
-<div id="d06453e1" class="cell" data-execution_count="21">
+<div id="9f2d24d4" class="cell" data-execution_count="21">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># División de datos</span></span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> tts(</span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    X, y, test_size<span class="op">=</span><span class="fl">0.25</span>, random_state<span class="op">=</span><span class="dv">42</span>, stratify<span class="op">=</span>y</span>
@@ -1675,7 +1675,7 @@ memory usage: 3.8+ MB</code></pre>
 </section>
 <section id="procesamiento" class="level2">
 <h2 class="anchored" data-anchor-id="procesamiento">Procesamiento</h2>
-<div id="d2917b5d" class="cell" data-execution_count="22">
+<div id="34972d0a" class="cell" data-execution_count="22">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OneHotEncoder, StandardScaler</span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> TfidfVectorizer</span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.compose <span class="im">import</span> ColumnTransformer</span>
@@ -1691,11 +1691,11 @@ memory usage: 3.8+ MB</code></pre>
 </section>
 <section id="entrenamiento-del-modelo" class="level2">
 <h2 class="anchored" data-anchor-id="entrenamiento-del-modelo">Entrenamiento del modelo</h2>
-<div id="97c51653" class="cell" data-execution_count="23">
+<div id="d4ec6e19" class="cell" data-execution_count="23">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> Pipeline(steps<span class="op">=</span>[</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> Pipeline([</span>
 <span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"preprocessor"</span>, preprocessor),</span>
 <span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"classifier"</span>, LogisticRegression(max_iter<span class="op">=</span><span class="dv">200</span>, random_state<span class="op">=</span><span class="dv">42</span>))</span>
 <span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1703,7 +1703,7 @@ memory usage: 3.8+ MB</code></pre>
 </section>
 <section id="matriz-de-confusión" class="level2">
 <h2 class="anchored" data-anchor-id="matriz-de-confusión">Matriz de Confusión</h2>
-<div id="8c2c3e5b" class="cell" data-execution_count="24">
+<div id="6c730cd5" class="cell" data-execution_count="24">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> classification_report, confusion_matrix, ConfusionMatrixDisplay</span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
