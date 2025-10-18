@@ -761,7 +761,7 @@ Puntos clave en simple:
 
 > En resumen: el clustering sirvió para comprobar que **existen comportamientos y estilos de escritura que se repiten**, lo cual da sentido a luego usar clasificación supervisada para separar lo tóxico de lo no tóxico de forma más precisa.
 
-## ✅ 6. Conclusiones finales
+# ✅ Conclusiones finales
 
 ### Calidad de los datos
 - El dataset tenía un alto número de tweets con **toxicidad cercana a 0**, lo cual generaba un cierto desbalance natural.
@@ -782,8 +782,6 @@ Puntos clave en simple:
 - Los clusters identificados confirmaron que hay estilos y grupos de discurso coherentes — lo cual respalda la existencia de patrones reales en el lenguaje del dataset.
 
 ---
-
-6 Conclusiones
 
 ## 🚀 Próximos pasos y mejoras sugeridas
 
